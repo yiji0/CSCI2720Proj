@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Testing</title>
+</head>
+<body>
+    <script>
+        function myFuntion() {
+            url = 'http://localhost:3000/uid/' + document.getElementById('uid').value;
+            const myDataObject = {
+                'uid': document.getElementById('uid').value,
+                'pwd': document.getElementById('pwd').value
+            }
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(myDataObject)
+            })
+            .then(res => res.text())
+            .then(data => {
+                console.log(data);
+            })
+        }
+    </script>
+
+    <h1>Administrator Login</h1>
+    <form action="http://localhost:3000/login" method="post">
+        <label for="uid">Account ID</label>
+        <input type="text" id="uid" name="uid">
+        <br><br>
+
+        <label for="pwd">Password</label>
+        <input type="text" id="pwd" name="pwd">
+        <br><br>
+
+        <input type="submit">
+    </form>
+</body>
+</html>
