@@ -17,55 +17,49 @@ db.on('error', console.error.bind(console, 'Connection error:'));
 db.once('open', function () {
     console.log("Connection is open...");
 
-    // const LocationSchema = mongoose.Schema({
-    //     name: { type: String, required: true, unique: true },
-    //     lat: { type: mongoose.Types.Decimal128, required: true },
-    //     lon: { type: mongoose.Types.Decimal128, required: true },
-    //     comment: [{
-    //         uid: { type: String, required: true, unique: true },
-    //         content: { type: String, required: true }
-    //     }]
-    // });
+    const LocationSchema = mongoose.Schema({
+        name: { type: String, required: true, unique: true },
+        lat: { type: mongoose.Types.Decimal128, required: true },
+        lon: { type: mongoose.Types.Decimal128, required: true },
+        comment: [{
+            uid: { type: String, required: true, unique: true },
+            content: { type: String, required: true }
+        }]
+    });
 
-    // const WeatherSchema = mongoose.Schema({
-    //     loc: { type: mongoose.Schema.Types.ObjectId, ref: 'Location' },
-    //     temp_c: { type: mongoose.Types.Decimal128, required: true },
-    //     wind_kph: { type: mongoose.Types.Decimal128, required: true },
-    //     wind_dir: { type: String, required: true },
-    //     humidity: { type: Number, required: true },
-    //     precip_mm: { type: mongoose.Types.Decimal128, required: true },
-    //     vis_km: { type: Number, required: true }
-    // });
+    const WeatherSchema = mongoose.Schema({
+        loc: { type: mongoose.Schema.Types.ObjectId, ref: 'Location' },
+        temp_c: { type: mongoose.Types.Decimal128, required: true },
+        wind_kph: { type: mongoose.Types.Decimal128, required: true },
+        wind_dir: { type: String, required: true },
+        humidity: { type: Number, required: true },
+        precip_mm: { type: mongoose.Types.Decimal128, required: true },
+        vis_km: { type: Number, required: true }
+    });
 
-    // const UserSchema = mongoose.Schema({
-    //     id: { type: String, required: true, unique: true },
-    //     pwd: { type: String, required: true }
-    //     fav_loc: { type: mongoose.Schema.Types.ObjectId, ref: 'Location' }
-    // });
-
-    // const AdminSchema = mongoose.Schema({
-    //     id: { type: String, required: true, unique: true },
-    //     pwd: { type: String, required: true }
-    // });
-
-    // const Location = mongoose.model('Location', LocationSchema);
-
-    // const Weather = mongoose.model('Weather', WeatherSchema);
-
-    // const User = mongoose.model('User', UserSchema);
-
-    // const Admin = mongoose.model('Admin', AdminSchema);
+    const UserSchema = mongoose.Schema({
+        id: { type: String, required: true, unique: true },
+        pwd: { type: String, required: true },
+        fav_loc: { type: mongoose.Schema.Types.ObjectId, ref: 'Location' }
+    });
 
     const AdminSchema = mongoose.Schema({
         id: { type: String, required: true, unique: true },
         pwd: { type: String, required: true }
     });
+
+    const Location = mongoose.model('Location', LocationSchema);
+
+    const Weather = mongoose.model('Weather', WeatherSchema);
+
+    const User = mongoose.model('User', UserSchema);
+
     const Admin = mongoose.model('Admin', AdminSchema);
 
     app.get('/test', (req, res) => {
         Admin.create({
-            id: 'test01',
-            pwd: '123456'
+            id: 'test02',
+            pwd: 'abcdef'
         }, (err, user) => {
             if (err)
                 res.send(err);
