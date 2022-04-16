@@ -1,0 +1,19 @@
+{
+  "name": "csci2720proj",
+  "version": "1.0.0",
+  "description": "https://docs.qq.com/doc/DUVROVEdsTEZLaWRp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yiji0/CSCI2720Proj.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yiji0/CSCI2720Proj/issues"
+  },
+  "homepage": "https://github.com/yiji0/CSCI2720Proj#readme"
+}
