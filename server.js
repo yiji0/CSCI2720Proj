@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.json());
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const { send } = require('express/lib/response');
 mongoose.connect('mongodb+srv://stu124:p280948-@csci2720.m2qbq.mongodb.net/stu124');
 
@@ -55,6 +55,35 @@ db.once('open', function () {
     const User = mongoose.model('User', UserSchema);
 
     const Admin = mongoose.model('Admin', AdminSchema);
+
+    app.get('/test', (req, res) => {
+        Admin.create({
+            id: 'test02',
+            pwd: 'abcdef'
+        }, (err, user) => {
+            if (err)
+                res.send(err);
+            else
+                res.send('Admin created successfully!\n' + user);
+        });
+    });
+
+    app.post('/login', (req, res) => {
+        let _uid = req.body['uid'];
+        let _pwd = req.body['pwd'];
+
+        Admin.findOne({id: _uid}, (err, val) => {
+            if (err)
+                res.send(err);
+            else {
+                if (val != null && _pwd == val.pwd) {
+                    res.send('Login Successfully!\n');
+                } else {
+                    res.send("Incorrect Account or Password.\n");
+                }
+            }
+        });
+    });
 
     app.all('/*', (req, res) => {
         res.send("Welcome!");
