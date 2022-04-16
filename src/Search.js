@@ -219,7 +219,7 @@ class CityRowName extends React.Component {
   
     render() {
       return ( <div>
-        <div><p>Search By Lontitude</p>
+        <div><p>Search By Longitude</p>
           <SearchBarLon
             filterText={this.state.filterText}
             onFilterTextChange={this.handleFilterTextChange}
