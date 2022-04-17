@@ -14,7 +14,7 @@ class Map extends React.Component{
       initialViewState={{
         longitude: 114.210932,
         latitude: 22.416263,
-        zoom: 14
+        zoom: 2
       }}
       style={{width: 1000, height: 600}}
       mapStyle="mapbox://styles/mapbox/streets-v9"
@@ -31,12 +31,4 @@ class Map extends React.Component{
 }
 
 
-class Location extends React.Component{
-  render(){
-    return(
-      <div>The dedailed view</div>
-    )
-  }
-}
-
-export {Map,Location};
+export default Map;
