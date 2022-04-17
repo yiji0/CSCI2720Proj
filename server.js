@@ -11,8 +11,7 @@ app.use(express.json());
 
 const mongoose = require('mongoose');
 const { send } = require('express/lib/response');
-// mongoose.connect('mongodb+srv://stu124:p280948-@csci2720.m2qbq.mongodb.net/stu124');
-mongoose.connect('mongodb://localhost:27017/');
+mongoose.connect('mongodb+srv://stu124:p280948-@csci2720.m2qbq.mongodb.net/stu124');
 
 
 
