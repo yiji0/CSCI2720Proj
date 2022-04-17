@@ -1,3 +1,4 @@
+const fetch = require('node-fetch')
 const express = require('express');
 const app = express();
 
@@ -10,7 +11,10 @@ app.use(express.json());
 
 const mongoose = require('mongoose');
 const { send } = require('express/lib/response');
-mongoose.connect('mongodb+srv://stu124:p280948-@csci2720.m2qbq.mongodb.net/stu124');
+// mongoose.connect('mongodb+srv://stu124:p280948-@csci2720.m2qbq.mongodb.net/stu124');
+mongoose.connect('mongodb://localhost:27017/');
+
+
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection error:'));
@@ -22,7 +26,7 @@ db.once('open', function () {
         lat: { type: mongoose.Types.Decimal128, required: true },
         lon: { type: mongoose.Types.Decimal128, required: true },
         comment: [{
-            uid: { type: String, required: true, unique: true },
+            uid: { type: String, required: true},
             content: { type: String, required: true }
         }]
     });
@@ -81,6 +85,53 @@ db.once('open', function () {
                 } else {
                     res.send("Incorrect Account or Password.\n");
                 }
+            }
+        });
+    });
+
+    app.put('/latestdata', (req, res) => {
+        let location = req.query['loc'];
+        console.log(location);
+        Location.findOne({ name: location }, (err, loc) => {
+            if (err)
+                res.send(err);
+            else if (loc == undefined) {
+                console.log("No location found");
+            } else {
+                console.log("Find " + loc['name']);
+                const weather_key = 'bced98796b384bf0a55111054221604';
+                const weather_url = "http://api.weatherapi.com/v1/current.json?key="
+                    + weather_key + "&q=" + loc.name + "&aqi=no";
+                fetch(weather_url).then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    let temp_c = data['current']['temp_c'];
+                    let wind_kph = data['current']['wind_kph'];
+                    let humidity = data['current']['humidity'];
+                    let percip_mm = data['current']['precip_mm'];
+                    let vis_km = data['current']['vis_km'];
+                    console.log(temp_c + "\t" + wind_kph + "\t" + humidity + "\t" + percip_mm + "\t" + vis_km);
+                    let conditions = { 'loc': loc._id },
+                        update = {
+                            $set: {
+                                temp_c:data['current']['temp_c'],
+                                wind_kph: data['current']['wind_kph'],
+                                humidity: data['current']['humidity'],
+                                percip_mm: data['current']['precip_mm'],
+                                vis_km: data['current']['vis_km']
+                            }
+                        };
+                    Weather.updateOne(conditions, update, {upsert: true}, (err, weather) => {
+                        if (err) {
+                            console.log('Failed in updating');
+                            res.send(err);
+                        } else {
+                            console.log('Successfully update');
+                        }
+                    });
+                }).catch(err => {
+                    console.log(err);
+                });
             }
         });
     });
