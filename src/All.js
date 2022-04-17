@@ -159,14 +159,31 @@ class All extends React.Component{
 }
 
 class Fav extends React.Component{
+    state={
+      location:null
+    }
+
+    async componentDidMount(){
+      const url = "http://localhost:3000/favlist/";
+      const response = await fetch(url);
+      const data = await response.json();
+      this.setState({location:data});
+    }
     render(){
         return(
-            <div>get from favourite list</div>
+          <table>
+          <tr>
+            <th>CityName</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
+          </tr>
+          {this.state.location.map((loc,index) => <GetFav data={loc} i={index} key={index}/>)}
+          </table>
+            
         )
         
     }
 }
-
   
   export {All,Fav};
 
