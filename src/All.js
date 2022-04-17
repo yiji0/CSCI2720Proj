@@ -155,6 +155,20 @@ class All extends React.Component{
       }
 }
 
+class GetFav extends React.Component{
+  render(){
+    let i = this.props.i;
+    let data = this.props.data;
+    return(
+      <tr>
+      <td><Link to={'/'+data.name}>{data.name}</Link></td>
+      <td>{data.lon}</td>
+      <td>{data.lat}</td>
+      </tr>
+    )
+  }
+}
+
 class Fav extends React.Component{
     state={
       location:null
