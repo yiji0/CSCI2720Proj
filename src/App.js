@@ -1,9 +1,11 @@
 import * as React from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
-import {Map, Location} from './Map';
+import Map from './Map';
 import {All, Fav} from './All';
 import Search from './Search';
+import Detail from './Detail';
+
 
 const CITIES = [
   {name: 'HongKong', lat: '114°10E', lon: '22°16N'},
@@ -42,7 +44,7 @@ function App() {
         <Route path='/' element={<All/>} />
         <Route path='/favourite' element={<Fav/>} />
         <Route path='/search' element={<Search cities={CITIES}/>} />
-        <Route path="/:loc" element={<Location/>} />
+        <Route path="/:loc" element={<Detail/>} />
         </Routes>
         </div>
         </BrowserRouter>
