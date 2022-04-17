@@ -2,7 +2,6 @@ import * as React from 'react';
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 class All extends React.Component{
   sortname(){
-    console.log("1");
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("locationlist");
     switching = true;
@@ -25,7 +24,6 @@ class All extends React.Component{
     }
   }
   sortlat(){
-    console.log("1");
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("locationlist");
     switching = true;
@@ -48,7 +46,6 @@ class All extends React.Component{
     }
   }
   sortlon(){
-    console.log("1");
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("locationlist");
     switching = true;
