@@ -20,12 +20,15 @@ class Login extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-    }).then(res => {
+    })
+    .then(res => {
       if (res.status == 200) {
         this.setState({login: true});
       }
       return res.text();
-    }).catch(err => {
+    })
+    .then(data => alert(data))
+    .catch(err => {
       console.log(err);
     });
     event.preventDefault();
