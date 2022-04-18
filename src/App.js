@@ -44,7 +44,7 @@ function App() {
         <Routes>
         <Route path='/login' element={<Login/>} />
         <Route path="/map" element={<Map/>} />
-        <Route path='/' element={<All/>} />
+        <Route path='/all' element={<All/>} />
         <Route path='/favourite' element={<Fav/>} />
         <Route path='/search' element={<Search cities={CITIES}/>} />
         <Route path="/:loc" element={<Detail/>} />
