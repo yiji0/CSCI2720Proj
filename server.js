@@ -2,7 +2,8 @@ const fetch = require('node-fetch')
 const express = require('express');
 const app = express();
 
-const cors = require('cors'); app.use(cors());
+const cors = require('cors');
+app.use(cors());
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -74,15 +75,14 @@ db.once('open', function () {
     app.post('/login', (req, res) => {
         let _uid = req.body['uid'];
         let _pwd = req.body['pwd'];
-
         Admin.findOne({id: _uid}, (err, val) => {
             if (err)
-                res.send(err);
+                res.status(404).send(err);
             else {
                 if (val != null && _pwd == val.pwd) {
-                    res.send('Login Successfully!\n');
+                    res.status(200).send('Login Successfully!\n');
                 } else {
-                    res.send("Incorrect Account or Password.\n");
+                    res.status(404).send("Incorrect Account or Password.\n");
                 }
             }
         });
@@ -140,4 +140,4 @@ db.once('open', function () {
     });
 });
 
-const server = app.listen(3000);
+const server = app.listen(8000);
