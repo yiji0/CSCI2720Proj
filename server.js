@@ -2,8 +2,7 @@ const fetch = require('node-fetch')
 const express = require('express');
 const app = express();
 
-const cors = require('cors');
-app.use(cors());
+const cors = require('cors'); app.use(cors());
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -60,7 +59,19 @@ db.once('open', function () {
 
     const Admin = mongoose.model('Admin', AdminSchema);
 
-    app.get('/test', (req, res) => {
+    app.get('/createUser', (req, res) => {
+        User.create({
+            id: 'user11',
+            pwd: '123456'
+        }, (err, user) => {
+            if (err)
+                res.send(err);
+            else
+                res.send('User created successfully!\n' + user);
+        });
+    });
+
+    app.get('/createAdmin', (req, res) => {
         Admin.create({
             id: 'test02',
             pwd: 'abcdef'
@@ -72,17 +83,35 @@ db.once('open', function () {
         });
     });
 
-    app.post('/login', (req, res) => {
+    app.post('/login/user', (req, res) => {
         let _uid = req.body['uid'];
         let _pwd = req.body['pwd'];
-        Admin.findOne({id: _uid}, (err, val) => {
+
+        User.findOne({id: _uid}, (err, val) => {
             if (err)
-                res.status(404).send(err);
+                res.send(err);
             else {
                 if (val != null && _pwd == val.pwd) {
-                    res.status(200).send('Login Successfully!\n');
+                    res.status(200).send('Login As User Successfully!\n');
                 } else {
-                    res.status(404).send("Incorrect Account or Password.\n");
+                    res.status(404).send("Incorrect Username or Password.\n");
+                }
+            }
+        });
+    });
+
+    app.post('/login/admin', (req, res) => {
+        let _uid = req.body['uid'];
+        let _pwd = req.body['pwd'];
+
+        Admin.findOne({id: _uid}, (err, val) => {
+            if (err)
+                res.send(err);
+            else {
+                if (val != null && _pwd == val.pwd) {
+                    res.status(200).send('Login As Admin Successfully!\n');
+                } else {
+                    res.status(404).send("Incorrect Username or Password.\n");
                 }
             }
         });
