@@ -7,14 +7,14 @@ class Login extends React.Component {
   }
 
 
-  handleSubmit = (event) => {
+  handleUserSubmit = (event) => {
     const uid = document.getElementById("uid").value;
     const pwd = document.getElementById("pwd").value;
     const userinfo = {
       uid: uid,
       pwd: pwd
     };
-    fetch("http://localhost:8000/login", {
+    fetch("http://localhost:8000/login/user", {
       method: "POST",
       body: JSON.stringify(userinfo),
       headers: {
@@ -33,8 +33,52 @@ class Login extends React.Component {
     });
     event.preventDefault();
   }
-
+  
+  handleAdminSubmit = (event) => {
+    const uid = document.getElementById("uid").value;
+    const pwd = document.getElementById("pwd").value;
+    const userinfo = {
+      uid: uid,
+      pwd: pwd
+    };
+    fetch("http://localhost:8000/login/admin", {
+      method: "POST",
+      body: JSON.stringify(userinfo),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => {
+      if (res.status == 200) {
+        this.setState({login: true});
+      }
+      return res.text();
+    })
+    .then(data => alert(data))
+    .catch(err => {
+      console.log(err);
+    });
+    event.preventDefault();
+  }
+  
   render() {
+    return ( this.state.login == false ? (
+      <div>
+        Username : &nbsp;
+        <input type="text" name="uid" id="uid"/>
+        <br/><br/>
+        Password : &nbsp;
+        <input type="text" name="pwd" id="pwd"/>
+        <br/><br/>
+        <button type='submit' onClick={this.handleUserSubmit}>Login As User</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type='submit' onClick={this.handleAdminSubmit}>Login As Admin</button>
+      </div>
+    ) : <All />
+    );
+  }
+
+/*  render() {
     return (
       this.state.login == false ? (
         <div>
@@ -57,6 +101,6 @@ class Login extends React.Component {
         </div>
       ) : <All />
     );
-  }
+  }*/
 }
 export default Login;
