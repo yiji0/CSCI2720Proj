@@ -5,6 +5,7 @@ import Map from './Map';
 import {All, Fav} from './All';
 import Search from './Search';
 import Detail from './Detail';
+import Login from './Login'
 
 
 const CITIES = [
@@ -35,6 +36,7 @@ function App() {
         <Link to='/'>All</Link>
         <Link to='/search'>Search</Link>
         <Link to='/favourite'>Favourite Locations</Link>
+        <Link to='/login'>Login</Link>
         </ul>
 
         <hr/>
@@ -45,6 +47,7 @@ function App() {
         <Route path='/favourite' element={<Fav/>} />
         <Route path='/search' element={<Search cities={CITIES}/>} />
         <Route path="/:loc" element={<Detail/>} />
+        <Route path='/login' element={<Login/>} />
         </Routes>
         </div>
         </BrowserRouter>

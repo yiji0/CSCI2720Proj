@@ -136,7 +136,7 @@ class CityRowName extends React.Component {
       const filterText = this.props.filterText;
   
       const rows = [];
-  
+
       this.props.cities.forEach((city) => {
         if (city.lon.indexOf(filterText) === -1) {
           return;
@@ -174,10 +174,7 @@ class CityRowName extends React.Component {
     handleFilterTextChange(e) {
       this.props.onFilterTextChange(e.target.value);
     }
-    
-    
 
-    
     render() {
       return (
         <form>
