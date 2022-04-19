@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
 
 class CityRowName extends React.Component {
     render() {
@@ -34,8 +35,9 @@ class CityRowName extends React.Component {
       });
   
       return (
-        <table>
-          <thead>
+        <div className="container">
+        <Table bordered striped hover>
+            <thead>
             <tr>
               <th>Name</th>
               <th>Longitude</th>
@@ -43,7 +45,8 @@ class CityRowName extends React.Component {
             </tr>
           </thead>
           <tbody>{rows}</tbody>
-        </table>
+        </Table>
+        </div>
       );
     }
   }
@@ -150,8 +153,9 @@ class CityRowName extends React.Component {
       });
   
       return (
-        <table>
-          <thead>
+        <div className="container">
+        <Table bordered striped hover>
+            <thead>
             <tr>
               <th>Name</th>
               <th>Longitude</th>
@@ -159,7 +163,8 @@ class CityRowName extends React.Component {
             </tr>
           </thead>
           <tbody>{rows}</tbody>
-        </table>
+        </Table>
+        </div>
       );
     }
   }
@@ -266,8 +271,9 @@ class CityRowName extends React.Component {
       });
   
       return (
-        <table>
-          <thead>
+        <div className="container">
+        <Table bordered striped hover>
+            <thead>
             <tr>
               <th>Name</th>
               <th>Longitude</th>
@@ -275,7 +281,8 @@ class CityRowName extends React.Component {
             </tr>
           </thead>
           <tbody>{rows}</tbody>
-        </table>
+        </Table>
+        </div>
       );
     }
   }
