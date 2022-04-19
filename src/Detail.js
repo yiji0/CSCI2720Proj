@@ -78,7 +78,7 @@ function Detail(){
 
     async function addComment(){
         const newCom = {
-            user: 'username1', // how we know the user,
+            user: 'uid01', // how we know the user,
             comment: document.getElementById('new-comment').value
         };
         let res = await fetch('http://localhost:8000/detail/newcomm',{
@@ -103,36 +103,49 @@ function Detail(){
 
     }
 
+    async function addFav(){
+        const url = window.location.href;
+        const res = await fetch(url,{
+            method: 'POST'
+        }); //send the param in url get a res of sucess or not
+        alert(res.text()=='sucess'? 'Added to your favorite':'Something wrong');
+    }
+
     return(
-        <>
-        <div id ='details'>
-            <h3>Location details:</h3>
-            <ul>
-                <li>{data.temp_c}</li>
-                <li>{data.wind_kph}</li>
-            </ul>
+        <div className='d-flex'>
+        <div className='w-50 m-4'>
+            <SmallMap info={data.location}/>
         </div>
-        <div id="comments"> 
-            <h3>Comments:</h3>
-            {data.comments.map((comm,index)=>
-                <div className="d-flex" key={index}> 
-                    <div className="flex-shrink-0"> {comm.user} </div>
-                    <div className="flex-grow-1">
-                        <p>{comm.comment}</p>
-                    </div>
-                </div>
-            )}
-        </div>
-        <div>
-            <h3>Add Comments:</h3>
-            <div className="mb-3">
-                <label for="new-comment" className="form-label">Comment</label>
-                <textarea className="form-control" id="new-comment" rows="3"></textarea>
+        <div className='flex-grow-1 m-4'>
+            <div id ='details' className='p-2 mb-4 bg-light'>
+                <h3>Location details:</h3>
+                <ul>
+                    <li>{data.temp_c}</li>
+                    <li>{data.wind_kph}</li>
+                </ul>
             </div>
-            <button type="button" className="btn btn-success" onClick={addComment}>Add comment</button>
+            <button type="button" className="btn btn-outline-success me-2" onClick={addFav}>Add to My Favourite</button>
+            <div id="comments" className='my-4 p-2 bg-light'> 
+                <h3>Comments:</h3>
+                {data.comments.map((comm,index)=>
+                    <div className="d-flex" key={index}> 
+                        <div className="flex-shrink-0"> {comm.user} </div>
+                        <div className="flex-grow-1">
+                            <p>{comm.comment}</p>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <div>
+                <h3>Add Comments:</h3>
+                <div className="mb-3">
+                    <label for="new-comment" className="form-label">Comment:</label>
+                    <textarea className="form-control" id="new-comment" rows="3"></textarea>
+                </div>
+                <button type="button" className="btn btn-outline-success me-2" onClick={addComment}>Add comment</button>
+            </div>
         </div>
-        <SmallMap info={data.location}/>
-        </>
+        </div>
     )
 }
 
@@ -150,7 +163,10 @@ class SmallMap extends React.Component{
             mapboxAccessToken={MAPBOX_TOKEN}
             >
             <Marker longitude={this.props.info.lon} latitude={this.props.info.lat} anchor="bottom">
-                Marker
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            </svg>
             </Marker>
             </ReactMapGL>
         )
