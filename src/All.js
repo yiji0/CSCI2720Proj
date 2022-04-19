@@ -1,5 +1,8 @@
+import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
+import Table from 'react-bootstrap/Table'
+
 class All extends React.Component{
   sortname(){
     var table, rows, switching, i, x, y, shouldSwitch;
@@ -70,15 +73,16 @@ class All extends React.Component{
     render() {
         return ( 
             <>
-            <button onClick={this.sortname}>Sort by name</button>
-            <button onClick={this.sortlat}>Sort by latitude</button>
-            <button onClick={this.sortlon}>Sort by longitude</button>
-            <table id="locationlist">
+            <div className="container">
+            <Table bordered striped hover id="locationlist">
+            <thead>
             <tr>
-              <th>CityName</th>
-              <th>Longitude</th>
-              <th>Latitude</th>
+            <th>CityName <button className="btn btn-outline-success me-2" onClick={this.sortname}>Sort</button></th>
+            <th>Longitude <button className="btn btn-outline-success me-2" onClick={this.sortlat}>Sort</button></th>
+            <th>Latitude <button className="btn btn-outline-success me-2" onClick={this.sortlon}>Sort</button></th>
             </tr>
+            </thead>
+            <tbody>
             <tr>
               <td><Link to="/HongKong">Hong Kong</Link></td>
               <td>1</td>
@@ -149,7 +153,9 @@ class All extends React.Component{
               <td>1</td>
               <td>1</td>
             </tr>
-          </table>
+            </tbody>
+          </Table>
+          </div>
           </>
         );
       }
@@ -182,14 +188,20 @@ class Fav extends React.Component{
     }
     render(){
         return(
-          <table>
+          <div className="container">
+          <Table bordered striped hover>
+          <thead>
           <tr>
             <th>CityName</th>
             <th>Longitude</th>
             <th>Latitude</th>
           </tr>
+          </thead>
+          <tbody>
           {this.state.location.map((loc,index) => <GetFav data={loc} i={index} key={index}/>)}
-          </table>
+          </tbody>
+          </Table>
+          </div>
             
         )
         
