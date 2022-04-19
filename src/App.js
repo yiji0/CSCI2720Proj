@@ -32,22 +32,22 @@ function App() {
         <BrowserRouter>
         <div>
         <ul>
+        <Link to='/'>Login</Link>
         <Link to="/map">Map</Link>
-        <Link to='/'>All</Link>
+        <Link to='/all'>All</Link>
         <Link to='/search'>Search</Link>
         <Link to='/favourite'>Favourite Locations</Link>
-        <Link to='/login'>Login</Link>
         </ul>
 
         <hr/>
 
         <Routes>
+        <Route path='/' element={<Login/>} />
         <Route path="/map" element={<Map/>} />
-        <Route path='/' element={<All/>} />
+        <Route path='/all' element={<All/>} />
         <Route path='/favourite' element={<Fav/>} />
         <Route path='/search' element={<Search cities={CITIES}/>} />
         <Route path="/:loc" element={<Detail/>} />
-        <Route path='/login' element={<Login/>} />
         </Routes>
         </div>
         </BrowserRouter>
