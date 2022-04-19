@@ -42,7 +42,7 @@ function App() {
         <hr/>
 
         <Routes>
-        <Route path='/login' element={<Login/>} />
+        <Route path='/' element={<Login/>} />
         <Route path="/map" element={<Map/>} />
         <Route path='/all' element={<All/>} />
         <Route path='/favourite' element={<Fav/>} />
