@@ -32,9 +32,9 @@ function App() {
         <BrowserRouter>
         <div>
         <ul>
-        <Link to='/login'>Login</Link>
+        <Link to='/'>Login</Link>
         <Link to="/map">Map</Link>
-        <Link to='/'>All</Link>
+        <Link to='/all'>All</Link>
         <Link to='/search'>Search</Link>
         <Link to='/favourite'>Favourite Locations</Link>
         </ul>
