@@ -106,7 +106,7 @@ class Login extends React.Component {
           <Col>
           
           <div className="bg-light border"> 
-          <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <Button type='submit' onClick={this.handleUserSubmit} variant="success">Login As User</Button>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <Button type='submit' onClick={this.handleAdminSubmit} variant="outline-success">Login As Admin</Button>
