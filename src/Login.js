@@ -1,5 +1,10 @@
 import * as React from 'react';
 import { All } from "./All";
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import 'bootstrap/dist/css/bootstrap.min.css';
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -63,17 +68,56 @@ class Login extends React.Component {
   
   render() {
     return ( this.state.login == false ? (
-      <div>
+      <Container>
+      
+        <Row><br/></Row>
+        <Row><br/></Row>
+        <Row><br/></Row>
+        <Row><br/></Row>
+        <Row><br/></Row>
+        
+        <Row>
+          <Col></Col>
+          <Col>   
+          <div className="bg-light border">  
+          <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         Username : &nbsp;
         <input type="text" name="uid" id="uid"/>
+        
         <br/><br/>
-        Password : &nbsp;
+        </div>
+          </Col>
+          <Col></Col>
+        </Row>
+        <Row>
+        <Col></Col>
+          <Col>
+          <div className="border">  
+          <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Password &nbsp;: &nbsp;
         <input type="text" name="pwd" id="pwd"/>
         <br/><br/>
-        <button type='submit' onClick={this.handleUserSubmit}>Login As User</button>
+        </div>
+        </Col>
+          <Col></Col>
+        </Row>
+        <Row>
+        <Col></Col>
+          <Col>
+          
+          <div className="bg-light border"> 
+          <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <Button type='submit' onClick={this.handleUserSubmit} variant="success">Login As User</Button>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <button type='submit' onClick={this.handleAdminSubmit}>Login As Admin</button>
-      </div>
+        <Button type='submit' onClick={this.handleAdminSubmit} variant="outline-success">Login As Admin</Button>
+        <br/><br/>
+        </div>
+        </Col>
+          <Col></Col>
+        </Row>
+        
+        
+      </Container>
     ) : <All />
     );
   }
