@@ -5,8 +5,11 @@ import Map from './Map';
 import {All, Fav} from './All';
 import Search from './Search';
 import Detail from './Detail';
-import Login from './Login'
-
+import Login from './Login';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Nav from 'react-bootstrap/Nav';
+import Container from 'react-bootstrap/Container';
 
 const CITIES = [
   {name: 'HongKong', lat: '114°10E', lon: '22°16N'},
@@ -30,16 +33,50 @@ function App() {
   return (
         <> 
         <BrowserRouter>
+        <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/all'>Home</Link></Navbar.Brand>
+          <Nav className="me-auto">
+          <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/map'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Link></Nav.Link>
+            <NavDropdown title="Locations" id="basic-nav-dropdown">
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/all'>All Locations</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/HongKong'>Hong Kong</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Beijing'>Beijing</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Shanghai'>Shanghai</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Harbin'>Harbin</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Lahsa'>Lahsa</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Urumchi'>Urumchi</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Seoul'>Seoul</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Tokyo'>Tokyo</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Hohhot'>Hohhot</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Singapore'>Singapore City</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Chengdu'>Chengdu</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Kunming'>Kunming</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Sanya'>Sanya</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Taipei'>Taipei</Link></NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/search'>&nbsp;&nbsp;&nbsp;&nbsp;Search</Link></Nav.Link>
+            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/favourite'>&nbsp;&nbsp;&nbsp;&nbsp;Favourite Locations</Link></Nav.Link>
+            <Nav.Link>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </Nav.Link>
+            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>Log In / Log Out</Link></Nav.Link>
+          </Nav>
+        </Container>
+        </Navbar>
+        <br/>
         <div>
-        <ul>
-        <Link to='/'>Login</Link>
-        <Link to="/map">Map</Link>
-        <Link to='/all'>All</Link>
-        <Link to='/search'>Search</Link>
-        <Link to='/favourite'>Favourite Locations</Link>
-        </ul>
-
-        <hr/>
 
         <Routes>
         <Route path='/' element={<Login/>} />
