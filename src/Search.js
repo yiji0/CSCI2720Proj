@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
 
 class CityRowName extends React.Component {
     render() {
@@ -65,17 +66,21 @@ class CityRowName extends React.Component {
   
     render() {
       return (
+        <Container>
+         
         <form>
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search By Name..."
             value={this.props.filterText}
             onChange={this.handleFilterTextChange}
+            className = "form-control"
           />
           <p>
             
           </p>
         </form>
+        </Container>
       );
     }
   }
@@ -102,8 +107,12 @@ class CityRowName extends React.Component {
 
   
     render() {
-      return ( <div>
-        <div><p>Search By Name</p>
+      return ( 
+        
+        <div className="bg-light border">
+          <Container>
+          <p className = "text-center fs-1 fw-bold">Search By Name</p>
+          </Container>
           <SearchBarName
             filterText={this.state.filterText}
             onFilterTextChange={this.handleFilterTextChange}
@@ -113,9 +122,10 @@ class CityRowName extends React.Component {
             filterText={this.state.filterText}
 
           />
+          <br/><br/>
         </div>
+      
         
-        </div>
       );
     }
   }
@@ -182,17 +192,20 @@ class CityRowName extends React.Component {
 
     render() {
       return (
+        <Container>
         <form>
           <input
             type="text"
-            placeholder="Search By Longitude"
+            placeholder="Search By Longitude..."
             value={this.props.filterText}
             onChange={this.handleFilterTextChange}
+            className = "form-control"
           />
           <p>
             
           </p>
         </form>
+        </Container>
       );
     }
   }
@@ -220,8 +233,11 @@ class CityRowName extends React.Component {
 
   
     render() {
-      return ( <div>
-        <div><p>Search By Longitude</p>
+      return ( 
+        <div className="bg-light border">
+          <Container>
+          <p className = "text-center fs-1 fw-bold">Search By Longitude</p>
+          </Container>
           <SearchBarLon
             filterText={this.state.filterText}
             onFilterTextChange={this.handleFilterTextChange}
@@ -231,9 +247,9 @@ class CityRowName extends React.Component {
             filterText={this.state.filterText}
 
           />
+          <br/><br/>
         </div>
         
-        </div>
       );
     }
   }
@@ -303,17 +319,20 @@ class CityRowName extends React.Component {
     
     render() {
       return (
+        <Container>
         <form>
           <input
             type="text"
-            placeholder="Search By Latitude"
+            placeholder="Search By Latitude..."
             value={this.props.filterText}
             onChange={this.handleFilterTextChange}
+            className = "form-control"
           />
           <p>
             
           </p>
         </form>
+        </Container>
       );
     }
   }
@@ -341,8 +360,11 @@ class CityRowName extends React.Component {
 
   
     render() {
-      return ( <div>
-        <div><p>Search By Latitude</p>
+      return ( 
+        <div className="bg-light border">
+          <Container>
+          <p className = "text-center fs-1 fw-bold">Search By Latitude</p>
+          </Container>
           <SearchBarLat
             filterText={this.state.filterText}
             onFilterTextChange={this.handleFilterTextChange}
@@ -352,8 +374,7 @@ class CityRowName extends React.Component {
             filterText={this.state.filterText}
 
           />
-        </div>
-        
+          <br/>
         </div>
       );
     }
