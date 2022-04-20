@@ -3,13 +3,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import Map from './Map';
 import {All, Fav} from './All';
-import Search from './Search';
 import Detail from './Detail';
 import Login from './Login';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
+import {Search, SearchName, SearchLon, SearchLat} from './Search';
 
 const CITIES = [
   {name: 'HongKong', lat: '114°10E', lon: '22°16N'},
@@ -72,6 +72,7 @@ function App() {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </Nav.Link>
             <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>Log In / Log Out</Link></Nav.Link>
+            
           </Nav>
         </Container>
         </Navbar>
@@ -85,6 +86,9 @@ function App() {
         <Route path='/favourite' element={<Fav/>} />
         <Route path='/search' element={<Search cities={CITIES}/>} />
         <Route path="/:loc" element={<Detail/>} />
+        <Route path='/search/ByName' element={<SearchName cities={CITIES}></SearchName>} />
+        <Route path='/search/ByLon' element={<SearchLon cities={CITIES}></SearchLon>} />
+        <Route path="/search/ByLat" element={<SearchLat cities={CITIES}></SearchLat>} />
         </Routes>
         </div>
         </BrowserRouter>

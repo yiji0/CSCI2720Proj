@@ -1,7 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 class CityRowName extends React.Component {
     render() {
@@ -108,12 +111,10 @@ class CityRowName extends React.Component {
   
     render() {
       return ( 
-        <Container>
-        <details open>
-        <summary>Search By Name</summary>
+        <Container> 
         <div>
           <Container>
-          <p className = "text-center fs-1 fw-bold">Search By Name</p>
+          <p className = "text-center fs-2 fw-bold">Search By Name</p>
           </Container>
           <SearchBarName
             filterText={this.state.filterText}
@@ -124,9 +125,9 @@ class CityRowName extends React.Component {
             filterText={this.state.filterText}
 
           />
-          <br/><br/>
         </div>
-        </details>
+        &nbsp;&nbsp;<Button variant="outline-success"><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to="/search">Back to Search Menu</Link></Button>
+        <br/><br/>
         </Container>
         
       );
@@ -238,11 +239,9 @@ class CityRowName extends React.Component {
     render() {
       return ( 
         <Container>
-        <details>
-        <summary>Search By Longitude</summary>
         <div>
           <Container>
-          <p className = "text-center fs-1 fw-bold">Search By Longitude</p>
+          <p className = "text-center fs-2 fw-bold">Search By Longitude</p>
           </Container>
           <SearchBarLon
             filterText={this.state.filterText}
@@ -253,9 +252,9 @@ class CityRowName extends React.Component {
             filterText={this.state.filterText}
 
           />
-          <br/><br/>
         </div>
-        </details>
+        &nbsp;&nbsp;<Button variant="outline-success"><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to="/search">Back to Search Menu</Link></Button>
+        <br/><br/>
         </Container>
       );
     }
@@ -369,11 +368,12 @@ class CityRowName extends React.Component {
     render() {
       return ( 
         <Container>
-        <details>
-        <summary>Search By Latitude</summary>
         <div>
           <Container>
-          <p className = "text-center fs-1 fw-bold">Search By Latitude</p>
+          <p className = "text-center fs-2 fw-bold">
+          Search By Latitude
+          
+          </p>
           </Container>
           <SearchBarLat
             filterText={this.state.filterText}
@@ -384,10 +384,10 @@ class CityRowName extends React.Component {
             filterText={this.state.filterText}
 
           />
-          <br/>
           
         </div>
-        </details>
+        &nbsp;&nbsp;<Button variant="outline-success"><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to="/search">Back to Search Menu</Link></Button>
+        <br/><br/>
         </Container>
       );
     }
@@ -410,26 +410,70 @@ class Search extends React.Component {
       });
     }
 
-    
-
-  
     render() {
-      return ( <div>
-        <div><p></p>
-          <SearchName cities={this.props.cities}></SearchName>
-        </div>
-        <div><p></p>
-          <SearchLon cities={this.props.cities}></SearchLon>
-        </div>
-        <div><p></p>
-          <SearchLat cities={this.props.cities}></SearchLat>
-        </div>
+      return ( 
+      <div>
+        <Container>
+      
+      <Row><br/></Row>
+      <Row><br/></Row>
+      <Row><br/></Row>
+      <Row>
+        <p className = "text-center fs-2 fw-bold text-center">Please Choose the Searching Field: </p>
+      </Row>
+      <Row><br/></Row>
+      <Row>
+        <Col></Col>
+        <Col>   
+        <div className="bg-light border">  
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <Button variant="outline-success" size="lg">
+          <Link style={{ color: 'inherit', textDecoration: 'inherit'}} to="/search/ByName">&nbsp;&nbsp;&nbsp;Search By Name&nbsp;&nbsp;&nbsp;</Link>
+        </Button>
+      <br/><br/>
+      </div>
+        </Col>
+        <Col></Col>
+      </Row>
+      <Row>
+      <Col></Col>
+        <Col>
+        <div className="border">  
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <Button variant="outline-success" size="lg">
+          <Link style={{ color: 'inherit', textDecoration: 'inherit'}} to="/search/ByLon">Search By Longitude</Link>
+        </Button>
+      <br/><br/>
+      </div>
+      </Col>
+        <Col></Col>
+      </Row>
+      <Row>
+      <Col></Col>
+        <Col>
         
+        <div className="bg-light border"> 
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <Button variant="outline-success" size="lg">
+          <Link style={{ color: 'inherit', textDecoration: 'inherit'}} to="/search/ByLat">&nbsp;&nbsp;Search By Latitude&nbsp;</Link>
+        </Button>
+      <br/><br/>
+      </div>
+      </Col>
+        <Col></Col>
+      </Row>
+    </Container>
         </div>
       );
     }
   }
-  export default Search;
+  export {Search, SearchName, SearchLon, SearchLat};
   //ReactDOM.render(
   //  <Search cities={CITIES} />,
   //  document.getElementById('app')
