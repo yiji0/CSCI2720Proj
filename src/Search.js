@@ -108,8 +108,10 @@ class CityRowName extends React.Component {
   
     render() {
       return ( 
-        
-        <div className="bg-light border">
+        <Container>
+        <details open>
+        <summary>Search By Name</summary>
+        <div>
           <Container>
           <p className = "text-center fs-1 fw-bold">Search By Name</p>
           </Container>
@@ -124,7 +126,8 @@ class CityRowName extends React.Component {
           />
           <br/><br/>
         </div>
-      
+        </details>
+        </Container>
         
       );
     }
@@ -234,7 +237,10 @@ class CityRowName extends React.Component {
   
     render() {
       return ( 
-        <div className="bg-light border">
+        <Container>
+        <details>
+        <summary>Search By Longitude</summary>
+        <div>
           <Container>
           <p className = "text-center fs-1 fw-bold">Search By Longitude</p>
           </Container>
@@ -249,7 +255,8 @@ class CityRowName extends React.Component {
           />
           <br/><br/>
         </div>
-        
+        </details>
+        </Container>
       );
     }
   }
@@ -361,7 +368,10 @@ class CityRowName extends React.Component {
   
     render() {
       return ( 
-        <div className="bg-light border">
+        <Container>
+        <details>
+        <summary>Search By Latitude</summary>
+        <div>
           <Container>
           <p className = "text-center fs-1 fw-bold">Search By Latitude</p>
           </Container>
@@ -375,7 +385,10 @@ class CityRowName extends React.Component {
 
           />
           <br/>
+          
         </div>
+        </details>
+        </Container>
       );
     }
   }
