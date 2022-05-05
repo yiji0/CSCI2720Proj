@@ -1,5 +1,6 @@
 const fetch = require('node-fetch')
 const express = require('express');
+const sha256 = require('crypto-js/sha256');
 const app = express();
 
 const cors = require('cors'); app.use(cors());
@@ -13,9 +14,6 @@ const mongoose = require('mongoose');
 const { send } = require('express/lib/response');
 mongoose.connect('mongodb+srv://stu124:p280948-@csci2720.m2qbq.mongodb.net/stu124');
 const weather_key = 'bced98796b384bf0a55111054221604';
-
-
-
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection error:'));
@@ -63,8 +61,8 @@ db.once('open', function () {
 
     app.get('/createUser', (req, res) => {
         User.create({
-            id: 'user11',
-            pwd: '123456'
+            id: 'user1',
+            pwd: sha256('123456').toString()
         }, (err, user) => {
             if (err)
                 res.send(err);
@@ -75,8 +73,34 @@ db.once('open', function () {
 
     app.get('/createAdmin', (req, res) => {
         Admin.create({
-            id: 'test02',
-            pwd: 'abcdef'
+            id: 'test1',
+            pwd: sha256('abcdef').toString()
+        }, (err, user) => {
+            if (err)
+                res.send(err);
+            else
+                res.send('Admin created successfully!\n' + user);
+        });
+    });
+
+    app.post('/createuser', (req, res) => {
+        let { uid, pwd } = req.body;
+        User.create({
+            id: uid,
+            pwd: pwd
+        }, (err, user) => {
+            if (err)
+                res.send(err);
+            else
+                res.send('User created successfully!\n' + user);
+        });
+    });
+
+    app.post('/createadmin', (req, res) => {
+        let { uid, pwd } = req.body;
+        Admin.create({
+            id: uid,
+            pwd: pwd
         }, (err, user) => {
             if (err)
                 res.send(err);
@@ -88,7 +112,6 @@ db.once('open', function () {
     app.post('/login/user', (req, res) => {
         let _uid = req.body['uid'];
         let _pwd = req.body['pwd'];
-
         User.findOne({ id: _uid }, (err, val) => {
             if (err)
                 res.send(err);

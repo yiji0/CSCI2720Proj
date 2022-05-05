@@ -4,7 +4,7 @@ import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import Map from './Map';
 import {All, Fav} from './All';
 import Detail from './Detail';
-import Login from './Login';
+import {getloginfo, logout, Login} from './Login';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
@@ -71,7 +71,7 @@ function App() {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>Log In / Log Out</Link></Nav.Link>
+            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{getloginfo() ? "Log out" : "Log in"}</Link></Nav.Link>
             
           </Nav>
         </Container>
