@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { useState } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import Map from './Map';
 import {All, Fav} from './All';
 import Detail from './Detail';
-import {getloginfo, logout, Login} from './Login';
+import {getloginfo, Login} from './Login';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
@@ -30,6 +31,13 @@ const CITIES = [
 ];
 
 function App() {
+  const [islogin, setLogin] = useState(false);
+  const switchloginstate = () => {
+    let loginfo = getloginfo();
+    console.log("Switch state: " + (loginfo ? loginfo['uid'] : "no state"));
+    if (getloginfo()) setLogin(true);
+    else setLogin(false);
+  };
   return (
         <> 
         <BrowserRouter>
@@ -71,7 +79,7 @@ function App() {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{getloginfo() ? "Log out" : "Log in"}</Link></Nav.Link>
+            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{islogin ? "Log out" : "Log in"}</Link></Nav.Link>
             
           </Nav>
         </Container>
@@ -80,7 +88,7 @@ function App() {
         <div>
 
         <Routes>
-        <Route path='/' element={<Login/>} />
+        <Route path='/' element={<Login onChangeLogin={switchloginstate}/>} />
         <Route path="/map" element={<Map/>} />
         <Route path='/all' element={<All/>} />
         <Route path='/favourite' element={<Fav/>} />
@@ -92,7 +100,7 @@ function App() {
         </Routes>
         </div>
         </BrowserRouter>
-        </>     
+        </>
     );
 }
 

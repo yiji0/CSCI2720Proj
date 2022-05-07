@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { All } from "./All";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -7,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import sha256 from 'crypto-js/sha256';
 import cookie from 'react-cookies'
+import {Navigate} from 'react-router-dom';
 
 
 // 获取当前用户cookie
@@ -16,13 +16,12 @@ export const getloginfo = () => {
 
 // 用户登录，保存cookie
 export const login = (uid, mode) => {
-  cookie.save('userInfo', { uid, mode }, { path: '/All' });
+  cookie.save('userInfo', { uid, mode }, { path: '/', maxAge: 60 });
 }
 
 // 用户登出，删除cookie
 export const logout = () => {
   cookie.remove('userInfo');
-  window.location.href = '/';
 }
 
 class Login extends React.Component {
@@ -49,9 +48,8 @@ class Login extends React.Component {
       .then(res => {
         if (res.status === 200) {
           this.setState({ login: true });
-          console.log(getloginfo());
           login(uid, 'user');
-          console.log(getloginfo());
+          this.props.onChangeLogin();
         }
         return res.text();
       })
@@ -60,7 +58,7 @@ class Login extends React.Component {
         console.log(err);
       });
     event.preventDefault();
-  }
+  };
 
   handleAdminSubmit = (event) => {
     const uid = document.getElementById("uid").value;
@@ -80,6 +78,8 @@ class Login extends React.Component {
       .then(res => {
         if (res.status === 200) {
           this.setState({ login: true });
+          login(uid, 'admin');
+          this.props.onChangeLogin();
         }
         return res.text();
       })
@@ -88,9 +88,11 @@ class Login extends React.Component {
         console.log(err);
       });
     event.preventDefault();
-  }
-
+  };
+  
   render() {
+    logout();
+    this.props.onChangeLogin();
     return (this.state.login === false ? (
       <Container>
 
@@ -142,7 +144,7 @@ class Login extends React.Component {
 
 
       </Container>
-    ) : <All />
+    ) : <Navigate to='/all' />
     );
   }
 
@@ -171,4 +173,4 @@ class Login extends React.Component {
       );
     }*/
 }
-export {Login};
+export { Login };
