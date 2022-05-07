@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table'
+import { getloginfo } from './Login'
 
 class All extends React.Component {
   sortname() {
@@ -177,14 +178,26 @@ class GetFav extends React.Component {
 
 class Fav extends React.Component {
   state = {
-    location: null
+    location: []
   }
 
   async componentDidMount() {
-    const url = "http://localhost:8000/favlist/";
-    const response = await fetch(url);
-    const data = await response.json();
-    this.setState({ location: data });
+    const loginfo = getloginfo();
+    if (loginfo && loginfo['mode'] === 'user') {
+      const url = "http://localhost:8000/favlist/" + loginfo['uid'];
+      fetch(url, { method: "POST" }).then(res => res.text())
+        .then(data => {
+          if (data) {
+            this.setState({ location: JSON.parse(data) });
+          }
+        })
+        .catch(err => {
+          console.log(err.message);
+        });
+    } else {
+      alert("Please login in first!");
+      this.setState({ location: [] });
+    }
   }
   render() {
     return (
@@ -202,9 +215,7 @@ class Fav extends React.Component {
           </tbody>
         </Table>
       </div>
-
     )
-
   }
 }
 

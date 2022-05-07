@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
 const mongoose = require('mongoose');
-const { send } = require('express/lib/response');
+const send = require('express/lib/response');
+
 mongoose.connect('mongodb+srv://stu124:p280948-@csci2720.m2qbq.mongodb.net/stu124');
 const weather_key = 'bced98796b384bf0a55111054221604';
 
@@ -43,7 +44,7 @@ db.once('open', function () {
     const UserSchema = mongoose.Schema({
         id: { type: String, required: true, unique: true },
         pwd: { type: String, required: true },
-        fav_loc: { type: mongoose.Schema.Types.ObjectId, ref: 'Location' }
+        fav_loc: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }]
     });
 
     const AdminSchema = mongoose.Schema({
@@ -357,7 +358,7 @@ db.once('open', function () {
                 res.set('Content-Type', 'application/json');
                 res.status(200).send(JSON.stringify({
                     name: loc.name,
-                    lat: loc.lat.toString()/*.replace('.', '°') + 'N'*/,
+                    lat: loc.lat.toString()/*.replace('.', '°') + 'N'*/, // uncomment for format transformation
                     lon: loc.lon.toString()/*.replace('.', '°') + 'E'*/
                 }))
             }
@@ -414,6 +415,52 @@ db.once('open', function () {
             } else {
                 console.log("Successfully deleted location " + location);
                 res.status(204).send("Successfully deleted location " + location);
+            }
+        });
+    });
+
+    // get the user's favorite locations list
+    app.post('/favlist/:uid', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let uid = req.params['uid'];
+        User.findOne({ id: uid }).populate("fav_loc").exec((err, user) => {
+            if (err) {
+                console.log(err.message);
+                res.status(404).send("Fail to find the fav locations");
+            } else {
+                let favlists = user['fav_loc'];
+                let favlocations = [];
+                for (let favlocobj of favlists) {
+                    favlocations.push({
+                        name: favlocobj.name,
+                        lat: favlocobj.lat.toString(),
+                        lon:favlocobj.lon.toString()
+                    })
+                }
+                res.set('Content-Type', 'application/json');
+                res.status(200).send(JSON.stringify(favlocations));
+            }
+        });
+    });
+
+    app.put('/favlist', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let { uid, location } = req.body;
+        Location.findOne({ name: location }, (err, loc) => {
+            if (err) {
+                console.log(err);
+                res.status(404).send("No location found");
+            } else {
+                User.updateOne({ id: uid },
+                    { $push: { fav_loc: loc } },
+                    (err, user) => {
+                        if (err) {
+                            console.log(err.message);
+                            res.status(404).send("Fail to add loc to the fav lists");
+                        } else {
+                            res.status(201).send("Successfully add the fav location");
+                        }
+                    });
             }
         });
     });

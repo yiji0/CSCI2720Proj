@@ -31,7 +31,7 @@ const CITIES = [
 ];
 
 function App() {
-  const [islogin, setLogin] = useState(false);
+  const [islogin, setLogin] = useState(getloginfo() ? true : false);
   const switchloginstate = () => {
     let loginfo = getloginfo();
     console.log("Switch state: " + (loginfo ? loginfo['uid'] : "no state"));
@@ -39,7 +39,7 @@ function App() {
     else setLogin(false);
   };
   return (
-        <> 
+        <>
         <BrowserRouter>
         <Navbar bg="dark" variant="dark">
         <Container>
@@ -79,7 +79,7 @@ function App() {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{islogin ? "Log out" : "Log in"}</Link></Nav.Link>
+            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{islogin ? (getloginfo()['uid'] + "\tLog out") : "Log in"}</Link></Nav.Link>
             
           </Nav>
         </Container>

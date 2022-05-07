@@ -5,24 +5,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import sha256 from 'crypto-js/sha256';
-import cookie from 'react-cookies'
+import cookie from 'react-cookies';
 import {Navigate} from 'react-router-dom';
 
 
-// 获取当前用户cookie
 export const getloginfo = () => {
   return cookie.load('userInfo');
-}
+};
 
-// 用户登录，保存cookie
 export const login = (uid, mode) => {
-  cookie.save('userInfo', { uid, mode }, { path: '/', maxAge: 60 });
-}
+  cookie.save('userInfo', { uid, mode }, { path: '/', maxAge: 3600 });
+};
 
-// 用户登出，删除cookie
 export const logout = () => {
   cookie.remove('userInfo');
-}
+};
 
 class Login extends React.Component {
   constructor(props) {
