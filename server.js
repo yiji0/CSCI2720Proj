@@ -163,11 +163,11 @@ db.once('open', function () {
                         res.status(404).send("No weather info found");
                     } else {
                         let weatherobj = {
-                            "loc": {
-                                "name": loc.name,
-                                "lat": loc.lat.toString(),
-                                "lon": loc.lon.toString()
-                            },
+                            // "loc": {
+                            //     "name": loc.name,
+                            //     "lat": loc.lat.toString(),
+                            //     "lon": loc.lon.toString()
+                            // },
                             "temp_c": weather.temp_c.toString(),
                             "wind_kph": weather.wind_kph.toString(),
                             "humidity": weather.humidity,
@@ -456,8 +456,10 @@ db.once('open', function () {
                     (err, user) => {
                         if (err) {
                             console.log(err.message);
+                            // Fail to add loc to the fav lists
                             res.status(404).send("Fail to add loc to the fav lists");
                         } else {
+                            // Successfully add the fav location
                             res.status(201).send("Successfully add the fav location");
                         }
                     });

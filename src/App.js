@@ -31,13 +31,23 @@ const CITIES = [
 ];
 
 function App() {
-  const [islogin, setLogin] = useState(getloginfo() ? true : false);
+  const [islogin, setLogin] = useState(getloginfo() ? getloginfo()['uid'] : false);
   const switchloginstate = () => {
     let loginfo = getloginfo();
     console.log("Switch state: " + (loginfo ? loginfo['uid'] : "no state"));
-    if (getloginfo()) setLogin(true);
+    if (getloginfo()) setLogin(loginfo['uid']);
     else setLogin(false);
   };
+
+  function getCookie(cookieName) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+      let [key,value] = el.split('=');
+      cookie[key.trim()] = value;
+    })
+    return cookie[cookieName];
+  }  
+
   return (
         <>
         <BrowserRouter>
@@ -91,9 +101,9 @@ function App() {
         <Route path='/' element={<Login onChangeLogin={switchloginstate}/>} />
         <Route path="/map" element={<Map/>} />
         <Route path='/all' element={<All/>} />
-        <Route path='/favourite' element={<Fav/>} />
+        <Route path='/favourite' element={<Fav />} />
         <Route path='/search' element={<Search cities={CITIES}/>} />
-        <Route path="/:loc" element={<Detail/>} />
+        <Route path="/:loc" element={<Detail uid={islogin}/>} />
         <Route path='/search/ByName' element={<SearchName cities={CITIES}></SearchName>} />
         <Route path='/search/ByLon' element={<SearchLon cities={CITIES}></SearchLon>} />
         <Route path="/search/ByLat" element={<SearchLat cities={CITIES}></SearchLat>} />

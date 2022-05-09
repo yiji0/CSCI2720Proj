@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactMapGL, {Marker} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { useState} from "react";
 
 
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3V2aWFicyIsImEiOiJjbDFydWlkamkyMHk1M2xtbW1sb2p0a3hpIn0.8V0sfF1FRYSn4B0n-m1vAg';
@@ -57,28 +58,103 @@ const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3V2aWFicyIsImEiOiJjbDFydWlkamkyMHk1M2xtbW1sb2p
 // }
 
 
-function Detail(){
-    let data = {
-        comments:[
-            {user:'unername', comment:'this is very nice'},
-            {user:'unsername2', comment:'this is also very nice'}        
-        ],
-        temp_c:"TBD",
-        wind_kph:"TBD",
-        wind_dir:null,
-        humidity:0,
-        precip_mm:0,
-        vis_km:0,
-        location:{
-            name:null,
-            lon:0,
-            lat:0
-        }
-    };
+class Detail extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            comments:[
+                {user:'unername', comment:'this is very nice'},
+                {user:'unsername2', comment:'this is also very nice'}        
+            ],
+            weather:{
+                temp_c:"TBD",
+                wind_kph:"TBD",
+                wind_dir:null,
+                humidity:0,
+                precip_mm:0,
+                vis_km:0
+            },
+            location:{
+                name: window.location.pathname.split('/')[1],
+                lon:0,
+                lat:0
+            }
+        
+        };
 
-    async function addComment(){
+    }    
+
+    // const [comments, setComments] = useState([
+    //     {user:'unername', comment:'this is very nice'},
+    //     {user:'unsername2', comment:'this is also very nice'}        
+    // ]); 
+
+    // const [weather, setWeather] = useState({
+    //     temp_c:"TBD",
+    //     wind_kph:"TBD",
+    //     wind_dir:null,
+    //     humidity:0,
+    //     precip_mm:0,
+    //     vis_km:0});
+
+    // const [location, setLocation] = useState({
+    //     name: window.location.pathname.split('/')[1],
+    //     lon:0,
+    //     lat:0
+    // })
+
+    // let data = {
+    //     comments:[
+    //         {user:'unername', comment:'this is very nice'},
+    //         {user:'unsername2', comment:'this is also very nice'}        
+    //     ],
+    //     temp_c:"TBD",
+    //     wind_kph:"TBD",
+    //     wind_dir:null,
+    //     humidity:0,
+    //     precip_mm:0,
+    //     vis_km:0,
+    //     location:{
+    //         name:null,
+    //         lon:0,
+    //         lat:0
+    //     }
+    // };
+
+    async fetchInfo(){
+        // ftech location infomation for map
+        let locres = await fetch('http://localhost:8000/loc/'+this.state.location.name,{
+          method:'GET',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
+        let loc = await locres.json();
+        this.setState((prevState)=>({location: loc}));
+
+        // fetch weather infomation
+        let wres = await fetch('http://localhost:8000/weather/'+this.state.location.name,{
+            method:'GET',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          });
+        let weatherInfo = await wres.json();
+        this.setState((prevState)=>({weather:weatherInfo}));
+        
+        // fetch comments
+        
+    }
+    
+    componentDidMount(){
+        this.fetchInfo()
+    }
+
+    async addComment(){
         const newCom = {
-            user: 'uid01', // how we know the user,
+            user: 'uid01', // how we know the user, in props?
             comment: document.getElementById('new-comment').value
         };
         let res = await fetch('http://localhost:8000/detail/newcomm',{
@@ -103,67 +179,112 @@ function Detail(){
 
     }
 
-    async function addFav(){
-        const url = window.location.href;
-        const res = await fetch(url,{
-            method: 'POST'
-        }); //send the param in url get a res of sucess or not
-        alert(res.text()=='sucess'? 'Added to your favorite':'Something wrong');
+    async addFav(){
+        let myObjData = {uid: this.props.uid, location: this.state.location.name};
+
+        const res = await fetch('http://localhost:8000/favlist',{
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(myObjData)
+        });         //send the param in url get a res of sucess or not
+        const msg = await res.text();
+        alert(msg);
+        // any way to prevent user from adding loc already in the list?
     }
 
-    return(
-        <div className='d-flex'>
-        <div className='w-50 m-4'>
-            <SmallMap info={data.location}/>
-        </div>
-        <div className='flex-grow-1 m-4'>
-            <div id ='details' className='p-2 mb-4 bg-light'>
-                <h3>Location details:</h3>
-                <ul>
-                    <li>{data.temp_c}</li>
-                    <li>{data.wind_kph}</li>
-                </ul>
+    render(){
+        return(
+            <div className='d-flex'>
+            <div className='w-50 m-4'>
+                <SmallMap lon={this.state.location.lon} lat={this.state.location.lat}/>
             </div>
-            <button type="button" className="btn btn-outline-success me-2" onClick={addFav}>Add to My Favourite</button>
-            <div id="comments" className='my-4 p-2 bg-light'> 
-                <h3>Comments:</h3>
-                {data.comments.map((comm,index)=>
-                    <div className="d-flex" key={index}> 
-                        <div className="flex-shrink-0"> {comm.user} </div>
-                        <div className="flex-grow-1">
-                            <p>{comm.comment}</p>
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div>
-                <h3>Add Comments:</h3>
-                <div className="mb-3">
-                    <label for="new-comment" className="form-label">Comment:</label>
-                    <textarea className="form-control" id="new-comment" rows="3"></textarea>
+            <div className='flex-grow-1 m-4'>
+                <div id ='details' className='p-2 mb-4 bg-light'>
+                    <h3>{this.state.location.name}:</h3>
+                    <ul>
+                        <li>Longitude: {this.state.location.lon}<span>&#176;</span>E</li>
+                        <li>Latitude: {this.state.location.lat}<span>&#176;</span>N</li>
+                        <li>Temperature: {this.state.weather.temp_c} <span>&#8451;</span></li>
+                        <li>Wind Speed: {this.state.weather.wind_kph}km/h</li>
+                        <li>Wind Direction: {this.state.weather.wind_dir}</li>
+                        <li>Humidity: {this.state.weather.humidity}</li>
+                        <li>Precipitation: {this.state.weather.precip_mm}mm</li>
+                        <li>Visibility: {this.state.weather.vis_km}km</li>
+
+                    </ul>
                 </div>
-                <button type="button" className="btn btn-outline-success me-2" onClick={addComment}>Add comment</button>
+                <button type="button" className="btn btn-outline-success me-2" onClick={this.addFav}>Add to My Favourite</button>
+                <div id="comments" className='my-4 p-2 bg-light'> 
+                    <h3>Comments:</h3>
+                    {this.state.comments.map((comm,index)=>
+                        <div className="d-flex" key={index}> 
+                            <div className="flex-shrink-0"> {comm.user} </div>
+                            <div className="flex-grow-1">
+                                <p>{comm.comment}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <div>
+                    <h3>Add Comments:</h3>
+                    <div className="mb-3">
+                        <label for="new-comment" className="form-label">Comment:</label>
+                        <textarea className="form-control" id="new-comment" rows="3"></textarea>
+                    </div>
+                    <button type="button" className="btn btn-outline-success me-2" onClick={this.addComment}>Add comment</button>
+                </div>
             </div>
-        </div>
-        </div>
-    )
+            </div>
+        )
+    }
 }
 
-class SmallMap extends React.Component{
+class SmallMap extends React.Component {
+
+    // constructor(){
+    //     super()
+    //     this.state = {
+    //         lon:110,
+    //         lat:22,
+    //         zoom:2
+    //     };
+    // }
+
+    // async fetchLoc(){
+    // // ftech location infomation for map
+    // const name = window.location.pathname.split('/')[1]
+    // let locres = await fetch('http://localhost:8000/loc/'+name,{
+    //     method:'GET',
+    //     headers: { 
+    //       'Content-Type': 'application/json',
+    //       'Accept': 'application/json'
+    //     }
+    //   });
+    //   let loc = await locres.json();
+    //   this.setState(loc);
+    // }
+
+    // async componentWillMount(){
+    //     this.fetchLoc();
+    // }
+
     render(){
         return(
             <ReactMapGL
+            // very weird can't use props or state to initial view center
             initialViewState={{
-                longitude: this.props.info.lon,
-                latitude: this.props.info.lat,
-                zoom: 10
+                longitude: 110,
+                latitude: 22,
+                zoom: 2
             }}
             style={{width: '50vw', height: '100vh'}}
             mapStyle="mapbox://styles/mapbox/streets-v9"
             mapboxAccessToken={MAPBOX_TOKEN}
             >
-            <Marker longitude={this.props.info.lon} latitude={this.props.info.lat} anchor="bottom">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+            <Marker longitude={this.props.lon} latitude={this.props.lat} anchor="bottom">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" className="bi bi-geo-alt" viewBox="0 0 16 16">
             <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
             <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
             </svg>
