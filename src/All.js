@@ -71,6 +71,25 @@ class All extends React.Component {
       }
     }
   }
+  state = {
+    location: []
+  }
+
+  async fetchLoc(){
+    let res = await fetch('http://localhost:8000/loc',{
+      method:'GET',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+    let l = await res.json();
+    await this.setState({location: l});
+  }
+
+  componentDidMount(){
+    this.fetchLoc()
+  }
   render() {
     return (
       <>
@@ -84,76 +103,7 @@ class All extends React.Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><Link to="/HongKong">Hong Kong</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Beijing">Beijing</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Shanghai">Shanghai</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Harbin">Harbin</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Lhasa">Lhasa</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Urumchi">Urumchi</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Seoul">Seoul</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Tokyo">Tokyo</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Hohhot">Hohhot</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Singapore">Singapore City</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Chengdu">Chengdu</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Kunming">Kunming</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Sanya">Sanya</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td><Link to="/Taipei">Taipei</Link></td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
+            {this.state.location.map((loc, index) => <GetFav data={loc} i={index} key={index} />)}
             </tbody>
           </Table>
         </div>
