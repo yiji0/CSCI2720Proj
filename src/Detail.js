@@ -77,10 +77,12 @@ class Detail extends React.Component{
             location:{
                 name: window.location.pathname.split('/')[1],
                 lon:0,
-                lat:0
-            }
+                lat:0,
+            },
+            inFav: 0 // by default not in Favlist
         
         };
+    this.addFav = this.addFav.bind(this)
 
     }    
 
@@ -144,7 +146,16 @@ class Detail extends React.Component{
         let weatherInfo = await wres.json();
         this.setState((prevState)=>({weather:weatherInfo}));
         
+        // fetch favlist and check whether exists
+        let favres = await fetch('http://localhost:8000/favlist/'+this.props.uid,{
+            method:'POST',
+          });
+        let fav = await favres.json();
+        let favlist = fav.map((loc)=>loc.name)
+        this.setState({inFav:favlist.some(loc=>loc==this.state.location.name)? 1:0})
+    
         // fetch comments
+
         
     }
     
@@ -191,6 +202,7 @@ class Detail extends React.Component{
         });         //send the param in url get a res of sucess or not
         const msg = await res.text();
         alert(msg);
+        this.setState({inFav:1})
         // any way to prevent user from adding loc already in the list?
     }
 
@@ -215,7 +227,8 @@ class Detail extends React.Component{
 
                     </ul>
                 </div>
-                <button type="button" className="btn btn-outline-success me-2" onClick={this.addFav}>Add to My Favourite</button>
+                {this.state.inFav==0 && <button type="button" className="btn btn-outline-success me-2" onClick={this.addFav}>Add to My Favourite</button>}
+                {this.state.inFav==1 && <button type='button' className="btn btn-outline-success me-2" disabled>Added to My Favourite</button>}
                 <div id="comments" className='my-4 p-2 bg-light'> 
                     <h3>Comments:</h3>
                     {this.state.comments.map((comm,index)=>
