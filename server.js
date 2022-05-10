@@ -365,7 +365,7 @@ db.once('open', function () {
         });
     });
 
-    // response : JSON string of all location data
+    // response : JSON string of all location data in the form of number
     app.get('/loc', (req, res) => {
         res.set('Content-Type', 'text/plain');
         Location.find((err, locs) => {
@@ -382,6 +382,31 @@ db.once('open', function () {
                         name: locs[i].name,
                         lat: locs[i].lat.toString(),
                         lon: locs[i].lon.toString()
+                    });
+                }
+                res.set('Content-Type', 'application/json');
+                res.status(200).send(JSON.stringify(loclist))
+            }
+        });
+    });
+    
+    // response : JSON string of all location data in the form of direction
+    app.get('/loc1', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        Location.find((err, locs) => {
+            if (err) {
+                console.log(err.message);
+                res.status(404).send(err.message);
+            } else if (locs == undefined) {
+                console.log("No location of found");
+                res.status(404).send("No location of found");
+            } else {
+                let loclist = [];
+                for (let i = 0; i < locs.length; i++) {
+                    loclist.push({
+                        name: locs[i].name,
+                        lat: locs[i].lat.toString().replace('.', '°') + 'N',
+                        lon: locs[i].lon.toString().replace('.', '°') + 'E'
                     });
                 }
                 res.set('Content-Type', 'application/json');
