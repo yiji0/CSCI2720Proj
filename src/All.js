@@ -38,7 +38,14 @@ class All extends React.Component {
         shouldSwitch = false;
         x = rows[i].getElementsByTagName("TD")[2];
         y = rows[i + 1].getElementsByTagName("TD")[2];
-        if (x.innerHTML > y.innerHTML) {
+        let p = x.innerHTML;
+        let t = y.innerHTML;
+        let pp = p.indexOf("°");
+        let tt = t.indexOf("°");
+        let xx = Number(p.substring(0,pp));
+        let yy = Number(t.substring(0,tt));
+        
+        if (xx > yy) {
           shouldSwitch = true;
           break;
         }
@@ -60,7 +67,19 @@ class All extends React.Component {
         shouldSwitch = false;
         x = rows[i].getElementsByTagName("TD")[1];
         y = rows[i + 1].getElementsByTagName("TD")[1];
-        if (x.innerHTML > y.innerHTML) {
+        let p = x.innerHTML;
+        let t = y.innerHTML;
+        let pp = p.indexOf("°");
+        let tt = t.indexOf("°");
+        if(pp==-1){
+          pp=p.length-1;
+        }
+        if(tt==-1){
+          tt=t.length-1;
+        }
+        let xx = Number(p.substring(0,pp));
+        let yy = Number(t.substring(0,tt));
+        if (xx > yy) {
           shouldSwitch = true;
           break;
         }
@@ -98,8 +117,8 @@ class All extends React.Component {
             <thead>
               <tr>
                 <th>CityName <button className="btn btn-outline-success me-2" onClick={this.sortname}>Sort</button></th>
-                <th>Longitude <button className="btn btn-outline-success me-2" onClick={this.sortlat}>Sort</button></th>
-                <th>Latitude <button className="btn btn-outline-success me-2" onClick={this.sortlon}>Sort</button></th>
+                <th>Longitude <button className="btn btn-outline-success me-2" onClick={this.sortlon}>Sort</button></th>
+                <th>Latitude <button className="btn btn-outline-success me-2" onClick={this.sortlat}>Sort</button></th>
               </tr>
             </thead>
             <tbody>
