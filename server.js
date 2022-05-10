@@ -88,7 +88,7 @@ db.once('open', function () {
         let { uid, pwd } = req.body;
         User.create({
             id: uid,
-            pwd: pwd
+            pwd: sha256(pwd).toString()
         }, (err, user) => {
             if (err)
                 res.send(err);
@@ -101,7 +101,7 @@ db.once('open', function () {
         let { uid, pwd } = req.body;
         Admin.create({
             id: uid,
-            pwd: pwd
+            pwd: sha256(pwd).toString()
         }, (err, user) => {
             if (err)
                 res.send(err);
@@ -210,11 +210,11 @@ db.once('open', function () {
                         let weatherlist = []
                         for (let i = 0; i < weather.length; i++) {
                             let weatherobj = {
-                                "loc": {
-                                    "name": weather[i].loc.name,
-                                    "lat": weather[i].loc.lat.toString(),
-                                    "lon": weather[i].loc.lon.toString()
-                                },
+                                // "loc": {
+                                //     "name": weather[i].loc.name,
+                                //     "lat": weather[i].loc.lat.toString(),
+                                //     "lon": weather[i].loc.lon.toString()
+                                // },
                                 "temp_c": weather[i].temp_c.toString(),
                                 "wind_kph": weather[i].wind_kph.toString(),
                                 "humidity": weather[i].humidity,
@@ -239,7 +239,7 @@ db.once('open', function () {
         Location.findOne({ name: location }, (err, loc) => {
             if (err)
                 res.status(404).send(err.message);
-            else if (loc == undefined) {
+            else if (!loc) {
                 console.log("No location found");
                 res.status(404).send("No location found");
             } else {
@@ -327,7 +327,7 @@ db.once('open', function () {
         LLocation.findOne(filter, (err, loc) => {
             if (err)
                 res.status(404).send(err);
-            else if (loc == undefined) {
+            else if (!loc) {
                 console.log("No location of name " + location + "found");
                 res.status(404).send("No location of name " + location + "found");
             } else {
@@ -351,7 +351,7 @@ db.once('open', function () {
             if (err) {
                 console.log(err.message);
                 res.status(404).send(err.message);
-            } else if (loc == undefined) {
+            } else if (!loc) {
                 console.log("No location of name " + req.params['loc'] + " found");
                 res.status(404).send("No location of name " + req.params['loc'] + " found");
             } else {
@@ -372,7 +372,7 @@ db.once('open', function () {
             if (err) {
                 console.log(err.message);
                 res.status(404).send(err.message);
-            } else if (locs == undefined) {
+            } else if (!locs) {
                 console.log("No location of found");
                 res.status(404).send("No location of found");
             } else {
@@ -389,7 +389,7 @@ db.once('open', function () {
             }
         });
     });
-    
+
     // response : JSON string of all location data in the form of direction
     app.get('/loc1', (req, res) => {
         res.set('Content-Type', 'text/plain');
@@ -397,7 +397,7 @@ db.once('open', function () {
             if (err) {
                 console.log(err.message);
                 res.status(404).send(err.message);
-            } else if (locs == undefined) {
+            } else if (!locs) {
                 console.log("No location of found");
                 res.status(404).send("No location of found");
             } else {
@@ -449,9 +449,9 @@ db.once('open', function () {
         res.set('Content-Type', 'text/plain');
         let uid = req.params['uid'];
         User.findOne({ id: uid }).populate("fav_loc").exec((err, user) => {
-            if (err) {
-                console.log(err.message);
-                res.status(404).send("Fail to find the fav locations");
+            if (err || !user) {
+                console.log(err ? err.message : "Error in finding user");
+                res.status(404).send("Fail to find the user");
             } else {
                 let favlists = user['fav_loc'];
                 let favlocations = [];
@@ -459,7 +459,7 @@ db.once('open', function () {
                     favlocations.push({
                         name: favlocobj.name,
                         lat: favlocobj.lat.toString(),
-                        lon:favlocobj.lon.toString()
+                        lon: favlocobj.lon.toString()
                     })
                 }
                 res.set('Content-Type', 'application/json');
@@ -472,10 +472,11 @@ db.once('open', function () {
         res.set('Content-Type', 'text/plain');
         let { uid, location } = req.body;
         Location.findOne({ name: location }, (err, loc) => {
-            if (err) {
+            if (err || !loc) {
                 console.log(err);
                 res.status(404).send("No location found");
             } else {
+                console.log(loc);
                 User.updateOne({ id: uid },
                     { $push: { fav_loc: loc } },
                     (err, user) => {
@@ -486,6 +487,30 @@ db.once('open', function () {
                         } else {
                             // Successfully add the fav location
                             res.status(201).send("Successfully add the fav location");
+                        }
+                    });
+            }
+        });
+    });
+
+    app.delete('/favlist', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let { uid, location } = req.body;
+        Location.findOne({ name: location }, (err, loc) => {
+            if (err || !loc) {
+                console.log(err);
+                res.status(404).send("No location found");
+            } else {
+                User.updateOne({ id: uid },
+                    { $pull: { fav_loc: loc._id } },
+                    (err, user) => {
+                        if (err) {
+                            console.log(err.message);
+                            // Fail to remove loc to the fav lists
+                            res.status(404).send("Fail to remove loc to the fav lists");
+                        } else {
+                            // Successfully remove the fav location
+                            res.status(204).send("Successfully remove the fav location");
                         }
                     });
             }
