@@ -95,7 +95,7 @@ class All extends React.Component {
   }
 
   async fetchLoc(){
-    let res = await fetch('http://localhost:8000/loc',{
+    let res = await fetch('http://localhost:8000/loc1',{
       method:'GET',
       headers: { 
         'Content-Type': 'application/json',
