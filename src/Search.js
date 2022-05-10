@@ -93,6 +93,7 @@ class CityRowName extends React.Component {
       super(props);
       this.state = {
         filterText: '',
+        location: []
 
       };
       
@@ -106,6 +107,21 @@ class CityRowName extends React.Component {
       });
     }
 
+    async fetchLoc(){
+      let res = await fetch('http://localhost:8000/loc1',{
+        method:'GET',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      let l = await res.json();
+      await this.setState({location: l});
+    }
+  
+    componentDidMount(){
+      this.fetchLoc()
+    }
     
 
   
@@ -121,7 +137,7 @@ class CityRowName extends React.Component {
             onFilterTextChange={this.handleFilterTextChange}
           />
           <CityTableName
-            cities={this.props.cities}
+            cities={this.state.location}
             filterText={this.state.filterText}
 
           />
@@ -220,7 +236,7 @@ class CityRowName extends React.Component {
       super(props);
       this.state = {
         filterText: '',
-
+        location:[]
       };
       
       this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
@@ -233,7 +249,21 @@ class CityRowName extends React.Component {
       });
     }
 
-    
+    async fetchLoc(){
+      let res = await fetch('http://localhost:8000/loc1',{
+        method:'GET',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      let l = await res.json();
+      await this.setState({location: l});
+    }
+  
+    componentDidMount(){
+      this.fetchLoc()
+    }
 
   
     render() {
@@ -248,7 +278,7 @@ class CityRowName extends React.Component {
             onFilterTextChange={this.handleFilterTextChange}
           />
           <CityTableLon
-            cities={this.props.cities}
+            cities={this.state.location}
             filterText={this.state.filterText}
 
           />
@@ -349,7 +379,7 @@ class CityRowName extends React.Component {
       super(props);
       this.state = {
         filterText: '',
-
+        location:[]
       };
       
       this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
@@ -362,7 +392,21 @@ class CityRowName extends React.Component {
       });
     }
 
-    
+    async fetchLoc(){
+      let res = await fetch('http://localhost:8000/loc1',{
+        method:'GET',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      let l = await res.json();
+      await this.setState({location: l});
+    }
+  
+    componentDidMount(){
+      this.fetchLoc()
+    }
 
   
     render() {
@@ -380,7 +424,7 @@ class CityRowName extends React.Component {
             onFilterTextChange={this.handleFilterTextChange}
           />
           <CityTableLat
-            cities={this.props.cities}
+            cities={this.state.location}
             filterText={this.state.filterText}
 
           />
