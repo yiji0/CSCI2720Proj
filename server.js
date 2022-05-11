@@ -478,7 +478,7 @@ db.once('open', function () {
             } else {
                 console.log(loc);
                 User.updateOne({ id: uid },
-                    { $push: { fav_loc: loc } },
+                    { $addToSet: { fav_loc: loc } },
                     (err, user) => {
                         if (err) {
                             console.log(err.message);
@@ -496,6 +496,7 @@ db.once('open', function () {
     app.delete('/favlist', (req, res) => {
         res.set('Content-Type', 'text/plain');
         let { uid, location } = req.body;
+        console.log(req.body);
         Location.findOne({ name: location }, (err, loc) => {
             if (err || !loc) {
                 console.log(err);
@@ -513,6 +514,39 @@ db.once('open', function () {
                             res.status(204).send("Successfully remove the fav location");
                         }
                     });
+            }
+        });
+    });
+
+    app.put('/comment', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let { uid, location, comment } = req.body;
+        Location.updateOne({name: location}, 
+            {$push: {comment: {
+                uid: uid,
+                content: comment
+            }}}, (err, loc) => {
+                if (err) {
+                    console.log(err.message);
+                    res.status(404).send("Fail to add comment in location " + location);
+                } else {
+                    res.status(201).send("Successfully add the comment");
+                }
+            });
+    });
+
+    app.get('/comment/:loc', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        Location.findOne({name: req.params.loc}, (err, loc) => {
+            if (err || !loc) {
+                console.log("Error in finding location " + req.params.loc);
+                res.status(404).send("No location of name " + req.params.loc + " found");
+            } else {
+                let comments = [];
+                for (let comment of loc.comment) {
+                    comments.push({user: comment.uid, comment: comment.content});
+                }
+                res.status(200).send(JSON.stringify(comments));
             }
         });
     });

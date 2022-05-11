@@ -60,11 +60,11 @@ const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3V2aWFicyIsImEiOiJjbDFydWlkamkyMHk1M2xtbW1sb2p
 
 class Detail extends React.Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             comments:[
-                {user:'unername', comment:'this is very nice'},
-                {user:'unsername2', comment:'this is also very nice'}        
+                // {user:'unername', comment:'this is very nice'},
+                // {user:'unsername2', comment:'this is also very nice'}        
             ],
             weather:{
                 temp_c:"TBD",
@@ -80,11 +80,10 @@ class Detail extends React.Component{
                 lat:0,
             },
             inFav: 0 // by default not in Favlist
-        
         };
-    this.addFav = this.addFav.bind(this)
-
-    }    
+        this.addFav = this.addFav.bind(this);
+        this.addComment = this.addComment.bind(this);
+    }
 
     // const [comments, setComments] = useState([
     //     {user:'unername', comment:'this is very nice'},
@@ -122,8 +121,20 @@ class Detail extends React.Component{
     //         lat:0
     //     }
     // };
-
+    
     async fetchInfo(){
+        // judge whether the location is already in the fav list
+        fetch('http://localhost:8000/favlist/'+this.props.uid, {
+            method: 'POST',
+        }).then(res => res.json()).then(res => {
+            if (this.state.location in res) {
+                this.setState({inFav: true});
+                console.log("Location " + this.state.location.name + " already in fav list");
+            }
+        }).catch(err => {
+            console.log(err.message);
+        });
+
         // ftech location infomation for map
         let locres = await fetch('http://localhost:8000/loc/'+this.state.location.name,{
           method:'GET',
@@ -152,57 +163,103 @@ class Detail extends React.Component{
           });
         let fav = await favres.json();
         let favlist = fav.map((loc)=>loc.name)
-        this.setState({inFav:favlist.some(loc=>loc==this.state.location.name)? 1:0})
+        this.setState({inFav:favlist.some(loc=>loc===this.state.location.name)? 1:0})
     
-        // fetch comments
-
-        
+        let commres = await fetch('http://localhost:8000/comment/'+this.state.location.name,{
+            method:'GET',
+          });
+        let comments = await commres.json();
+        console.log(comments[0]);
+        this.setState({comments: comments});
     }
     
     componentDidMount(){
-        this.fetchInfo()
+        this.fetchInfo();
     }
 
     async addComment(){
-        const newCom = {
-            user: 'uid01', // how we know the user, in props?
+        let newCom = {
+            uid: this.props.uid, // how we know the user, in props?
+            location: this.state.location.name,
             comment: document.getElementById('new-comment').value
         };
-        let res = await fetch('http://localhost:8000/detail/newcomm',{
-            method: 'POST',
+        console.log(newCom);
+        fetch('http://localhost:8000/comment',{
+            method: 'PUT',
             body: JSON.stringify(newCom),
             headers: {
                 'Content-Type': 'application/json'
             },
+        }).then(res => {
+            if (res.status === 201) {
+                return res.text();
+            } else {
+                throw new Error("Fail to add comment");
+            }
+        }).then(res => {
+            let comments = this.state.comments;
+            comments.push({user: newCom.uid, comment: newCom.comment});
+            this.setState({ comments: comments})
+            document.getElementById('new-comment').value = '';
+            // let newComment = document.createElement("div");
+            // let element = '<div></div><div><p></p></div>'
+            // newComment.innerHTML = element;
+    
+            // newComment.className = "d-flex";
+            // newComment.querySelectorAll("div")[0].className = "flex-shrink-0"; // 1st div
+            // newComment.querySelectorAll("div")[0].innerHTML = newCom.uid;
+    
+            // newComment.querySelectorAll("div")[1].className = "flex-grow-1";
+            // newComment.querySelector('p').innerHTML = newCom.comment;
+            // document.getElementById("comments").appendChild(newComment);
+        }).catch(err => {
+            console.log(err.message);
         });
-        let data = await res.json();
-        let newComment = document.createElement("div");
-        let element = '<div></div><div><p></p></div>'
-        newComment.innerHTML = element;
-
-        newComment.className = "d-flex";
-        newComment.querySelectorAll("div")[0].className = "flex-shrink-0"; // 1st div
-        newComment.querySelectorAll("div")[0].innerHTML = data.user;
-
-        newComment.querySelectorAll("div")[1].className = "flex-grow-1";
-        newComment.querySelector('p').innerHTML = data.comment;
-        document.getElementById("comments").appendChild(newComment); 
-
+        // let data = await res.json();
     }
 
     async addFav(){
         let myObjData = {uid: this.props.uid, location: this.state.location.name};
-
-        const res = await fetch('http://localhost:8000/favlist',{
-            method: 'PUT',
-            headers:{
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(myObjData)
-        });         //send the param in url get a res of sucess or not
-        const msg = await res.text();
-        alert(msg);
-        this.setState({inFav:1})
+        if (this.state.inFav) {
+            fetch('http://localhost:8000/favlist',{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(myObjData)
+            }).then(res => {
+                if (res.status === 204) {
+                    return res.text();
+                } else {
+                    throw new Error("Error in removing from fav list");
+                }
+            }).then(msg => {
+                alert("Successfully delete the location from the favorite list");
+                this.setState({inFav:false});
+            }).catch(err => {
+                console.log(err.message);
+            });         //send the param in url get a res of sucess or not
+        } else {
+            fetch('http://localhost:8000/favlist',{
+                method: 'PUT',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/plain'
+                },
+                body: JSON.stringify(myObjData)
+            }).then(res => {
+                if (res.status === 201) {
+                    return res.text();
+                } else {
+                    throw new Error("Error in adding the location to fav list");
+                }
+            }).then(msg => {
+                alert(msg);
+                this.setState({inFav:true});
+            }).catch(err => {
+                console.log(err.message);
+            });         //send the param in url get a res of sucess or not
+        }
         // any way to prevent user from adding loc already in the list?
     }
 
@@ -216,24 +273,23 @@ class Detail extends React.Component{
                 <div id ='details' className='p-2 mb-4 bg-light'>
                     <h3>{this.state.location.name}:</h3>
                     <ul>
-                        <li>Longitude: {this.state.location.lon}<span>&#176;</span>E</li>
-                        <li>Latitude: {this.state.location.lat}<span>&#176;</span>N</li>
-                        <li>Temperature: {this.state.weather.temp_c} <span>&#8451;</span></li>
+                        <li>Longitude: {this.state.location.lon.toString().replace('.', '°')}E</li>
+                        <li>Latitude: {this.state.location.lat.toString().replace('.', '°')}N</li>
+                        <li>Temperature: {this.state.weather.temp_c}<span>&#8451;</span></li>
                         <li>Wind Speed: {this.state.weather.wind_kph}km/h</li>
                         <li>Wind Direction: {this.state.weather.wind_dir}</li>
                         <li>Humidity: {this.state.weather.humidity}</li>
                         <li>Precipitation: {this.state.weather.precip_mm}mm</li>
                         <li>Visibility: {this.state.weather.vis_km}km</li>
-
                     </ul>
                 </div>
-                {this.state.inFav==0 && <button type="button" className="btn btn-outline-success me-2" onClick={this.addFav}>Add to My Favourite</button>}
-                {this.state.inFav==1 && <button type='button' className="btn btn-outline-success me-2" disabled>Added to My Favourite</button>}
+                {!this.state.inFav ? <button type="button" className="btn btn-outline-success me-2" onClick={this.addFav}>Add to My Favourite</button>
+                    : <button type='button' className="btn btn-success me-2" onClick={this.addFav}>Remove from My Favourite</button>}
                 <div id="comments" className='my-4 p-2 bg-light'> 
                     <h3>Comments:</h3>
                     {this.state.comments.map((comm,index)=>
                         <div className="d-flex" key={index}> 
-                            <div className="flex-shrink-0"> {comm.user} </div>
+                            <div className="flex-shrink-0"> {comm.user + ":"} </div>
                             <div className="flex-grow-1">
                                 <p>{comm.comment}</p>
                             </div>
@@ -243,7 +299,7 @@ class Detail extends React.Component{
                 <div>
                     <h3>Add Comments:</h3>
                     <div className="mb-3">
-                        <label for="new-comment" className="form-label">Comment:</label>
+                        <label htmlFor="new-comment" className="form-label">Comment:</label>
                         <textarea className="form-control" id="new-comment" rows="3"></textarea>
                     </div>
                     <button type="button" className="btn btn-outline-success me-2" onClick={this.addComment}>Add comment</button>

@@ -86,10 +86,13 @@ class Login extends React.Component {
       });
     event.preventDefault();
   };
-  
-  render() {
+
+  componentDidMount() {
     logout();
     this.props.onChangeLogin();
+  }
+  
+  render() {
     return (this.state.login === false ? (
       <Container>
 
