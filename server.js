@@ -170,6 +170,7 @@ db.once('open', function () {
                             // },
                             "temp_c": weather.temp_c.toString(),
                             "wind_kph": weather.wind_kph.toString(),
+                            "wind_dir": weather.wind_dir,
                             "humidity": weather.humidity,
                             "precip_mm": weather.precip_mm.toString(),
                             "vis_km": weather.vis_km
@@ -217,6 +218,7 @@ db.once('open', function () {
                                 // },
                                 "temp_c": weather[i].temp_c.toString(),
                                 "wind_kph": weather[i].wind_kph.toString(),
+                                "wind_dir": weather.wind_dir,
                                 "humidity": weather[i].humidity,
                                 "precip_mm": weather[i].precip_mm.toString(),
                                 "vis_km": weather[i].vis_km
@@ -252,6 +254,7 @@ db.once('open', function () {
                                 $set: {
                                     temp_c: data['current']['temp_c'],
                                     wind_kph: data['current']['wind_kph'],
+                                    wind_dir: data['current']['wind_dir'],
                                     humidity: data['current']['humidity'],
                                     precip_mm: data['current']['precip_mm'],
                                     vis_km: data['current']['vis_km']
@@ -295,6 +298,7 @@ db.once('open', function () {
                                         $set: {
                                             temp_c: data['current']['temp_c'],
                                             wind_kph: data['current']['wind_kph'],
+                                            wind_dir: data['current']['wind_dir'],
                                             humidity: data['current']['humidity'],
                                             precip_mm: data['current']['precip_mm'],
                                             vis_km: data['current']['vis_km']
