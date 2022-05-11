@@ -11,6 +11,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import {Search, SearchName, SearchLon, SearchLat} from './Search';
+import {All_adm, User_adm} from './adm';
 
 const CITIES = [
   {name: 'HongKong', lat: '114°10E', lon: '22°16N'},
@@ -65,6 +66,8 @@ function App() {
         <Route path='/search/ByName' element={<SearchName islogin={islogin} cities={CITIES}></SearchName>} />
         <Route path='/search/ByLon' element={<SearchLon islogin={islogin} cities={CITIES}></SearchLon>} />
         <Route path="/search/ByLat" element={<SearchLat islogin={islogin} cities={CITIES}></SearchLat>} />
+        <Route path='/all_adm' element={<All_adm islogin={islogin}></All_adm>} />
+        <Route path='/user_adm' element={<User_adm islogin={islogin}></User_adm>} />
         </Routes>
         </div>
         </BrowserRouter>
