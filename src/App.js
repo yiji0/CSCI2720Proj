@@ -51,62 +51,20 @@ function App() {
   return (
         <>
         <BrowserRouter>
-        <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/all'>Home</Link></Navbar.Brand>
-          <Nav className="me-auto">
-          <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/map'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Link></Nav.Link>
-            <NavDropdown title="Locations" id="basic-nav-dropdown">
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/all'>All Locations</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/HongKong'>Hong Kong</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Beijing'>Beijing</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Shanghai'>Shanghai</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Harbin'>Harbin</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Lahsa'>Lahsa</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Urumchi'>Urumchi</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Seoul'>Seoul</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Tokyo'>Tokyo</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Hohhot'>Hohhot</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Singapore'>Singapore City</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Chengdu'>Chengdu</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Kunming'>Kunming</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Sanya'>Sanya</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/Taipei'>Taipei</Link></NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/search'>&nbsp;&nbsp;&nbsp;&nbsp;Search</Link></Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/favourite'>&nbsp;&nbsp;&nbsp;&nbsp;Favourite Locations</Link></Nav.Link>
-            <Nav.Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{islogin ? (getloginfo()['uid'] + "\tLog out") : "Log in"}</Link></Nav.Link>
-            
-          </Nav>
-        </Container>
-        </Navbar>
+        
         <br/>
         <div>
 
         <Routes>
         <Route path='/' element={<Login onChangeLogin={switchloginstate}/>} />
-        <Route path="/map" element={<Map/>} />
-        <Route path='/all' element={<All/>} />
+        <Route path="/map" element={<Map islogin={islogin}/>} />
+        <Route path='/all' element={<All islogin={islogin}></All>} />
         <Route path='/favourite' element={<Fav />} />
-        <Route path='/search' element={<Search cities={CITIES}/>} />
+        <Route path='/search' element={<Search islogin={islogin} cities={CITIES}/>} />
         <Route path="/:loc" element={<Detail uid={islogin}/>} />
-        <Route path='/search/ByName' element={<SearchName cities={CITIES}></SearchName>} />
-        <Route path='/search/ByLon' element={<SearchLon cities={CITIES}></SearchLon>} />
-        <Route path="/search/ByLat" element={<SearchLat cities={CITIES}></SearchLat>} />
+        <Route path='/search/ByName' element={<SearchName islogin={islogin} cities={CITIES}></SearchName>} />
+        <Route path='/search/ByLon' element={<SearchLon islogin={islogin} cities={CITIES}></SearchLon>} />
+        <Route path="/search/ByLat" element={<SearchLat islogin={islogin} cities={CITIES}></SearchLat>} />
         </Routes>
         </div>
         </BrowserRouter>
