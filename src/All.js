@@ -154,12 +154,26 @@ class All extends React.Component {
               </tr>
             </thead>
             <tbody>
-            {this.state.location.map((loc, index) => <GetFav data={loc} i={index} key={index} />)}
+            {this.state.location.map((loc, index) => <Get data={loc} i={index} key={index} />)}
             </tbody>
           </Table>
         </div>
       </>
     );
+  }
+}
+
+class Get extends React.Component {
+  render() {
+    let i = this.props.i;
+    let data = this.props.data;
+    return (
+      <tr>
+        <td><Link to={'/' + data.name}>{data.name}</Link></td>
+        <td>{data.lon}</td>
+        <td>{data.lat}</td>
+      </tr>
+    )
   }
 }
 
@@ -172,6 +186,7 @@ class GetFav extends React.Component {
         <td><Link to={'/' + data.name}>{data.name}</Link></td>
         <td>{data.lon}</td>
         <td>{data.lat}</td>
+        <td><button className="btn btn-outline-success me-2">delete</button></td>
       </tr>
     )
   }
@@ -236,6 +251,7 @@ class Fav extends React.Component {
               <th>CityName</th>
               <th>Longitude</th>
               <th>Latitude</th>
+              <th>        </th>
             </tr>
           </thead>
           <tbody>
