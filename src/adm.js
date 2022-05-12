@@ -4,10 +4,19 @@ import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table'
 import Container from 'react-bootstrap/Container';
 
+
+
 class AllAdm extends React.Component {
-  state = {
-    location: []
+
+  constructor(){
+    super();
+    this.state = {
+      location: []
+    };
+    this.createLoc = this.createLoc.bind(this);
+    this.fetchLoc = this.fetchLoc.bind(this)
   }
+
 
   async fetchLoc() {
     let res = await fetch('http://localhost:8000/loc1', {
@@ -33,11 +42,13 @@ class AllAdm extends React.Component {
   }
 
   async createLoc(){
-    
+    let name = document.querySelector('#newLocName').value;
+    let lon = document.getElementById('newlon').value;
+    let lat = document.getElementById('newlat').value;
     let newLocObj = {
-      name: document.querySelector('#newLocName').value,
-      lon: document.getElementById('newlon').value,
-      lat: document.getElementById('newlat').value
+      name: name,
+      lon: lon,
+      lat: lat
     };
 
     // console.log(newLocObj)
@@ -45,12 +56,26 @@ class AllAdm extends React.Component {
     let createNewLoc = await fetch('http://localhost:8000/loc',{
       method: 'POST',
       headers:{
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(newLocObj)
     });
     let msg = await createNewLoc.text();
-    alert(msg);
+    alert(msg)
+    
+    if(msg=='success'){
+      let newLoc = {
+        name: name,
+        lon: lon.replace('.', '°') + 'E',
+        lat: lat.replace('.', '°') + 'N'
+      };
+      this.setState(previousState => ({
+        location: [...previousState.location, newLoc]
+      }));
+      document.querySelector('#newLocName').value='';
+      document.querySelector('#newlon').value='';
+      document.querySelector('#newlat').value='';
+    }
   }
 
   async updateLoc(){
@@ -61,12 +86,11 @@ class AllAdm extends React.Component {
       lat: document.getElementById('ulat').value
     };
 
-    return fetch('http://localhost:8000/loc/'+document.querySelector("#oname").value,{
+    let res = await fetch('http://localhost:8000/loc/'+document.querySelector("#oname").value,{
       method:'PUT',
       body:JSON.stringify(newLocObj),
       headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }
     });
   }
@@ -81,6 +105,7 @@ class AllAdm extends React.Component {
                 <th>CityName </th>
                 <th>Longitude </th>
                 <th>Latitude </th>
+                <th>Action</th>
                 <th> </th>
               </tr>
             </thead>
@@ -127,7 +152,7 @@ class LocInfo extends React.Component {
     let data = this.props.data;
     return (
       <tr>
-        <td><Link to={'/' + data.name}>{data.name}</Link></td>
+        <td>{data.name}</td>
         <td>{data.lon}</td>
         <td>{data.lat}</td>
         <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteLoc(data.name)}>delete</button></td>
@@ -162,10 +187,16 @@ class Getuser extends React.Component {
   }
 }
 
+
 class UserAdm extends React.Component {
-  state = {
-    user: []
+  constructor(){
+    super()
+    this.state = {
+      user: []
+    }
+    this.createUser = this.createUser.bind(this);
   }
+  
 
   async fetchuser(){
     let res = await fetch('http://localhost:8000/user',{
@@ -185,9 +216,11 @@ class UserAdm extends React.Component {
   }
 
   async createUser(){
+    let name = document.getElementById('uid').value;
+    let pwd = document.getElementById('pwd').value;
     let uObj = {
-      name: document.getElementById('uid').value,
-      pwd: document.getElementById('pwd').value
+      name:name,
+      pwd: pwd
     };
     console.log(uObj)
   
@@ -198,9 +231,16 @@ class UserAdm extends React.Component {
       },
       body: JSON.stringify(uObj)
     });
-    let msg = await newUser.text();
-    alert(msg);
+    let user = await newUser.json();
+    
+    this.setState(previousState => ({
+      user: [...previousState.user, user]
+    }));
+    document.querySelector('#uid').value='';
+    document.querySelector('#pwd').value='';
+    
   }
+  
   async updateUser(){
     let newObj = {
       id: document.querySelector("#oid").value,
@@ -208,14 +248,16 @@ class UserAdm extends React.Component {
       newpwd: document.getElementById('upwd').value
     };
 
-    return fetch('http://localhost:8000/user',{
+    fetch('http://localhost:8000/user',{
       method:'PUT',
       body:JSON.stringify(newObj),
       headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }
-    });
+    })
+    .then(
+      res => res.status == 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
+    );
   }
   
   render(){

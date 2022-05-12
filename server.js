@@ -68,7 +68,8 @@ db.once('open', function () {
             if (err)
                 res.send(err);
             else
-                res.send('User created successfully!\n' + user);
+                console.log('User created successfully!\n' + user)
+                res.send('success');
         });
     });
 
@@ -89,13 +90,19 @@ db.once('open', function () {
         res.set('Content-Type', 'text/plain');
         User.create({
             id : req.body['name'],
-            pwd : sha(req.body['pwd']).toString(),
+            pwd : sha256(req.body['pwd']).toString(),
             fav_loc: []
         }, (err, user) => {
             if (err)
                 res.send(err.message);
             else
-                res.status(201).send('User created successfully!\n' + user);
+                res.set('Content-Type','application/json');
+                let uObj = {
+                    id: req.body['name'],
+                    pwd : sha256(req.body['pwd']).toString()
+                };
+                console.log('User created successfully!\n' + user)
+                res.status(201).send(JSON.stringify(uObj));
         });
     });
     
@@ -118,28 +125,28 @@ db.once('open', function () {
     // Update User
     app.put('/user', (req, res) => {
         res.set('Content-Type', 'text-plain');
-        let userid = req.body['id'];
-        let newid = req.body['newid'];
-        let newpwd = req.body['newpwd'];
+        let userid = req.body.id;
+        let newid = req.body.newid;
+        let newpwd = req.body.newpwd;
 
         User.findOne({ id: userid }, (err, user) => {
             if (err) {
                 res.send(err);
             } else if (!user) {
-                res.status(404).send('User ' + userid + ' does not exist.\n');
-            } else if (newid != NULL && newid != '' && newpwd != NULL && newpwd != '') {
+                res.sendStatus(404);
+            } else if (newid != '' && newpwd != '') {
                 user.id = newid;
-                user.pwd = newpwd;
+                user.pwd = sha256(newpwd).toString();
                 user.save();
-                res.status(200).send(JSON.stringify(user));
-            } else if (newid != NULL && newid != '') {
+                res.sendStatus(200);
+            } else if (newid != '') {
                 user.id = newid;
                 user.save();
-                res.status(200).send(JSON.stringify(user));
-            } else if (newpwd != NULL && newpwd != '') {
-                user.pwd = newpwd;
+                res.sendStatus(200);
+            } else if (newpwd != '') {
+                user.pwd = sha256(newpwd).toString();
                 user.save();
-                res.status(200).send(JSON.stringify(user));
+                res.sendStatus(200);
             }
         });
     });
@@ -498,8 +505,9 @@ db.once('open', function () {
                 console.log(err.message);
                 res.status(404).send(err.message);
             } else {
-                console.log("success");
-                res.status(201).send("Successfully created locations");
+                console.log("Successfully created locations");
+                res.status(201).send('success');    
+                
             }
         });
     });

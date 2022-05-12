@@ -69,9 +69,11 @@ class SearchBarName extends React.Component {
     this.props.onFilterTextChange(e.target.value);
   }
 
+
   render() {
     return (
       <Container>
+
         <form>
           <input
             type="text"
@@ -81,6 +83,7 @@ class SearchBarName extends React.Component {
             className="form-control"
           />
           <p>
+
           </p>
         </form>
       </Container>
@@ -96,7 +99,9 @@ class SearchName extends React.Component {
       location: []
 
     };
+
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+
   }
 
   handleFilterTextChange(filterText) {
@@ -120,6 +125,8 @@ class SearchName extends React.Component {
   componentDidMount() {
     this.fetchLoc()
   }
+
+
 
   render() {
     return (
@@ -266,7 +273,7 @@ class SearchLon extends React.Component {
 
   render() {
     return (
-      <>
+      <>       
         <Container>
           <div>
             <Container>
@@ -442,7 +449,9 @@ class Search extends React.Component {
       filterText: '',
 
     };
+
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+
   }
 
   handleFilterTextChange(filterText) {
