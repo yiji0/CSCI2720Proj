@@ -31,7 +31,7 @@ class CityRowName extends React.Component {
       const rows = [];
   
       this.props.cities.forEach((city) => {
-        if (city.name.toLowerCase().indexOf(filterText) === -1 && city.name.toUpperCase().indexOf(filterText) === -1) {
+        if (city.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1 && city.name.toUpperCase().indexOf(filterText.toUpperCase()) === -1) {
           return;
         }
         rows.push(
