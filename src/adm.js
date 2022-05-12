@@ -57,7 +57,6 @@ class All_adm extends React.Component {
   }
 
   async updateLoc(){
-    alert("update successfully! Please fresh the page.");
     let newLocObj = {
       originalName: document.querySelector("#oname").value,
       name: document.querySelector('#uname').value,
@@ -206,7 +205,6 @@ class User_adm extends React.Component {
     alert(msg);
   }
   async updateUser(){
-    alert("update successfully! Please fresh the page.");
     let newObj = {
       id: document.querySelector("#oid").value,
       newid: document.querySelector('#unewuid').value,
