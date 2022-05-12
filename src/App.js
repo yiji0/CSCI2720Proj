@@ -50,14 +50,14 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar bg="dark" variant="dark">
+      <div style={{height:80}}>
+        <Navbar bg="dark" variant="dark" style={{position:'fixed',width:'100%',height:70}}>
           <Container>
             <Nav className='me-auto'>
               {mode === 'admin' && <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/all_adm'>Location List</Link></Navbar.Brand>}
               {mode === 'admin' && <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/user_adm'>User List</Link></Navbar.Brand>}
               {mode === 'user' && <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/all'>Home</Link></Navbar.Brand>}
               {mode === 'user' && <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/map'>Map</Link></Nav.Link>}
-         
               {mode === 'user' && <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/search'>Search</Link></Nav.Link>}
               {mode === 'user' && <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/favourite'>Favourite Locations</Link></Nav.Link>}
             </Nav>
@@ -67,6 +67,7 @@ function App() {
             </Nav>
           </Container>
         </Navbar>
+        </div>
         <Routes>
           <Route path='/' element={<PrivateRoute />}>
             <Route path='/' element={<All />} />
