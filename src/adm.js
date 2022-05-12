@@ -9,8 +9,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 class All_adm extends React.Component {
   state = {
-    location: [],
-    user: []
+    location: []
   }
 
   async fetchLoc(){
@@ -27,22 +26,6 @@ class All_adm extends React.Component {
 
   componentDidMount(){
     this.fetchLoc()
-  }
-
-  async fetchuser(){
-    let res = await fetch('http://localhost:8000/user',{
-      method:'GET',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    });
-    let l = await res.json();
-    await this.setState({user: l});
-  }
-
-  componentDidMount(){
-    this.fetchuser()
   }
 
 
@@ -82,8 +65,8 @@ class All_adm extends React.Component {
                 <th>CityName </th>
                 <th>Longitude </th>
                 <th>Latitude </th>
-                <th>Deletion</th>
-                <th>Update</th>
+                <th> </th>
+                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -91,7 +74,9 @@ class All_adm extends React.Component {
             </tbody>
           </Table>
         </div>
+        <Container>
         <button className="btn btn-outline-success me-2">Add new</button>
+        </Container>
       </>
     );
   }
@@ -120,6 +105,7 @@ class Getuser extends React.Component {
     return (
       <tr>
         <td>{data.id}</td>
+        <td>{data.pwd}</td>
         <td><button className="btn btn-outline-success me-2">delete</button></td>
         <td><button className="btn btn-outline-success me-2">update</button></td>
       </tr>
@@ -128,6 +114,27 @@ class Getuser extends React.Component {
 }
 
 class User_adm extends React.Component {
+  state = {
+    user: []
+  }
+
+  async fetchuser(){
+    let res = await fetch('http://localhost:8000/user',{
+      method:'GET',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+    let l = await res.json();
+    await this.setState({user: l});
+    console.log(this.state.user);
+  }
+
+  componentDidMount(){
+    this.fetchuser()
+  }
+
   render(){
     return (
       <>
@@ -162,8 +169,9 @@ class User_adm extends React.Component {
             <thead>
               <tr>
                 <th>UserId </th>
-                <th>Deletion</th>
-                <th>Update</th>
+                <th>Password </th>
+                <th> </th>
+                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -171,7 +179,9 @@ class User_adm extends React.Component {
             </tbody>
           </Table>
         </div>
+        <Container>
         <button className="btn btn-outline-success me-2">Add new</button>
+        </Container>
       </>
     );
   }
