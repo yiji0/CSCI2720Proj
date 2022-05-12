@@ -45,7 +45,7 @@ class All_adm extends React.Component {
 
     // console.log(newLocObj)
     
-    let createNewLoc = await fetch('http://localhost:8000/create_loc',{
+    let createNewLoc = await fetch('http://localhost:8000/loc',{
       method: 'POST',
       headers:{
           'Content-Type': 'application/json'
