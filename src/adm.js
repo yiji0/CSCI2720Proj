@@ -91,6 +91,15 @@ class All_adm extends React.Component {
 
 
 class LocInfo extends React.Component {
+  deleteLoc(d){
+    return fetch('http://localhost:8000/loc/'+d,{
+      method:'DELETE',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+  }
   render() {
     let i = this.props.i;
     let data = this.props.data;
@@ -99,7 +108,7 @@ class LocInfo extends React.Component {
         <td><Link to={'/' + data.name}>{data.name}</Link></td>
         <td>{data.lon}</td>
         <td>{data.lat}</td>
-        <td><button className="btn btn-outline-success me-2">delete</button></td>
+        <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteLoc(data.name)}>delete</button></td>
         <td><button className="btn btn-outline-success me-2">update</button></td>
       </tr>
     )
@@ -107,6 +116,15 @@ class LocInfo extends React.Component {
 }
 
 class Getuser extends React.Component {
+  deleteU(d){
+    return fetch('http://localhost:8000/user/'+d,{
+      method:'DELETE',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+  }
   render() {
     let i = this.props.i;
     let data = this.props.data;
@@ -114,7 +132,7 @@ class Getuser extends React.Component {
       <tr>
         <td>{data.id}</td>
         <td>{data.pwd}</td>
-        <td><button className="btn btn-outline-success me-2">delete</button></td>
+        <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteU(data.id)}>delete</button></td>
         <td><button className="btn btn-outline-success me-2">update</button></td>
       </tr>
     )
