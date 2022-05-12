@@ -50,6 +50,9 @@ function App() {
   return (
     <>
       <BrowserRouter>
+
+        
+
       <div style={{height:80}}>
         <Navbar bg="dark" variant="dark" style={{position:'fixed',width:'100%',height:70}}>
           <Container>
