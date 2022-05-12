@@ -56,6 +56,25 @@ class All_adm extends React.Component {
     alert(msg);
   }
 
+  async updateLoc(){
+    alert("update successfully! Please fresh the page.");
+    let newLocObj = {
+      originalName: document.querySelector("#oname").value,
+      name: document.querySelector('#uname').value,
+      lon: document.getElementById('ulon').value,
+      lat: document.getElementById('ulat').value
+    };
+
+    return fetch('http://localhost:8000/loc/'+document.querySelector("#oname").value,{
+      method:'PUT',
+      body:JSON.stringify(newLocObj),
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+  }
+
   render() {
     return (
       <>
@@ -67,7 +86,6 @@ class All_adm extends React.Component {
                 <th>Longitude </th>
                 <th>Latitude </th>
                 <th> </th>
-                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -77,6 +95,13 @@ class All_adm extends React.Component {
               <td><input type="text" id="newlon" placeholder='Longitude'/></td>
               <td><input type="text" id="newlat" placeholder='Latitude'/></td>
               <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createLoc}>Create</button></td>
+            </tr>
+            <tr id='updateLoc'>
+              <td><input type="text" id="oname" placeholder='The original city name'/></td>
+              <td><input type="text" id="uname" placeholder='New city name'/></td>
+              <td><input type="text" id="ulon" placeholder='New city longitude'/></td>
+              <td><input type="text" id="ulat" placeholder='New city latitude'/></td>
+              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.updateLoc}>Update</button></td>
             </tr>
             </tbody>
           </Table>
@@ -92,6 +117,7 @@ class All_adm extends React.Component {
 
 class LocInfo extends React.Component {
   deleteLoc(d){
+    alert("delete successfully! Please fresh the page.");
     return fetch('http://localhost:8000/loc/'+d,{
       method:'DELETE',
       headers: { 
@@ -109,7 +135,7 @@ class LocInfo extends React.Component {
         <td>{data.lon}</td>
         <td>{data.lat}</td>
         <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteLoc(data.name)}>delete</button></td>
-        <td><button className="btn btn-outline-success me-2">update</button></td>
+        
       </tr>
     )
   }
@@ -117,6 +143,7 @@ class LocInfo extends React.Component {
 
 class Getuser extends React.Component {
   deleteU(d){
+    alert("delete successfully! Please fresh the page.");
     return fetch('http://localhost:8000/user/'+d,{
       method:'DELETE',
       headers: { 
@@ -133,7 +160,7 @@ class Getuser extends React.Component {
         <td>{data.id}</td>
         <td>{data.pwd}</td>
         <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteU(data.id)}>delete</button></td>
-        <td><button className="btn btn-outline-success me-2">update</button></td>
+        
       </tr>
     )
   }
@@ -178,7 +205,23 @@ class User_adm extends React.Component {
     let msg = await newUser.text();
     alert(msg);
   }
+  async updateUser(){
+    alert("update successfully! Please fresh the page.");
+    let newObj = {
+      id: document.querySelector("#oid").value,
+      newid: document.querySelector('#unewuid').value,
+      newpwd: document.getElementById('upwd').value
+    };
 
+    return fetch('http://localhost:8000/user',{
+      method:'PUT',
+      body:JSON.stringify(newObj),
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+  }
   
   render(){
     return (
@@ -190,7 +233,6 @@ class User_adm extends React.Component {
                 <th>UserId </th>
                 <th>Password </th>
                 <th> </th>
-                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -199,6 +241,12 @@ class User_adm extends React.Component {
               <td><input type="text" id="uid" placeholder='New User ID'/></td>
               <td><input type="text" id="pwd" placeholder='New Password'/></td>
               <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createUser}>Create</button></td>
+            </tr>
+            <tr id='updateUser'>
+              <td><input type="text" id="oid" placeholder='The original User ID'/></td>
+              <td><input type="text" id="unewuid" placeholder='New User ID'/></td>
+              <td><input type="text" id="upwd" placeholder='New password'/></td>
+              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.updateUser}>Update</button></td>
             </tr>
             </tbody>
           </Table>
