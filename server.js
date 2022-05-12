@@ -276,7 +276,7 @@ db.once('open', function () {
         });
     });
 
-    // Udpating all weather informaiton
+    // Refreshing all weather informaiton
     app.put('/weather', (req, res) => {
         res.set('Content-Type', 'text/plain');
         Location.find((err, locs) => {
@@ -317,7 +317,7 @@ db.once('open', function () {
                     );
                 }
                 Promise.all(feteches).then(() => {
-                    res.status(201).send("Successfully update");
+                    res.status(201).send("Successfully Refresh");
                 });
             }
         });
@@ -429,6 +429,29 @@ db.once('open', function () {
             } else {
                 console.log("success");
                 res.status(201).send("Successfully created locations");
+            }
+        });
+    });
+    
+    // update a single location
+    app.put('/loc/:loc', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let originalName = req.body.originalName;
+        let updateName = req.body.name;
+        let updateLat = req.body.lat;
+        let updateLon = req.body.lon;
+
+        Location.findOne({name: originalName}, (err, loc) => {
+            if (err) {
+                res.status(404).send(err.message);
+            } else if (!loc) {
+                res.status(404).send("No location is found.");
+            } else {
+                loc.name = updateName;
+                loc.lat = updateLat;
+                loc.lon = updateLon;
+                loc.save();
+                res.status(200).send(JSON.stringify(loc));
             }
         });
     });
@@ -555,7 +578,116 @@ db.once('open', function () {
         });
     });
 
-
+    // get all user data
+    app.get('/user', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        User.find((err, users) => {
+            if (err) {
+                res.status(404).send(err);
+            } else if (!users || users.length == 0) {
+                res.status(404).send("No user found");
+            } else {
+                let userlist = [];
+                for (let i = 0; i < users.length; i++) {
+                    let userobj = {
+                        "id": users[i].id,
+                        "pwd": users[i].pwd
+                    }
+                    userlist.push(userobj);
+                }
+                console.log(userlist);
+                res.set('Content-Type', 'application/json');
+                res.status(200).send(JSON.stringify(userlist));
+            }
+        })
+    });
+    
+    // Create User
+    app.post('/createUser', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        User.create({
+            id : req.body['name'],
+            pwd : sha(req.body['pwd']).toString()
+        }, (err, user) => {
+            if (err)
+                res.send(err.message);
+            else
+                res.status(201).send('User created successfully!\n' + user);
+        });
+    });
+    
+    // Delete User
+    app.delete('/User/:User', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let userid = req.params['id'];
+        User.deleteOne({ id: userid }, (err, res) => {
+            if(err){
+                console.log("Failed to delete user" + userid);
+                res.status(404).send("Failed to delete user" + userid);
+            } else{
+                console.log("Successfully delete user" + userid);
+                res.status(204).send("Successfully delete user" + userid);
+            }
+        });
+    });
+    
+    // Update User
+    app.put('/User', (req, res) => {
+        res.set('Content-Type', 'text-plain');
+        let userid = req.params['id'];
+        let newid = req.params['newid'];
+        let newpwd = req.params['newpwd'];
+        if(newid != NULL){
+            User.updateOne({ id: userid }, {$set:{id: newid}}, (err, res) => {
+                if(err){
+                    console.log("Failed to update user" + userid);
+                    res.status(404).send("Failed to update user" + userid);
+                } else{
+                    console.log("Successfully update user" + userid);
+                    res.status(204).send("Successfully update user" + userid);
+                }
+            });
+        }
+        if(newpwd != NULL){
+            User.updateOne({ id: userid }, {$set:{pwd: newpwd}}, (err, res) => {
+                if(err){
+                    console.log("Failed to update user" + userid);
+                    res.status(404).send("Failed to update user" + userid);
+                } else{
+                    console.log("Successfully update user" + userid);
+                    res.status(204).send("Successfully update user" + userid);
+                }
+            });
+        }
+    });
+    
+    // Read User
+    app.post('/User', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let userid = req.params['id'];
+        User.findOne({ id: userid }, (err, res) => {
+            if(err){
+                console.log("Failed to find user" + userid);
+                res.status(404).send("Failed to find user" + userid);
+            } else{
+                console.log("Successfully find user" + userid);
+                res.status(204).send("Successfully find user" + userid);
+            }
+        });
+    });
+    app.post('/User', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        User.find((err, res) => {
+            if(err){
+                console.log(err.message);
+                res.status(404).send(err.message);
+            } else{
+                console.log(Success);
+                res.status(204).send("Successfully find");
+            }
+        });
+    });
+    
     app.all('/*', (req, res) => {
         res.send("Welcome!");
     });
