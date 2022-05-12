@@ -102,14 +102,15 @@ db.once('open', function () {
     // Delete User
     app.delete('/user/:userId', (req, res) => {
         res.set('Content-Type', 'text/plain');
-        User.deleteOne({ id: req.params['userId'] }, (err, user) => {
+        let userid = req.params['userId'];
+        User.deleteOne({ id: userid }, (err, user) => {
             if (err) {
-                console.log("Failed to delete user " + req.params['userid']);
-                res.status(404).send("Failed to delete user " + req.params['userid']);
+                console.log("Failed to delete user " + userid);
+                res.status(404).send("Failed to delete user " + userid);
             }
             else {
-                console.log("Successfully delete user " + req.params['userid']);
-                res.status(204).send("Successfully delete user " + req.params['userid']);
+                console.log("Successfully delete user " + userid);
+                res.status(204).send("Successfully delete user " + userid);
             }
         });
     });
@@ -141,6 +142,30 @@ db.once('open', function () {
                 res.status(200).send(JSON.stringify(user));
             }
         });
+    });
+    
+    // get all user data
+    app.get('/user', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        User.find((err, users) => {
+            if (err) {
+                res.status(404).send(err);
+            } else if (!users || users.length == 0) {
+                res.status(404).send("No user found");
+            } else {
+                let userlist = [];
+                for (let i = 0; i < users.length; i++) {
+                    let userobj = {
+                        "id": users[i].id,
+                        "pwd": users[i].pwd
+                    }
+                    userlist.push(userobj);
+                }
+                console.log(userlist);
+                res.set('Content-Type', 'application/json');
+                res.status(200).send(JSON.stringify(userlist));
+            }
+        })
     });
 
     app.post('/createAdmin', (req, res) => {
@@ -622,30 +647,6 @@ db.once('open', function () {
                 res.status(200).send(JSON.stringify(comments));
             }
         });
-    });
-
-    // get all user data
-    app.get('/user', (req, res) => {
-        res.set('Content-Type', 'text/plain');
-        User.find((err, users) => {
-            if (err) {
-                res.status(404).send(err);
-            } else if (!users || users.length == 0) {
-                res.status(404).send("No user found");
-            } else {
-                let userlist = [];
-                for (let i = 0; i < users.length; i++) {
-                    let userobj = {
-                        "id": users[i].id,
-                        "pwd": users[i].pwd
-                    }
-                    userlist.push(userobj);
-                }
-                console.log(userlist);
-                res.set('Content-Type', 'application/json');
-                res.status(200).send(JSON.stringify(userlist));
-            }
-        })
     });
     
 //     app.put('/User', (req, res) => {
