@@ -603,16 +603,16 @@ db.once('open', function () {
     });
     
     // Create User
-    app.post('/User', (req, res) => {
+    app.post('/createUser', (req, res) => {
         res.set('Content-Type', 'text/plain');
-        User.insertOne(req.body, (err, res) => {
-            if(err){
-                console.log("Failed to insert user" + userid);
-                res.status(404).send("Failed to insert user" + userid);
-            } else{
-                console.log("Successfully insert user" + userid);
-                res.status(201).send("Successfully insert user" + userid);
-            }
+        User.create({
+            id : req.body['name'],
+            pwd : sha(req.body['pwd']).toString()
+        }, (err, user) => {
+            if (err)
+                res.send(err.message);
+            else
+                res.status(201).send('User created successfully!\n' + user);
         });
     });
     
