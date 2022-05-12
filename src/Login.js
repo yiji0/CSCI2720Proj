@@ -143,7 +143,7 @@ class Login extends React.Component {
           
         </Row>
       </Container>
-    ) : <Navigate to='/'/>
+    ) : (this.state.mode === 'user' ? <Navigate to='/all'/> : <Navigate to='/all_adm'/>)
     );
   }
 

@@ -121,18 +121,6 @@ class Detail extends React.Component {
     // };
 
     async fetchInfo() {
-        // judge whether the location is already in the fav list
-        // fetch('http://localhost:8000/favlist/'+this.props.uid, {
-        //     method: 'POST',
-        // }).then(res => res.json()).then(res => {
-        //     if (this.state.location in res) {
-        //         this.setState({inFav: true});
-        //         console.log("Location " + this.state.location.name + " already in fav list");
-        //     }
-        // }).catch(err => {
-        //     console.log(err.message);
-        // });
-
         // ftech location infomation for map
         let locres = await fetch('http://localhost:8000/loc/' + this.state.location.name, {
             method: 'GET',

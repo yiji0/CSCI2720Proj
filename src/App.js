@@ -7,12 +7,11 @@ import { All, Fav } from './All';
 import Detail from './Detail';
 import { getloginfo, Login } from './Login';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import { Navigate, Outlet } from 'react-router-dom';
 import { Search, SearchName, SearchLon, SearchLat } from './Search';
-import { All_adm, User_adm } from './adm';
+import { AllAdm, UserAdm } from './Adm';
 import { logout } from './Login';
 
 function PrivateRoute() {
@@ -38,14 +37,14 @@ function App() {
     else { setLogin(false); setMode(false) }
   };
 
-  function getCookie(cookieName) {
-    let cookie = {};
-    document.cookie.split(';').forEach(function (el) {
-      let [key, value] = el.split('=');
-      cookie[key.trim()] = value;
-    })
-    return cookie[cookieName];
-  }
+  // function getCookie(cookieName) {
+  //   let cookie = {};
+  //   document.cookie.split(';').forEach(function (el) {
+  //     let [key, value] = el.split('=');
+  //     cookie[key.trim()] = value;
+  //   })
+  //   return cookie[cookieName];
+  // }
 
   return (
     <>
@@ -57,23 +56,6 @@ function App() {
               {mode === 'admin' && <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/user_adm'>User List</Link></Navbar.Brand>}
               {mode === 'user' && <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/all'>Home</Link></Navbar.Brand>}
               {mode === 'user' && <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/map'>Map</Link></Nav.Link>}
-              {mode === 'user' && <NavDropdown title="Locations" id="basic-nav-dropdown">
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/all'>All Locations</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Hong Kong'>Hong Kong</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Beijing'>Beijing</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Shanghai'>Shanghai</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Harbin'>Harbin</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Lahsa'>Lahsa</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Urumchi'>Urumchi</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Seoul'>Seoul</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Tokyo'>Tokyo</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Hohhot'>Hohhot</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Singapore City'>Singapore City</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Chengdu'>Chengdu</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Kunming'>Kunming</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Sanya'>Sanya</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Taipei'>Taipei</Link></NavDropdown.Item>
-              </NavDropdown>}
               {mode === 'user' && <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/search'>Search</Link></Nav.Link>}
               {mode === 'user' && <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/favourite'>Favourite Locations</Link></Nav.Link>}
             </Nav>
@@ -115,10 +97,10 @@ function App() {
             <Route path="/search/ByLat" element={<SearchLat islogin={islogin} ></SearchLat>} />
           </Route>
           <Route path='/all_adm' element={<PrivateRoute />}>
-            <Route path='/all_adm' element={<All_adm islogin={islogin}></All_adm>} />
+            <Route path='/all_adm' element={<AllAdm islogin={islogin}></AllAdm>} />
           </Route>
           <Route path='/user_adm' element={<PrivateRoute />}>
-            <Route path='/user_adm' element={<User_adm islogin={islogin}></User_adm>} />
+            <Route path='/user_adm' element={<UserAdm islogin={islogin}></UserAdm>} />
           </Route>
         </Routes>
       </BrowserRouter>

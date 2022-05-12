@@ -1,13 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table'
-import { getloginfo } from './Login'
-import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
 
-class All_adm extends React.Component {
+class AllAdm extends React.Component {
   state = {
     location: []
   }
@@ -126,7 +123,7 @@ class LocInfo extends React.Component {
     });
   }
   render() {
-    let i = this.props.i;
+    // let i = this.props.i;
     let data = this.props.data;
     return (
       <tr>
@@ -152,7 +149,7 @@ class Getuser extends React.Component {
     });
   }
   render() {
-    let i = this.props.i;
+    // let i = this.props.i;
     let data = this.props.data;
     return (
       <tr>
@@ -165,7 +162,7 @@ class Getuser extends React.Component {
   }
 }
 
-class User_adm extends React.Component {
+class UserAdm extends React.Component {
   state = {
     user: []
   }
@@ -257,5 +254,5 @@ class User_adm extends React.Component {
   }
 }
 
-export { All_adm, User_adm };
+export { AllAdm, UserAdm };
 
