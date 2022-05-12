@@ -28,6 +28,32 @@ class All_adm extends React.Component {
     this.fetchLoc()
   }
 
+  refreshData(){
+    fetch('http://localhost:8000/weather',{
+      method:'PUT',
+    }).then(res=>res.text()).then(msg=>alert(msg));
+  }
+
+  async createLoc(){
+    
+    let newLocObj = {
+      name: document.querySelector('#newLocName').value,
+      lon: document.getElementById('newlon').value,
+      lat: document.getElementById('newlat').value
+    };
+
+    // console.log(newLocObj)
+    
+    let createNewLoc = await fetch('http://localhost:8000/create_loc',{
+      method: 'POST',
+      headers:{
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newLocObj)
+    });
+    let msg = await createNewLoc.text();
+    alert(msg);
+  }
 
   render() {
     return (
@@ -70,19 +96,26 @@ class All_adm extends React.Component {
               </tr>
             </thead>
             <tbody>
-            {this.state.location.map((loc, index) => <GetFav data={loc} i={index} key={index} />)}
+            {this.state.location.map((loc, index) => <LocInfo data={loc} i={index} key={index} />)}
+            <tr>
+              <td><input type="text" id="newLocName" placeholder='New Location Name'/></td>
+              <td><input type="text" id="newlon" placeholder='Longitude'/></td>
+              <td><input type="text" id="newlat" placeholder='Latitude'/></td>
+              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createLoc}>Create</button></td>
+            </tr>
             </tbody>
           </Table>
         </div>
         <Container>
-        <button className="btn btn-outline-success me-2">Add new</button>
+          <button className="btn btn-outline-success me-2" onClick={this.refreshData}>Refresh Weather Data</button>
         </Container>
       </>
     );
   }
 }
 
-class GetFav extends React.Component {
+
+class LocInfo extends React.Component {
   render() {
     let i = this.props.i;
     let data = this.props.data;
@@ -135,6 +168,25 @@ class User_adm extends React.Component {
     this.fetchuser()
   }
 
+  async createUser(){
+    let uObj = {
+      name: document.getElementById('uid').value,
+      pwd: document.getElementById('pwd').value
+    };
+    console.log(uObj)
+  
+    let newUser = await fetch('http://localhost:8000/createUser',{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(uObj)
+    });
+    let msg = await newUser.text();
+    alert(msg);
+  }
+
+  
   render(){
     return (
       <>
@@ -176,12 +228,17 @@ class User_adm extends React.Component {
             </thead>
             <tbody>
             {this.state.user.map((user, index) => <Getuser data={user} i={index} key={index} />)}
+            <tr id='newUser'>
+              <td><input type="text" id="uid" placeholder='New User ID'/></td>
+              <td><input type="text" id="pwd" placeholder='New Password'/></td>
+              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createUser}>Create</button></td>
+            </tr>
             </tbody>
           </Table>
         </div>
-        <Container>
+        {/* <Container>
         <button className="btn btn-outline-success me-2">Add new</button>
-        </Container>
+        </Container> */}
       </>
     );
   }

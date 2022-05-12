@@ -276,7 +276,7 @@ db.once('open', function () {
         });
     });
 
-    // Udpating all weather informaiton
+    // Refreshing all weather informaiton
     app.put('/weather', (req, res) => {
         res.set('Content-Type', 'text/plain');
         Location.find((err, locs) => {
@@ -317,7 +317,7 @@ db.once('open', function () {
                     );
                 }
                 Promise.all(feteches).then(() => {
-                    res.status(201).send("Successfully update");
+                    res.status(201).send("Successfully Refresh");
                 });
             }
         });
