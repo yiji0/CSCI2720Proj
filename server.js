@@ -601,7 +601,93 @@ db.once('open', function () {
             }
         })
     });
-
+    
+    // Create User
+    app.post('/User', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        User.insertOne(req.body, (err, res) => {
+            if(err){
+                console.log("Failed to insert user" + userid);
+                res.status(404).send("Failed to insert user" + userid);
+            } else{
+                console.log("Successfully insert user" + userid);
+                res.status(201).send("Successfully insert user" + userid);
+            }
+        });
+    });
+    
+    // Delete User
+    app.delete('/User/:User', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let userid = req.params['id'];
+        User.deleteOne({ id: userid }, (err, res) => {
+            if(err){
+                console.log("Failed to delete user" + userid);
+                res.status(404).send("Failed to delete user" + userid);
+            } else{
+                console.log("Successfully delete user" + userid);
+                res.status(204).send("Successfully delete user" + userid);
+            }
+        });
+    });
+    
+    // Update User
+    app.put('/User', (req, res) => {
+        res.set('Content-Type', 'text-plain');
+        let userid = req.params['id'];
+        let newid = req.params['newid'];
+        let newpwd = req.params['newpwd'];
+        if(newid != NULL){
+            User.updateOne({ id: userid }, {$set:{id: newid}}, (err, res) => {
+                if(err){
+                    console.log("Failed to update user" + userid);
+                    res.status(404).send("Failed to update user" + userid);
+                } else{
+                    console.log("Successfully update user" + userid);
+                    res.status(204).send("Successfully update user" + userid);
+                }
+            });
+        }
+        if(newpwd != NULL){
+            User.updateOne({ id: userid }, {$set:{pwd: newpwd}}, (err, res) => {
+                if(err){
+                    console.log("Failed to update user" + userid);
+                    res.status(404).send("Failed to update user" + userid);
+                } else{
+                    console.log("Successfully update user" + userid);
+                    res.status(204).send("Successfully update user" + userid);
+                }
+            });
+        }
+    });
+    
+    // Read User
+    app.post('/User', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let userid = req.params['id'];
+        User.findOne({ id: userid }, (err, res) => {
+            if(err){
+                console.log("Failed to find user" + userid);
+                res.status(404).send("Failed to find user" + userid);
+            } else{
+                console.log("Successfully find user" + userid);
+                res.status(204).send("Successfully find user" + userid);
+            }
+        });
+    });
+    app.post('/User', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        User.find((err, res) => {
+            if(err){
+                console.log(err.message);
+                res.status(404).send(err.message);
+            } else{
+                console.log(Success);
+                res.status(204).send("Successfully find");
+            }
+        });
+    });
+    
     app.all('/*', (req, res) => {
         res.send("Welcome!");
     });
