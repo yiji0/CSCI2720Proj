@@ -91,8 +91,7 @@ class All_adm extends React.Component {
       method:'PUT',
       body:JSON.stringify(newLocObj),
       headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }
     });
   }
@@ -241,6 +240,7 @@ class User_adm extends React.Component {
     document.querySelector('#pwd').value='';
     
   }
+  
   async updateUser(){
     let newObj = {
       id: document.querySelector("#oid").value,
@@ -248,14 +248,16 @@ class User_adm extends React.Component {
       newpwd: document.getElementById('upwd').value
     };
 
-    return fetch('http://localhost:8000/user',{
+    fetch('http://localhost:8000/user',{
       method:'PUT',
       body:JSON.stringify(newObj),
       headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }
-    });
+    })
+    .then(
+      res => res.status == 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
+    );
   }
   
   render(){

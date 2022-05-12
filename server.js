@@ -125,28 +125,28 @@ db.once('open', function () {
     // Update User
     app.put('/user', (req, res) => {
         res.set('Content-Type', 'text-plain');
-        let userid = req.body['id'];
-        let newid = req.body['newid'];
-        let newpwd = req.body['newpwd'];
+        let userid = req.body.id;
+        let newid = req.body.newid;
+        let newpwd = req.body.newpwd;
 
         User.findOne({ id: userid }, (err, user) => {
             if (err) {
                 res.send(err);
             } else if (!user) {
-                res.status(404).send('User ' + userid + ' does not exist.\n');
-            } else if (newid != NULL && newid != '' && newpwd != NULL && newpwd != '') {
+                res.sendStatus(404);
+            } else if (newid != '' && newpwd != '') {
                 user.id = newid;
-                user.pwd = newpwd;
+                user.pwd = sha256(newpwd).toString();
                 user.save();
-                res.status(200).send(JSON.stringify(user));
-            } else if (newid != NULL && newid != '') {
+                res.sendStatus(200);
+            } else if (newid != '') {
                 user.id = newid;
                 user.save();
-                res.status(200).send(JSON.stringify(user));
-            } else if (newpwd != NULL && newpwd != '') {
-                user.pwd = newpwd;
+                res.sendStatus(200);
+            } else if (newpwd != '') {
+                user.pwd = sha256(newpwd).toString();
                 user.save();
-                res.status(200).send(JSON.stringify(user));
+                res.sendStatus(200);
             }
         });
     });
