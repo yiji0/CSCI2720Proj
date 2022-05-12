@@ -83,28 +83,74 @@ db.once('open', function () {
                 res.send('Admin created successfully!\n' + user);
         });
     });
-
-//     app.post('/createuser', (req, res) => {
-//         let { uid, pwd } = req.body;
-//         User.create({
-//             id: uid,
-//             pwd: sha256(pwd).toString()
-//         }, (err, user) => {
-//             if (err)
-//                 res.send(err);
-//             else
-//                 res.send('User created successfully!\n' + user);
-//         });
-//     });
-
-    app.post('/createadmin', (req, res) => {
-        let { uid, pwd } = req.body;
-        Admin.create({
-            id: uid,
-            pwd: sha256(pwd).toString()
+    
+    // Create User
+    app.post('/createUser', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        User.create({
+            id : req.body['name'],
+            pwd : sha(req.body['pwd']).toString(),
+            fav_loc: []
         }, (err, user) => {
             if (err)
+                res.send(err.message);
+            else
+                res.status(201).send('User created successfully!\n' + user);
+        });
+    });
+    
+    // Delete User
+    app.delete('/user/:userId', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        User.deleteOne({ id: req.params['userId'] }, (err, user) => {
+            if (err) {
+                console.log("Failed to delete user " + req.params['userid']);
+                res.status(404).send("Failed to delete user " + req.params['userid']);
+            }
+            else {
+                console.log("Successfully delete user " + req.params['userid']);
+                res.status(204).send("Successfully delete user " + req.params['userid']);
+            }
+        });
+    });
+    
+    // Update User
+    app.put('/user', (req, res) => {
+        res.set('Content-Type', 'text-plain');
+        let userid = req.body['id'];
+        let newid = req.body['newid'];
+        let newpwd = req.body['newpwd'];
+
+        User.findOne({ id: userid }, (err, user) => {
+            if (err) {
                 res.send(err);
+            } else if (!user) {
+                res.status(404).send('User ' + userid + ' does not exist.\n');
+            } else if (newid != NULL && newid != '' && newpwd != NULL && newpwd != '') {
+                user.id = newid;
+                user.pwd = newpwd;
+                user.save();
+                res.status(200).send(JSON.stringify(user));
+            } else if (newid != NULL && newid != '') {
+                user.id = newid;
+                user.save();
+                res.status(200).send(JSON.stringify(user));
+            } else if (newpwd != NULL && newpwd != '') {
+                user.pwd = newpwd;
+                user.save();
+                res.status(200).send(JSON.stringify(user));
+            }
+        });
+    });
+
+    app.post('/createAdmin', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        Admin.create({
+            id: req.body['uid'],
+            pwd: sha256(req.body['pwd']).toString()
+        }, (err, user) => {
+            if (err)
+                res.send(err.message);
             else
                 res.send('Admin created successfully!\n' + user);
         });
@@ -600,65 +646,6 @@ db.once('open', function () {
                 res.status(200).send(JSON.stringify(userlist));
             }
         })
-    });
-    
-    // Create User
-    app.post('/createUser', (req, res) => {
-        res.set('Content-Type', 'text/plain');
-        User.create({
-            id : req.body['name'],
-            pwd : sha(req.body['pwd']).toString(),
-            fav_loc: []
-        }, (err, user) => {
-            if (err)
-                res.send(err.message);
-            else
-                res.status(201).send('User created successfully!\n' + user);
-        });
-    });
-    
-    // Delete User
-    app.delete('/user/:userId', (req, res) => {
-        res.set('Content-Type', 'text/plain');
-        User.deleteOne({ id: req.params['userId'] }, (err, user) => {
-            if (err) {
-                console.log("Failed to delete user " + req.params['userid']);
-                res.status(404).send("Failed to delete user " + req.params['userid']);
-            }
-            else {
-                console.log("Successfully delete user " + req.params['userid']);
-                res.status(204).send("Successfully delete user " + req.params['userid']);
-            }
-        });
-    });
-    
-    // Update User
-    app.put('/user', (req, res) => {
-        res.set('Content-Type', 'text-plain');
-        let userid = req.body['id'];
-        let newid = req.body['newid'];
-        let newpwd = req.body['newpwd'];
-
-        User.findOne({ id: userid }, (err, user) => {
-            if (err) {
-                res.send(err);
-            } else if (!user) {
-                res.status(404).send('User ' + userid + ' does not exist.\n');
-            } else if (newid != NULL && newid != '' && newpwd != NULL && newpwd != '') {
-                user.id = newid;
-                user.pwd = newpwd;
-                user.save();
-                res.status(200).send(JSON.stringify(user));
-            } else if (newid != NULL && newid != '') {
-                user.id = newid;
-                user.save();
-                res.status(200).send(JSON.stringify(user));
-            } else if (newpwd != NULL && newpwd != '') {
-                user.pwd = newpwd;
-                user.save();
-                res.status(200).send(JSON.stringify(user));
-            }
-        });
     });
     
 //     app.put('/User', (req, res) => {
