@@ -432,6 +432,29 @@ db.once('open', function () {
             }
         });
     });
+    
+    // update a single location
+    app.put('/loc/:loc', (req, res) => {
+        res.set('Content-Type', 'text/plain');
+        let originalName = req.body.originalName;
+        let updateName = req.body.name;
+        let updateLat = req.body.lat;
+        let updateLon = req.body.lon;
+
+        Location.findOne({name: originalName}, (err, loc) => {
+            if (err) {
+                res.status(404).send(err.message);
+            } else if (!loc) {
+                res.status(404).send("No location is found.");
+            } else {
+                loc.name = updateName;
+                loc.lat = updateLat;
+                loc.lon = updateLon;
+                loc.save();
+                res.status(200).send(JSON.stringify(loc));
+            }
+        });
+    });
 
     // delete a single location
     app.delete('/loc/:loc', (req, res) => {
