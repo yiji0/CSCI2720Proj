@@ -149,6 +149,7 @@ class Get extends React.Component {
 
 class GetFav extends React.Component {
   deleteLoc(d){
+    alert("delete successfully. Please refresh the page.");
     return fetch('http://localhost:8000/favlist',{
       method:'DELETE',
       body: JSON.stringify({uid: getloginfo()['uid'], location: d}),
