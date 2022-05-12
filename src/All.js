@@ -71,10 +71,10 @@ class All extends React.Component {
         let t = y.innerHTML;
         let pp = p.indexOf("°");
         let tt = t.indexOf("°");
-        if (pp == -1) {
+        if (pp === -1) {
           pp = p.length - 1;
         }
-        if (tt == -1) {
+        if (tt === -1) {
           tt = t.length - 1;
         }
         let xx = Number(p.substring(0, pp));
@@ -135,7 +135,7 @@ class All extends React.Component {
 
 class Get extends React.Component {
   render() {
-    let i = this.props.i;
+    // let i = this.props.i;
     let data = this.props.data;
     return (
       <tr>
@@ -160,7 +160,7 @@ class GetFav extends React.Component {
     });
   }
   render() {
-    let i = this.props.i;
+    // let i = this.props.i;
     let data = this.props.data;
     return (
       <tr>
