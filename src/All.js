@@ -148,6 +148,16 @@ class Get extends React.Component {
 }
 
 class GetFav extends React.Component {
+  deleteLoc(d){
+    return fetch('http://localhost:8000/favlist',{
+      method:'DELETE',
+      body: JSON.stringify({uid: getloginfo()['uid'], location: d}),
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+  }
   render() {
     let i = this.props.i;
     let data = this.props.data;
@@ -156,7 +166,7 @@ class GetFav extends React.Component {
         <td><Link to={'/' + data.name}>{data.name}</Link></td>
         <td>{data.lon}</td>
         <td>{data.lat}</td>
-        <td><button className="btn btn-outline-success me-2">delete</button></td>
+        <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteLoc(data.name)}>delete</button></td>
       </tr>
     )
   }
