@@ -28,6 +28,32 @@ class All_adm extends React.Component {
     this.fetchLoc()
   }
 
+  async createLoc(){
+    let locName = document.getElementById('locName');
+    let lon = document.getElementById('lon');
+    let lat = document.getElementById('lat');
+    let newLocObj = {
+      name:locName,
+      lon: lon,
+      lat: lat
+    };
+
+    let createNewLoc = await fetch('http://localhost:8000/create_loc',{
+      method: 'POST',
+      headers:{
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newLocObj)
+    });
+    let msg = await createNewLoc.text();
+    alert(msg);
+  }
+
+  refreshData(){
+    fetch('http://localhost:8000/weather',{
+      method:'PUT',
+    }).then(res=>res.text()).then(msg=>alert(msg));
+  }
 
   render() {
     return (
@@ -70,19 +96,26 @@ class All_adm extends React.Component {
               </tr>
             </thead>
             <tbody>
-            {this.state.location.map((loc, index) => <GetFav data={loc} i={index} key={index} />)}
+            {this.state.location.map((loc, index) => <LocInfo data={loc} i={index} key={index} />)}
+            <tr>
+              <td><input type="text" id="LocName" placeholder='New Location Name'/></td>
+              <td><input type="text" id="lon" placeholder='Longitude'/></td>
+              <td><input type="text" id="lat" placeholder='Latitude'/></td>
+              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createLoc}>Create</button></td>
+            </tr>
             </tbody>
           </Table>
         </div>
         <Container>
-        <button className="btn btn-outline-success me-2">Add new</button>
+          <button className="btn btn-outline-success me-2" onClick={this.refreshData}>Refresh Weather Data</button>
         </Container>
       </>
     );
   }
 }
 
-class GetFav extends React.Component {
+
+class LocInfo extends React.Component {
   render() {
     let i = this.props.i;
     let data = this.props.data;
