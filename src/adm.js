@@ -68,8 +68,7 @@ class All_adm extends React.Component {
       method:'PUT',
       body:JSON.stringify(newLocObj),
       headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }
     });
   }
@@ -216,8 +215,7 @@ class User_adm extends React.Component {
       method:'PUT',
       body:JSON.stringify(newObj),
       headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }
     })
     .then(
