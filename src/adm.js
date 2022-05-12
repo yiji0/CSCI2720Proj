@@ -107,6 +107,7 @@ class All_adm extends React.Component {
                 <th>CityName </th>
                 <th>Longitude </th>
                 <th>Latitude </th>
+                <th>Action</th>
                 <th> </th>
               </tr>
             </thead>
@@ -153,7 +154,7 @@ class LocInfo extends React.Component {
     let data = this.props.data;
     return (
       <tr>
-        <td><Link to={'/' + data.name}>{data.name}</Link></td>
+        <td>{data.name}</td>
         <td>{data.lon}</td>
         <td>{data.lat}</td>
         <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteLoc(data.name)}>delete</button></td>
