@@ -88,7 +88,7 @@ class Login extends React.Component {
   
   render() {
     return (this.state.login === false ? (
-      <Container>
+      <Container fluid>
         <Row><br /></Row>
         <Row><br /></Row>
         <Row><br /></Row>
@@ -98,8 +98,8 @@ class Login extends React.Component {
         <Row>
           <Col></Col>
           <Col>
-            <div className="bg-light border">
-              <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div className="bg-light border" style={{textAlign: "center", minWidth:"250px"}}>
+              <br /> 
               Username : &nbsp;
               <input type="text" name="uid" id="uid" />
 
@@ -111,8 +111,8 @@ class Login extends React.Component {
         <Row>
           <Col></Col>
           <Col>
-            <div className="border">
-              <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div className="border" style={{textAlign: "center", minWidth:"250px"}}>
+              <br />
               Password &nbsp;: &nbsp;
               <input type="password" name="pwd" id="pwd" />
               <br /><br />
@@ -121,18 +121,26 @@ class Login extends React.Component {
           <Col></Col>
         </Row>
         <Row>
-          <Col></Col>
+        
+        <Col></Col>
           <Col>
-
-            <div className="bg-light border">
-              <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <Button type='submit' onClick={this.handleUserSubmit} variant="success">Login As User</Button>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <Button type='submit' onClick={this.handleAdminSubmit} variant="outline-success">Login As Admin</Button>
+          
+            <div className="bg-light border" style={{textAlign: "center", minWidth:"250px"}}>
+              <br />
+              <Button type='submit' onClick={this.handleUserSubmit} variant="success">&nbsp;&nbsp;Login As User&nbsp;&nbsp;</Button>
+             
+              
               <br /><br />
             </div>
-          </Col>
+            <div className="border" style={{textAlign: "center", minWidth:"250px"}}>
+            <br />
+            <Button type='submit' onClick={this.handleAdminSubmit} variant="outline-success">Login As Admin</Button>
+            <br /><br />
+            </div>
+            </Col>
           <Col></Col>
+         
+          
         </Row>
       </Container>
     ) : <Navigate to='/'/>
