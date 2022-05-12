@@ -128,16 +128,16 @@ class Detail extends React.Component{
     
     async fetchInfo(){
         // judge whether the location is already in the fav list
-        fetch('http://localhost:8000/favlist/'+this.props.uid, {
-            method: 'POST',
-        }).then(res => res.json()).then(res => {
-            if (this.state.location in res) {
-                this.setState({inFav: true});
-                console.log("Location " + this.state.location.name + " already in fav list");
-            }
-        }).catch(err => {
-            console.log(err.message);
-        });
+        // fetch('http://localhost:8000/favlist/'+this.props.uid, {
+        //     method: 'POST',
+        // }).then(res => res.json()).then(res => {
+        //     if (this.state.location in res) {
+        //         this.setState({inFav: true});
+        //         console.log("Location " + this.state.location.name + " already in fav list");
+        //     }
+        // }).catch(err => {
+        //     console.log(err.message);
+        // });
 
         // ftech location infomation for map
         let locres = await fetch('http://localhost:8000/loc/'+this.state.location.name,{
@@ -160,15 +160,17 @@ class Detail extends React.Component{
           });
         let weatherInfo = await wres.json();
         this.setState((prevState)=>({weather:weatherInfo}));
-        
+    
         // fetch favlist and check whether exists
         let favres = await fetch('http://localhost:8000/favlist/'+this.props.uid,{
             method:'POST',
           });
         let fav = await favres.json();
         let favlist = fav.map((loc)=>loc.name)
+        console.log(favlist)
         this.setState({inFav:favlist.some(loc=>loc===this.state.location.name)? 1:0})
-    
+
+        // fetch comments
         let commres = await fetch('http://localhost:8000/comment/'+this.state.location.name,{
             method:'GET',
           });
@@ -177,13 +179,13 @@ class Detail extends React.Component{
         this.setState({comments: comments});
     }
     
-    componentDidMount(){
+    componentWillMount(){
         this.fetchInfo();
     }
 
     async addComment(){
         let newCom = {
-            uid: this.props.uid, // how we know the user, in props?
+            uid: this.props.uid, 
             location: this.state.location.name,
             comment: document.getElementById('new-comment').value
         };
@@ -264,7 +266,6 @@ class Detail extends React.Component{
                 console.log(err.message);
             });         //send the param in url get a res of sucess or not
         }
-        // any way to prevent user from adding loc already in the list?
     }
 
     render(){
