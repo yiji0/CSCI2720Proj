@@ -24,9 +24,8 @@ export const logout = () => {
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { login: false };
+    this.state = { login: false, uid:undefined, mode:'user'};
   }
-
 
   handleUserSubmit = (event) => {
     const uid = document.getElementById("uid").value;
@@ -44,7 +43,7 @@ class Login extends React.Component {
     })
       .then(res => {
         if (res.status === 200) {
-          this.setState({ login: true });
+          this.setState({ login: true, uid: uid, mode:'user'});
           login(uid, 'user');
           this.props.onChangeLogin();
         }
@@ -74,7 +73,7 @@ class Login extends React.Component {
     })
       .then(res => {
         if (res.status === 200) {
-          this.setState({ login: true });
+          this.setState({ login: true, uid: uid, mode:'admin'});
           login(uid, 'admin');
           this.props.onChangeLogin();
         }
@@ -86,16 +85,10 @@ class Login extends React.Component {
       });
     event.preventDefault();
   };
-
-  componentDidMount() {
-    logout();
-    this.props.onChangeLogin();
-  }
   
   render() {
     return (this.state.login === false ? (
       <Container>
-
         <Row><br /></Row>
         <Row><br /></Row>
         <Row><br /></Row>
@@ -141,10 +134,8 @@ class Login extends React.Component {
           </Col>
           <Col></Col>
         </Row>
-
-
       </Container>
-    ) : <Navigate to='/all' />
+    ) : <Navigate to='/'/>
     );
   }
 

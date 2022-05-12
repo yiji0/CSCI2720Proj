@@ -13,35 +13,35 @@ class All_adm extends React.Component {
     user: []
   }
 
-  async fetchLoc(){
-    let res = await fetch('http://localhost:8000/loc1',{
-      method:'GET',
-      headers: { 
+  async fetchLoc() {
+    let res = await fetch('http://localhost:8000/loc1', {
+      method: 'GET',
+      headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     });
     let l = await res.json();
-    await this.setState({location: l});
+    await this.setState({ location: l });
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.fetchLoc()
   }
 
-  async fetchuser(){
-    let res = await fetch('http://localhost:8000/user',{
-      method:'GET',
-      headers: { 
+  async fetchuser() {
+    let res = await fetch('http://localhost:8000/user', {
+      method: 'GET',
+      headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     });
     let l = await res.json();
-    await this.setState({user: l});
+    await this.setState({ user: l });
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.fetchuser()
   }
 
@@ -49,32 +49,6 @@ class All_adm extends React.Component {
   render() {
     return (
       <>
-      
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/all_adm'>Location List</Link></Navbar.Brand>
-          <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/user_adm'>User List</Link></Navbar.Brand>
-          
-          <Nav className="me-auto">
-          <Nav.Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </Nav.Link>
-          <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{this.props.islogin ? (getloginfo()['uid'] + "\tLog out") : "Log in"}</Link></Nav.Link>
-            
-          </Nav>
-        </Container>
-        </Navbar>
         <div className="container">
           <Table bordered striped hover id="locationlist">
             <thead>
@@ -87,7 +61,7 @@ class All_adm extends React.Component {
               </tr>
             </thead>
             <tbody>
-            {this.state.location.map((loc, index) => <GetFav data={loc} i={index} key={index} />)}
+              {this.state.location.map((loc, index) => <GetFav data={loc} i={index} key={index} />)}
             </tbody>
           </Table>
         </div>
@@ -128,35 +102,9 @@ class Getuser extends React.Component {
 }
 
 class User_adm extends React.Component {
-  render(){
+  render() {
     return (
       <>
-      
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/all_adm'>Location List</Link></Navbar.Brand>
-          <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/user_adm'>User List</Link></Navbar.Brand>
-          
-          <Nav className="me-auto">
-          <Nav.Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </Nav.Link>
-          <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{this.props.islogin ? (getloginfo()['uid'] + "\tLog out") : "Log in"}</Link></Nav.Link>
-            
-          </Nav>
-        </Container>
-        </Navbar>
         <div className="container">
           <Table bordered striped hover id="locationlist">
             <thead>
@@ -167,7 +115,7 @@ class User_adm extends React.Component {
               </tr>
             </thead>
             <tbody>
-            {this.state.user.map((user, index) => <Getuser data={user} i={index} key={index} />)}
+              {this.state.user.map((user, index) => <Getuser data={user} i={index} key={index} />)}
             </tbody>
           </Table>
         </div>

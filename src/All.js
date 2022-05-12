@@ -1,11 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table'
 import { getloginfo } from './Login'
-import Nav from 'react-bootstrap/Nav';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
 
 class All extends React.Component {
   sortname() {
@@ -45,9 +42,9 @@ class All extends React.Component {
         let t = y.innerHTML;
         let pp = p.indexOf("°");
         let tt = t.indexOf("°");
-        let xx = Number(p.substring(0,pp));
-        let yy = Number(t.substring(0,tt));
-        
+        let xx = Number(p.substring(0, pp));
+        let yy = Number(t.substring(0, tt));
+
         if (xx > yy) {
           shouldSwitch = true;
           break;
@@ -74,14 +71,14 @@ class All extends React.Component {
         let t = y.innerHTML;
         let pp = p.indexOf("°");
         let tt = t.indexOf("°");
-        if(pp==-1){
-          pp=p.length-1;
+        if (pp == -1) {
+          pp = p.length - 1;
         }
-        if(tt==-1){
-          tt=t.length-1;
+        if (tt == -1) {
+          tt = t.length - 1;
         }
-        let xx = Number(p.substring(0,pp));
-        let yy = Number(t.substring(0,tt));
+        let xx = Number(p.substring(0, pp));
+        let yy = Number(t.substring(0, tt));
         if (xx > yy) {
           shouldSwitch = true;
           break;
@@ -97,19 +94,19 @@ class All extends React.Component {
     location: []
   }
 
-  async fetchLoc(){
-    let res = await fetch('http://localhost:8000/loc1',{
-      method:'GET',
-      headers: { 
+  async fetchLoc() {
+    let res = await fetch('http://localhost:8000/loc1', {
+      method: 'GET',
+      headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     });
     let l = await res.json();
-    await this.setState({location: l});
+    await this.setState({ location: l });
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.fetchLoc()
   }
 
@@ -117,33 +114,6 @@ class All extends React.Component {
   render() {
     return (
       <>
-      
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/all'>Home</Link></Navbar.Brand>
-          <Nav className="me-auto">
-          <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/map'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Link></Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/search'>&nbsp;&nbsp;&nbsp;&nbsp;Search</Link></Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/favourite'>&nbsp;&nbsp;&nbsp;&nbsp;Favourite Locations</Link></Nav.Link>
-            <Nav.Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{this.props.islogin ? (getloginfo()['uid'] + "\tLog out") : "Log in"}</Link></Nav.Link>
-            
-          </Nav>
-        </Container>
-        </Navbar>
         <div className="container">
           <Table bordered striped hover id="locationlist">
             <thead>
@@ -154,7 +124,7 @@ class All extends React.Component {
               </tr>
             </thead>
             <tbody>
-            {this.state.location.map((loc, index) => <Get data={loc} i={index} key={index} />)}
+              {this.state.location.map((loc, index) => <Get data={loc} i={index} key={index} />)}
             </tbody>
           </Table>
         </div>
@@ -218,47 +188,21 @@ class Fav extends React.Component {
   render() {
     return (
       <>
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/all'>Home</Link></Navbar.Brand>
-          <Nav className="me-auto">
-          <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/map'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Link></Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/search'>&nbsp;&nbsp;&nbsp;&nbsp;Search</Link></Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/favourite'>&nbsp;&nbsp;&nbsp;&nbsp;Favourite Locations</Link></Nav.Link>
-            <Nav.Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </Nav.Link>
-            <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit'}} to='/'>{this.props.islogin ? (getloginfo()['uid'] + "\tLog out") : "Log in"}</Link></Nav.Link>
-            
-          </Nav>
-        </Container>
-        </Navbar>
-      <div className="container">
-        <Table bordered striped hover>
-          <thead>
-            <tr>
-              <th>CityName</th>
-              <th>Longitude</th>
-              <th>Latitude</th>
-              <th>        </th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.location.map((loc, index) => <GetFav data={loc} i={index} key={index} />)}
-          </tbody>
-        </Table>
-      </div>
+        <div className="container">
+          <Table bordered striped hover>
+            <thead>
+              <tr>
+                <th>CityName</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>        </th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.location.map((loc, index) => <GetFav data={loc} i={index} key={index} />)}
+            </tbody>
+          </Table>
+        </div>
       </>
     )
   }
