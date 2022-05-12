@@ -79,7 +79,7 @@ function App() {
               {mode === 'user' && <Nav.Link><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/map'>Map</Link></Nav.Link>}
               {mode === 'user' && <NavDropdown title="Locations" id="basic-nav-dropdown">
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/all'>All Locations</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/HongKong'>Hong Kong</Link></NavDropdown.Item>
+                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Hong Kong'>Hong Kong</Link></NavDropdown.Item>
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Beijing'>Beijing</Link></NavDropdown.Item>
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Shanghai'>Shanghai</Link></NavDropdown.Item>
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Harbin'>Harbin</Link></NavDropdown.Item>
@@ -88,7 +88,7 @@ function App() {
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Seoul'>Seoul</Link></NavDropdown.Item>
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Tokyo'>Tokyo</Link></NavDropdown.Item>
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Hohhot'>Hohhot</Link></NavDropdown.Item>
-                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Singapore'>Singapore City</Link></NavDropdown.Item>
+                <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Singapore City'>Singapore City</Link></NavDropdown.Item>
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Chengdu'>Chengdu</Link></NavDropdown.Item>
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Kunming'>Kunming</Link></NavDropdown.Item>
                 <NavDropdown.Item><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/Sanya'>Sanya</Link></NavDropdown.Item>
