@@ -15,26 +15,6 @@ import { Search, SearchName, SearchLon, SearchLat } from './Search';
 import { All_adm, User_adm } from './adm';
 import { logout } from './Login';
 
-const CITIES = [
-  [
-    { "name": "Lhasa", "lat": "29.65", "lon": "91.1" },
-    { "name": "Urumchi", "lat": "43.8", "lon": "87.58" },
-    { "name": "Sanya", "lat": "19.26", "lon": "109.67" },
-    { "name": "Kunming", "lat": "25.04", "lon": "102.72" },
-    { "name": "Changsha", "lat": "28.18", "lon": "113.11" },
-    { "name": "Hong Kong", "lat": "22.28", "lon": "114.15" },
-    { "name": "Tokyo", "lat": "35.69", "lon": "139.69" },
-    { "name": "Seoul", "lat": "37.57", "lon": "127" },
-    { "name": "Shanghai", "lat": "31.01", "lon": "121.41" },
-    { "name": "Hohhot", "lat": "40.81", "lon": "111.65" },
-    { "name": "Harbin", "lat": "45.75", "lon": "126.65" },
-    { "name": "Singapore City", "lat": "1.29", "lon": "103.86" },
-    { "name": "Chengdu", "lat": "30.67", "lon": "104.07" },
-    { "name": "Beijing", "lat": "39.93", "lon": "116.39" },
-    { "name": "Taipei", "lat": "25.04", "lon": "121.53" }
-  ]
-];
-
 function PrivateRoute() {
   const auth = getloginfo();
   return auth ? <Outlet /> : <Navigate to='/login' />;
@@ -120,19 +100,19 @@ function App() {
             <Route path='/favourite' element={<Fav />} />
           </Route>
           <Route path='/search' element={<PrivateRoute />}>
-            <Route path='/search' element={<Search cities={CITIES} />} />
+            <Route path='/search' element={<Search />} />
           </Route>
           <Route path='/:loc' element={<PrivateRoute />}>
             <Route path="/:loc" element={<Detail uid={islogin} />} />
           </Route>
           <Route path='/search/ByName' element={<PrivateRoute />}>
-            <Route path='/search/ByName' element={<SearchName islogin={islogin} cities={CITIES}></SearchName>} />
+            <Route path='/search/ByName' element={<SearchName islogin={islogin} ></SearchName>} />
           </Route>
           <Route path='/search/ByLon' element={<PrivateRoute />}>
-            <Route path='/search/ByLon' element={<SearchLon islogin={islogin} cities={CITIES}></SearchLon>} />
+            <Route path='/search/ByLon' element={<SearchLon islogin={islogin} ></SearchLon>} />
           </Route>
           <Route path='/search/ByLat' element={<PrivateRoute />}>
-            <Route path="/search/ByLat" element={<SearchLat islogin={islogin} cities={CITIES}></SearchLat>} />
+            <Route path="/search/ByLat" element={<SearchLat islogin={islogin} ></SearchLat>} />
           </Route>
           <Route path='/all_adm' element={<PrivateRoute />}>
             <Route path='/all_adm' element={<All_adm islogin={islogin}></All_adm>} />
