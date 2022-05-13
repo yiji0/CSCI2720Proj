@@ -1,8 +1,8 @@
+/*LI Yuanheng (1155141669), JIANG Hongxu (1155141403), LIU Ziqi (1155141647)。
+ZHANG Shenghao (1155141511), JI Yi (1155141508), DUAN Jianing (1155141464)*/ 
 import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table'
-import Container from 'react-bootstrap/Container';
 import { BACK_END } from './App'
 
 
@@ -63,7 +63,7 @@ class AllAdm extends React.Component {
     let msg = await createNewLoc.text();
     alert(msg)
     
-    if(msg=='success'){
+    if(msg==='success'){
       let newLoc = {
         name: name,
         lon: lon.replace('.', '°') + 'E',
@@ -86,13 +86,15 @@ class AllAdm extends React.Component {
       lat: document.getElementById('ulat').value
     };
 
-    let res = await fetch(BACK_END + 'loc/'+document.querySelector("#oname").value,{
+    await fetch(BACK_END + 'loc/'+document.querySelector("#oname").value,{
       method:'PUT',
       body:JSON.stringify(newLocObj),
       headers: { 
         'Content-Type': 'application/json'
       }
-    });
+    }).then(
+      res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
+    );
   }
 
   render() {
@@ -105,31 +107,56 @@ class AllAdm extends React.Component {
                 <th>CityName </th>
                 <th>Longitude </th>
                 <th>Latitude </th>
-                <th>Action</th>
+                <th>Action </th>
                 <th> </th>
               </tr>
             </thead>
             <tbody>
             {this.state.location.map((loc, index) => <LocInfo data={loc} i={index} key={index} />)}
-            <tr>
-              <td><input type="text" id="newLocName" placeholder='New Location Name'/></td>
-              <td><input type="text" id="newlon" placeholder='Longitude'/></td>
-              <td><input type="text" id="newlat" placeholder='Latitude'/></td>
-              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createLoc}>Create</button></td>
-            </tr>
-            <tr id='updateLoc'>
-              <td><input type="text" id="oname" placeholder='The original city name'/></td>
-              <td><input type="text" id="uname" placeholder='New city name'/></td>
-              <td><input type="text" id="ulon" placeholder='New city longitude'/></td>
-              <td><input type="text" id="ulat" placeholder='New city latitude'/></td>
-              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.updateLoc}>Update</button></td>
-            </tr>
             </tbody>
           </Table>
+          <button className="btn btn-outline-success me-2 my-2" onClick={this.refreshData}>Refresh Weather Data</button>
+          
+          <h4>Create New Location:</h4>
+          <form>
+            <div className='form-group'>
+              <label for='newLocName'>Name: </label>
+              <input type="text" id="newLocName" className='form-control'/>
+            </div>
+            <div className='form-group'>
+              <label for='newlon'>Longitude: </label>
+              <input type="text" id="newlon" className='form-control'/>  
+            </div>
+            <div className='form-group'>
+              <label for='newlat'>Latitude: </label>
+              <input type="text" id="newlat" className='form-control'/>
+            </div>
+            <button type='button'className="btn btn-outline-success me-2 my-2" onClick={this.createLoc}>Create</button>  
+          </form>
+
+          <h4>Update Existing Location:</h4>
+          <form>
+            <div className='form-group'>
+              <label for='oname'>Original Name: </label>
+              <input type="text" id="oname" className='form-control'/>
+            </div>
+            <div className='form-group'>
+              <label for='uname'>New Name:</label>
+              <input type="text" id="uname" className='form-control'/> 
+            </div>
+            <div className='form-group'>
+              <label for='ulon'>New Longitude:</label>
+              <input type="text" id="ulon" className='form-control'/>
+            </div>
+            <div className='form-group'>
+              <label for='ulat'>New Latitude:</label>
+              <input type="text" id="ulat" className='form-control'/>
+            </div>
+            <button type='button'className="btn btn-outline-success me-2 my-2" onClick={this.updateLoc}>Update</button>  
+          </form>
+          
         </div>
-        <Container>
-          <button className="btn btn-outline-success me-2" onClick={this.refreshData}>Refresh Weather Data</button>
-        </Container>
+        
       </>
     );
   }
@@ -256,7 +283,7 @@ class UserAdm extends React.Component {
       }
     })
     .then(
-      res => res.status == 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
+      res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
     );
   }
   
@@ -274,7 +301,7 @@ class UserAdm extends React.Component {
             </thead>
             <tbody>
             {this.state.user.map((user, index) => <Getuser data={user} i={index} key={index} />)}
-            <tr id='newUser'>
+            {/* <tr id='newUser'>
               <td><input type="text" id="uid" placeholder='New User ID'/></td>
               <td><input type="text" id="pwd" placeholder='New Password'/></td>
               <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createUser}>Create</button></td>
@@ -284,13 +311,40 @@ class UserAdm extends React.Component {
               <td><input type="text" id="unewuid" placeholder='New User ID'/></td>
               <td><input type="text" id="upwd" placeholder='New password'/></td>
               <td><button type='button'className="btn btn-outline-success me-2" onClick={this.updateUser}>Update</button></td>
-            </tr>
+            </tr> */}
             </tbody>
           </Table>
+
+          <h4>Create New User:</h4>
+          <form>
+            <div className='form-group'>
+              <label for='uid'>New User Name:</label>
+              <input type="text" id="uid" className='form-control'/>
+            </div>
+            <div className='form-group'>
+              <label for='pwd'>Password:</label>
+              <input type="password" id="pwd" className='form-control'/>
+            </div>
+            <button type='button'className="btn btn-outline-success me-2 my-2" onClick={this.createUser}>Create</button>
+          </form>
+
+          <h4>Update Existing User:</h4>
+          <form>
+            <div className='form-group'>
+              <label for='oid'>Original User Name:</label>
+              <input type="text" id="oid" className='form-control'/>
+            </div>
+            <div className='form-group'>
+              <label for='unewuid'>New User Name:</label>
+              <input type="text" id="unewuid" className='form-control'/>
+            </div>
+            <div className='form-group'>
+              <label for='upwd'>New Password:</label>
+              <input type="password" id="upwd" className='form-control'/>
+            </div>
+            <button type='button'className="btn btn-outline-success me-2 my-2" onClick={this.updateUser}>Update</button>
+          </form>
         </div>
-        {/* <Container>
-        <button className="btn btn-outline-success me-2">Add new</button>
-        </Container> */}
       </>
     );
   }

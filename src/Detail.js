@@ -1,3 +1,5 @@
+/*LI Yuanheng (1155141669), JIANG Hongxu (1155141403), LIU Ziqi (1155141647)。
+ZHANG Shenghao (1155141511), JI Yi (1155141508), DUAN Jianing (1155141464)*/ 
 import React from 'react';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import {BACK_END} from './App';
@@ -12,12 +14,13 @@ class Detail extends React.Component {
         this.state = {
             comments: [],
             weather: {
-                temp_c: "TBD",
-                wind_kph: "TBD",
-                wind_dir: null,
-                humidity: 0,
-                precip_mm: 0,
-                vis_km: 0
+                temp_c: "Loading",
+                wind_kph: "Loading",
+                wind_dir: 'Loading',
+                humidity: 'Loading',
+                precip_mm: 'Loading',
+                vis_km: 'Loading',
+                last_updated: null
             },
             location: {
                 name: window.location.pathname.split('/')[1],
@@ -79,6 +82,14 @@ class Detail extends React.Component {
         let loc = await locres.json();
         this.setState((prevState) => ({ location: loc }));
 
+        // refresh weather info
+
+        let newres = await fetch(BACK_END+'weather',{
+            method: 'PUT'
+        })
+        let msg = await newres.text();
+        console.log(msg);
+
         // fetch weather infomation
         let wres = await fetch(BACK_END + 'weather/' + this.state.location.name, {
             method: 'GET',
@@ -96,7 +107,7 @@ class Detail extends React.Component {
         });
         let fav = await favres.json();
         let favlist = fav.map((loc)=>loc.name)
-        console.log(favlist)
+        // console.log(favlist)
         this.setState({inFav:favlist.some(loc=>loc===this.state.location.name)? 1:0})
 
         // fetch comments
@@ -207,15 +218,16 @@ class Detail extends React.Component {
                     <div className='flex-grow-1 m-4'>
                         <div id='details' className='p-2 mb-4 bg-light'>
                             <h3>{this.state.location.name}:</h3>
-                            <ul>
-                                <li>Longitude: {this.state.location.lon.toString().replace('.', '°')}E</li>
-                                <li>Latitude: {this.state.location.lat.toString().replace('.', '°')}N</li>
-                                <li>Temperature: {this.state.weather.temp_c}<span>&#8451;</span></li>
-                                <li>Wind Speed: {this.state.weather.wind_kph}km/h</li>
-                                <li>Wind Direction: {this.state.weather.wind_dir}</li>
-                                <li>Humidity: {this.state.weather.humidity}</li>
-                                <li>Precipitation: {this.state.weather.precip_mm}mm</li>
-                                <li>Visibility: {this.state.weather.vis_km}km</li>
+                            <small className='text-muted'>Last Update Time: {this.state.weather.last_updated}</small>
+                            <ul class="list-group">
+                                <li className="list-unstyled">Longitude: {this.state.location.lon.toString().replace('.', '°')}E</li>
+                                <li className="list-unstyled">Latitude: {this.state.location.lat.toString().replace('.', '°')}N</li>
+                                <li className="list-unstyled">Temperature: {this.state.weather.temp_c}<span>&#8451;</span></li>
+                                <li className="list-unstyled">Wind Speed: {this.state.weather.wind_kph}km/h</li>
+                                <li className="list-unstyled">Wind Direction: {this.state.weather.wind_dir}</li>
+                                <li className="list-unstyled">Humidity: {this.state.weather.humidity}</li>
+                                <li className="list-unstyled">Precipitation: {this.state.weather.precip_mm}mm</li>
+                                <li className="list-unstyled">Visibility: {this.state.weather.vis_km}km</li>
                             </ul>
                         </div>
                         {!this.state.inFav ? <button type="button" className="btn btn-outline-success me-2" onClick={this.addFav}>Add to My Favourite</button>
@@ -278,7 +290,6 @@ class SmallMap extends React.Component {
     render() {
         return (
             <ReactMapGL
-                // very weird can't use props or state to initial view center
                 initialViewState={{
                     longitude: 110,
                     latitude: 22,
@@ -293,6 +304,7 @@ class SmallMap extends React.Component {
                         <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
                         <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                     </svg>
+                    
                 </Marker>
             </ReactMapGL>
         )
