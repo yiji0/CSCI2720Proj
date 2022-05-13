@@ -56,7 +56,7 @@ function App() {
         
 
       <div style={{height:80}}>
-        <Navbar bg="dark" variant="dark" style={{position:'fixed',width:'100%',height:70}}>
+        <Navbar bg="dark" variant="dark" style={{width:'100%',height:70}}>
           <Container>
             <Nav className='me-auto'>
               {mode === 'admin' && <Navbar.Brand><Link style={{ color: 'inherit', textDecoration: 'inherit' }} to='/all_adm'>Location List</Link></Navbar.Brand>}
