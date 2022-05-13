@@ -53,28 +53,34 @@ class AllAdm extends React.Component {
 
     // console.log(newLocObj)
     
-    let createNewLoc = await fetch(BACK_END + 'loc',{
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newLocObj)
-    });
-    let msg = await createNewLoc.text();
-    alert(msg)
-    
-    if(msg==='success'){
-      let newLoc = {
-        name: name,
-        lon: lon.replace('.', '°') + 'E',
-        lat: lat.replace('.', '°') + 'N'
-      };
-      this.setState(previousState => ({
-        location: [...previousState.location, newLoc]
-      }));
-      document.querySelector('#newLocName').value='';
-      document.querySelector('#newlon').value='';
-      document.querySelector('#newlat').value='';
+    if (newLocObj['name'] == '' || newLocObj['lon'] == '' || newLocObj['lat'] == '') {
+      window.alert("Invalid input :(\nPlease fill in all blanks.");
+    } else {
+      let createNewLoc = await fetch(BACK_END + 'loc',{
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newLocObj)
+      });
+      let msg = await createNewLoc.text();
+      
+      if(msg==='success'){
+        let newLoc = {
+          name: name,
+          lon: lon.replace('.', '°') + 'E',
+          lat: lat.replace('.', '°') + 'N'
+        };
+        this.setState(previousState => ({
+          location: [...previousState.location, newLoc]
+        }));
+        document.querySelector('#newLocName').value='';
+        document.querySelector('#newlon').value='';
+        document.querySelector('#newlat').value='';
+        window.alert("Create successfully. :)");
+      } else {
+        window.alert("Invalid input :(\nPlease check whether the city has existed.");
+      }
     }
   }
 
@@ -86,15 +92,19 @@ class AllAdm extends React.Component {
       lat: document.getElementById('ulat').value
     };
 
-    await fetch(BACK_END + 'loc/'+document.querySelector("#oname").value,{
-      method:'PUT',
-      body:JSON.stringify(newLocObj),
-      headers: { 
-        'Content-Type': 'application/json'
-      }
-    }).then(
-      res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
-    );
+    if (newLocObj['originalName'] == '' || newLocObj['name'] == '' || newLocObj['lon'] == '' || newLocObj['lat'] == '') {
+      window.alert("Invalid input :(\nPlease fill in all blanks.");
+    } else {
+      await fetch(BACK_END + 'loc/'+document.querySelector("#oname").value,{
+        method:'PUT',
+        body:JSON.stringify(newLocObj),
+        headers: { 
+          'Content-Type': 'application/json'
+        }
+      }).then(
+        res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
+      );
+    }
   }
 
   render() {
@@ -165,7 +175,7 @@ class AllAdm extends React.Component {
 
 class LocInfo extends React.Component {
   deleteLoc(d){
-    alert("delete successfully! Please fresh the page.");
+    alert("Delete successfully! Please fresh the page.");
     return fetch(BACK_END + 'loc/'+d,{
       method:'DELETE',
       headers: { 
@@ -191,7 +201,7 @@ class LocInfo extends React.Component {
 
 class Getuser extends React.Component {
   deleteU(d){
-    alert("delete successfully! Please fresh the page.");
+    alert("Delete successfully! Please fresh the page.");
     return fetch(BACK_END + 'user/'+d,{
       method:'DELETE',
       headers: { 
@@ -245,27 +255,33 @@ class UserAdm extends React.Component {
   async createUser(){
     let name = document.getElementById('uid').value;
     let pwd = document.getElementById('pwd').value;
-    let uObj = {
-      name:name,
-      pwd: pwd
-    };
-    console.log(uObj)
-  
-    let newUser = await fetch(BACK_END + 'createUser',{
-      method:'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(uObj)
-    });
-    let user = await newUser.json();
-    
-    this.setState(previousState => ({
-      user: [...previousState.user, user]
-    }));
-    document.querySelector('#uid').value='';
-    document.querySelector('#pwd').value='';
-    
+
+    if (name == '' || pwd == '') {
+      window.alert("Invalid input :(\nPlease check wether you have input correct username and password.");
+    } else {
+      let uObj = {
+        name:name,
+        pwd: pwd
+      };
+      console.log(uObj)
+
+      let newUser = await fetch(BACK_END + 'createUser',{
+        method:'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uObj)
+      })
+      .then(res => res === 201 ? window.alert("Create successfully :)") : window.alert("Failed to create a user :(\nPlease check whether the username has existed."));
+      let user = await newUser.json();
+      console.log(user);
+      
+      this.setState(previousState => ({
+        user: [...previousState.user, user]
+      }));
+      document.querySelector('#uid').value='';
+      document.querySelector('#pwd').value='';
+    }
   }
   
   async updateUser(){
@@ -275,16 +291,22 @@ class UserAdm extends React.Component {
       newpwd: document.getElementById('upwd').value
     };
 
-    fetch(BACK_END + 'user',{
-      method:'PUT',
-      body:JSON.stringify(newObj),
-      headers: { 
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(
-      res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
-    );
+    if (newObj['id'] == '') {
+      window.alert("Invalid input :(\nPlease enter the original username.")
+    } else if (newObj['newid'] == '' && newObj['newpwd'] == '') {
+      window.alert("Invalid input :(\n Please enter at least one of the updating attributes.")
+    } else {
+      fetch(BACK_END + 'user',{
+        method:'PUT',
+        body:JSON.stringify(newObj),
+        headers: { 
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(
+        res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
+      );
+    }
   }
   
   render(){
