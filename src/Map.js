@@ -2,6 +2,7 @@ import * as React from 'react';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Link } from 'react-router-dom';
+import {BACK_END} from './App'
 
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3V2aWFicyIsImEiOiJjbDFydWlkamkyMHk1M2xtbW1sb2p0a3hpIn0.8V0sfF1FRYSn4B0n-m1vAg';
 
@@ -15,7 +16,7 @@ class Map extends React.Component {
   }
 
   async fetchLoc() {
-    let res = await fetch('http://localhost:8000/loc', {
+    let res = await fetch(BACK_END+'loc', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
