@@ -272,7 +272,8 @@ class UserAdm extends React.Component {
         },
         body: JSON.stringify(uObj)
       })
-      .then(res => res === 201 ? window.alert("Create successfully :)") : window.alert("Failed to create a user :(\nPlease check whether the username has existed."));
+      .then(res => res.text())
+      .then(data => window.alert(data));
       let user = await newUser.json();
       console.log(user);
       
