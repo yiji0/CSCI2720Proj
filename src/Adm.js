@@ -256,8 +256,9 @@ class UserAdm extends React.Component {
     let name = document.getElementById('uid').value;
     let pwd = document.getElementById('pwd').value;
 
-    if (name === '' || pwd === '') {
+    if (name.length<4 || name.length>20 ||pwd.length<4 || pwd.length>20) {
       window.alert("Invalid input :(\nPlease check wether you have input correct username and password.");
+      return;
     } else {
       let uObj = {
         name:name,
@@ -272,8 +273,7 @@ class UserAdm extends React.Component {
         },
         body: JSON.stringify(uObj)
       })
-      .then(res => res.text())
-      .then(data => window.alert(data));
+      
       let user = await newUser.json();
       console.log(user);
       
@@ -286,17 +286,24 @@ class UserAdm extends React.Component {
   }
   
   async updateUser(){
-    let newObj = {
-      id: document.querySelector("#oid").value,
-      newid: document.querySelector('#unewuid').value,
-      newpwd: document.getElementById('upwd').value
-    };
-
-    if (newObj['id'] === '') {
-      window.alert("Invalid input :(\nPlease enter the original username.")
-    } else if (newObj['newid'] === '' && newObj['newpwd'] === '') {
-      window.alert("Invalid input :(\n Please enter at least one of the updating attributes.")
+    let oid = document.querySelector("#oid").value;
+    let newid = document.querySelector('#unewuid').value;
+    let newpwd = document.getElementById('upwd').value;
+    if (oid === '') {
+      window.alert("Invalid input :(\nPlease enter the original username.");
+      return;
+    } else if (newid =='' && newpwd ==''){
+      window.alert("Invalid input :(\n Please enter at least one of the updating attributes.");
+      return;
+    } else if (newid.length<4 || newid.length>20 || newpwd.length<4 || newpwd.length>20) {
+      window.alert("Invalid input :(\n Please check wether you have input correct username and password.");
+      return;
     } else {
+      let newObj = {
+        id: oid,
+        newid: newid,
+        newpwd: newpwd
+      };
       fetch(BACK_END + 'user',{
         method:'PUT',
         body:JSON.stringify(newObj),
@@ -307,7 +314,13 @@ class UserAdm extends React.Component {
       .then(
         res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
       );
+      document.querySelector("#oid").value='';
+      document.querySelector('#unewuid').value='';
+      document.getElementById('upwd').value='';
     }
+    
+
+    
   }
   
   render(){
@@ -319,22 +332,12 @@ class UserAdm extends React.Component {
               <tr>
                 <th>Username </th>
                 <th>Password </th>
+                <th>Action</th>
                 <th> </th>
               </tr>
             </thead>
             <tbody>
             {this.state.user.map((user, index) => <Getuser data={user} i={index} key={index} />)}
-            {/* <tr id='newUser'>
-              <td><input type="text" id="uid" placeholder='New User ID (4-20 characters)'/></td>
-              <td><input type="text" id="pwd" placeholder='New Password (4-20 characters)'/></td>
-              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createUser}>Create</button></td>
-            </tr>
-            <tr id='updateUser'>
-              <td><input type="text" id="oid" placeholder='The original User ID'/></td>
-              <td><input type="text" id="unewuid" placeholder='New User ID (4-20 characters)'/></td>
-              <td><input type="text" id="upwd" placeholder='New password (4-20 characters)'/></td>
-              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.updateUser}>Update</button></td>
-            </tr> */}
             </tbody>
           </Table>
 
