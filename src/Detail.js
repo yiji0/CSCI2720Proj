@@ -17,7 +17,8 @@ class Detail extends React.Component {
                 wind_dir: null,
                 humidity: 0,
                 precip_mm: 0,
-                vis_km: 0
+                vis_km: 0,
+                last_updated: null
             },
             location: {
                 name: window.location.pathname.split('/')[1],
@@ -215,15 +216,16 @@ class Detail extends React.Component {
                     <div className='flex-grow-1 m-4'>
                         <div id='details' className='p-2 mb-4 bg-light'>
                             <h3>{this.state.location.name}:</h3>
-                            <ul>
-                                <li>Longitude: {this.state.location.lon.toString().replace('.', '°')}E</li>
-                                <li>Latitude: {this.state.location.lat.toString().replace('.', '°')}N</li>
-                                <li>Temperature: {this.state.weather.temp_c}<span>&#8451;</span></li>
-                                <li>Wind Speed: {this.state.weather.wind_kph}km/h</li>
-                                <li>Wind Direction: {this.state.weather.wind_dir}</li>
-                                <li>Humidity: {this.state.weather.humidity}</li>
-                                <li>Precipitation: {this.state.weather.precip_mm}mm</li>
-                                <li>Visibility: {this.state.weather.vis_km}km</li>
+                            <small className='text-muted'>Last Update Time: {this.state.weather.last_updated}</small>
+                            <ul class="list-group">
+                                <li className="list-unstyled">Longitude: {this.state.location.lon.toString().replace('.', '°')}E</li>
+                                <li className="list-unstyled">Latitude: {this.state.location.lat.toString().replace('.', '°')}N</li>
+                                <li className="list-unstyled">Temperature: {this.state.weather.temp_c}<span>&#8451;</span></li>
+                                <li className="list-unstyled">Wind Speed: {this.state.weather.wind_kph}km/h</li>
+                                <li className="list-unstyled">Wind Direction: {this.state.weather.wind_dir}</li>
+                                <li className="list-unstyled">Humidity: {this.state.weather.humidity}</li>
+                                <li className="list-unstyled">Precipitation: {this.state.weather.precip_mm}mm</li>
+                                <li className="list-unstyled">Visibility: {this.state.weather.vis_km}km</li>
                             </ul>
                         </div>
                         {!this.state.inFav ? <button type="button" className="btn btn-outline-success me-2" onClick={this.addFav}>Add to My Favourite</button>
