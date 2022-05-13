@@ -1,8 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table'
-import Container from 'react-bootstrap/Container';
 import { BACK_END } from './App'
 
 
@@ -63,7 +61,7 @@ class AllAdm extends React.Component {
     let msg = await createNewLoc.text();
     alert(msg)
     
-    if(msg=='success'){
+    if(msg==='success'){
       let newLoc = {
         name: name,
         lon: lon.replace('.', '°') + 'E',
@@ -93,7 +91,7 @@ class AllAdm extends React.Component {
         'Content-Type': 'application/json'
       }
     }).then(
-      res => res.status == 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
+      res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
     );
   }
 
@@ -283,7 +281,7 @@ class UserAdm extends React.Component {
       }
     })
     .then(
-      res => res.status == 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
+      res => res.status === 200 ? window.alert("Updated successfully :)\nPlease refresh the page.") : window.alert("Failed to update :(")
     );
   }
   
