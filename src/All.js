@@ -1,3 +1,5 @@
+/*LI Yuanheng (1155141669), JIANG Hongxu (1155141403), LIU Ziqi (1155141647)。
+ZHANG Shenghao (1155141511), JI Yi (1155141508), DUAN Jianing (1155141464)*/ 
 import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -166,8 +168,8 @@ class GetFav extends React.Component {
     return (
       <tr>
         <td><Link to={'/' + data.name}>{data.name}</Link></td>
-        <td>{data.lon}</td>
-        <td>{data.lat}</td>
+        <td>{data.lon.toString().replace('.', '°')}E</td>
+        <td>{data.lat.toString().replace('.', '°')}E</td>
         <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteLoc(data.name)}>delete</button></td>
       </tr>
     )
