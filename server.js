@@ -63,30 +63,18 @@ db.once('open', function () {
 
     const Admin = mongoose.model('Admin', AdminSchema);
 
-    app.get('/createUser', (req, res) => {
-        User.create({
-            id: 'user1',
-            pwd: sha256('123456').toString()
-        }, (err, user) => {
-            if (err)
-                res.send(err);
-            else
-                console.log('User created successfully!\n' + user)
-            res.send('success');
-        });
-    });
-
-    app.get('/createAdmin', (req, res) => {
-        Admin.create({
-            id: 'test1',
-            pwd: sha256('abcdef').toString()
-        }, (err, user) => {
-            if (err)
-                res.send(err);
-            else
-                res.send('Admin created successfully!\n' + user);
-        });
-    });
+    // Create Admin
+    // app.get('/createAdmin', (req, res) => {
+    //     Admin.create({
+    //         id: 'test1',
+    //         pwd: sha256('abcdef').toString()
+    //     }, (err, user) => {
+    //         if (err)
+    //             res.send(err);
+    //         else
+    //             res.send('Admin created successfully!\n' + user);
+    //     });
+    // });
 
     // Create User
     app.post('/createUser', (req, res) => {
@@ -178,19 +166,7 @@ db.once('open', function () {
         })
     });
 
-    app.post('/createAdmin', (req, res) => {
-        res.set('Content-Type', 'text/plain');
-        Admin.create({
-            id: req.body['uid'],
-            pwd: sha256(req.body['pwd']).toString()
-        }, (err, user) => {
-            if (err)
-                res.send(err.message);
-            else
-                res.send('Admin created successfully!\n' + user);
-        });
-    });
-
+    // User Authentication
     app.post('/login/user', (req, res) => {
         let _uid = req.body['uid'];
         let _pwd = req.body['pwd'];
@@ -207,6 +183,7 @@ db.once('open', function () {
         });
     });
 
+    // Admin Authentication
     app.post('/login/admin', (req, res) => {
         let _uid = req.body['uid'];
         let _pwd = req.body['pwd'];
@@ -571,8 +548,8 @@ db.once('open', function () {
                 for (let favlocobj of favlists) {
                     favlocations.push({
                         name: favlocobj.name,
-                        lat: favlocobj.lat.toString().replace('.', '°') + 'N',
-                        lon: favlocobj.lon.toString().replace('.', '°') + 'E'
+                        lat: favlocobj.lat.toString(),
+                        lon: favlocobj.lon.toString()
                     })
                 }
                 res.set('Content-Type', 'application/json');
@@ -581,6 +558,7 @@ db.once('open', function () {
         });
     });
 
+    // add a location to favorite list
     app.put('/favlist', (req, res) => {
         res.set('Content-Type', 'text/plain');
         let { uid, location } = req.body;
@@ -606,6 +584,7 @@ db.once('open', function () {
         });
     });
 
+    // delete a location from favorite list
     app.delete('/favlist', (req, res) => {
         res.set('Content-Type', 'text/plain');
         let { uid, location } = req.body;
@@ -631,6 +610,7 @@ db.once('open', function () {
         });
     });
 
+    // add comment to a location
     app.put('/comment', (req, res) => {
         res.set('Content-Type', 'text/plain');
         let { uid, location, comment } = req.body;
@@ -652,6 +632,7 @@ db.once('open', function () {
             });
     });
 
+    // get comments of a location
     app.get('/comment/:loc', (req, res) => {
         res.set('Content-Type', 'text/plain');
         Location.findOne({ name: req.params.loc }, (err, loc) => {
@@ -667,62 +648,6 @@ db.once('open', function () {
             }
         });
     });
-
-    //     app.put('/User', (req, res) => {
-    //         res.set('Content-Type', 'text-plain');
-    //         let userid = req.params['id'];
-    //         let newid = req.params['newid'];
-    //         let newpwd = req.params['newpwd'];
-    //         if(newid != NULL){
-    //             User.updateOne({ id: userid }, {$set:{id: newid}}, (err, res) => {
-    //                 if(err){
-    //                     console.log("Failed to update user" + userid);
-    //                     res.status(404).send("Failed to update user" + userid);
-    //                 } else{
-    //                     console.log("Successfully update user" + userid);
-    //                     res.status(204).send("Successfully update user" + userid);
-    //                 }
-    //             });
-    //         }
-    //         if(newpwd != NULL){
-    //             User.updateOne({ id: userid }, {$set:{pwd: newpwd}}, (err, res) => {
-    //                 if(err){
-    //                     console.log("Failed to update user" + userid);
-    //                     res.status(404).send("Failed to update user" + userid);
-    //                 } else{
-    //                     console.log("Successfully update user" + userid);
-    //                     res.status(204).send("Successfully update user" + userid);
-    //                 }
-    //             });
-    //         }
-    //     });
-
-    // Read User
-    //     app.post('/User', (req, res) => {
-    //         res.set('Content-Type', 'text/plain');
-    //         let userid = req.params['id'];
-    //         User.findOne({ id: userid }, (err, res) => {
-    //             if(err){
-    //                 console.log("Failed to find user" + userid);
-    //                 res.status(404).send("Failed to find user" + userid);
-    //             } else{
-    //                 console.log("Successfully find user" + userid);
-    //                 res.status(204).send("Successfully find user" + userid);
-    //             }
-    //         });
-    //     });
-    //     app.post('/User', (req, res) => {
-    //         res.set('Content-Type', 'text/plain');
-    //         User.find((err, res) => {
-    //             if(err){
-    //                 console.log(err.message);
-    //                 res.status(404).send(err.message);
-    //             } else{
-    //                 console.log(Success);
-    //                 res.status(204).send("Successfully find");
-    //             }
-    //         });
-    //     });
 
     app.all('/*', (req, res) => {
         res.send("Welcome!");
