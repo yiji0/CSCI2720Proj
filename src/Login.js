@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import sha256 from 'crypto-js/sha256';
 import cookie from 'react-cookies';
 import {Navigate} from 'react-router-dom';
+import {BACK_END} from './App'
 
 
 export const getloginfo = () => {
@@ -34,7 +35,7 @@ class Login extends React.Component {
       uid: uid,
       pwd: sha256(pwd).toString()
     };
-    fetch("http://localhost:8000/login/user", {
+    fetch(BACK_END+"login/user", {
       method: "POST",
       body: JSON.stringify(userinfo),
       headers: {
@@ -64,7 +65,7 @@ class Login extends React.Component {
       pwd: sha256(pwd).toString()
     };
     console.log(userinfo);
-    fetch("http://localhost:8000/login/admin", {
+    fetch(BACK_END+"login/admin", {
       method: "POST",
       body: JSON.stringify(userinfo),
       headers: {
