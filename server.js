@@ -1,5 +1,3 @@
-/*LI Yuanheng (1155141669), JIANG Hongxu (1155141403), LIU Ziqi (1155141647)。
-ZHANG Shenghao (1155141511), JI Yi (1155141508), DUAN Jianing (1155141464)*/ 
 const fetch = require('node-fetch')
 const express = require('express');
 const sha256 = require('crypto-js/sha256');
@@ -79,22 +77,29 @@ db.once('open', function () {
     // Create User
     app.post('/createUser', (req, res) => {
         res.set('Content-Type', 'text/plain');
-        User.create({
-            id: req.body['name'],
-            pwd: sha256(req.body['pwd']).toString(),
-            fav_loc: []
-        }, (err, user) => {
-            if (err)
-                res.send(err.message);
-            else
-                res.set('Content-Type', 'application/json');
-            let uObj = {
+        if (req.body['name'] != '' && req.body['pwd'] != '') {
+            User.create({
                 id: req.body['name'],
-                pwd: sha256(req.body['pwd']).toString()
-            };
-            console.log('User created successfully!\n' + user)
-            res.status(201).send(JSON.stringify(uObj));
-        });
+                pwd: sha256(req.body['pwd']).toString(),
+                fav_loc: []
+            }, (err, user) => {
+                if (err){
+                    console.log("Fail to create.");
+                    res.send(err.message);
+                }
+                else {
+                    res.set('Content-Type', 'application/json');
+                    let uObj = {
+                        id: req.body['name'],
+                        pwd: sha256(req.body['pwd']).toString()
+                    };
+                    console.log('User created successfully!\n' + user)
+                    res.status(201).send(JSON.stringify(uObj));
+                } 
+            });
+        } else {
+            res.sendStatus(404);
+        }
     });
 
     // Delete User
@@ -491,7 +496,6 @@ db.once('open', function () {
             } else {
                 console.log("Successfully created locations");
                 res.status(201).send('success');
-
             }
         });
     });
