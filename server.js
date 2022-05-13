@@ -38,7 +38,8 @@ db.once('open', function () {
         wind_dir: { type: String, required: true },
         humidity: { type: Number, required: true },
         precip_mm: { type: mongoose.Types.Decimal128, required: true },
-        vis_km: { type: Number, required: true }
+        vis_km: { type: Number, required: true },
+        last_updated: { type: String, required: true }
     });
 
     const UserSchema = mongoose.Schema({
@@ -69,7 +70,7 @@ db.once('open', function () {
                 res.send(err);
             else
                 console.log('User created successfully!\n' + user)
-                res.send('success');
+            res.send('success');
         });
     });
 
@@ -84,28 +85,28 @@ db.once('open', function () {
                 res.send('Admin created successfully!\n' + user);
         });
     });
-    
+
     // Create User
     app.post('/createUser', (req, res) => {
         res.set('Content-Type', 'text/plain');
         User.create({
-            id : req.body['name'],
-            pwd : sha256(req.body['pwd']).toString(),
+            id: req.body['name'],
+            pwd: sha256(req.body['pwd']).toString(),
             fav_loc: []
         }, (err, user) => {
             if (err)
                 res.send(err.message);
             else
-                res.set('Content-Type','application/json');
-                let uObj = {
-                    id: req.body['name'],
-                    pwd : sha256(req.body['pwd']).toString()
-                };
-                console.log('User created successfully!\n' + user)
-                res.status(201).send(JSON.stringify(uObj));
+                res.set('Content-Type', 'application/json');
+            let uObj = {
+                id: req.body['name'],
+                pwd: sha256(req.body['pwd']).toString()
+            };
+            console.log('User created successfully!\n' + user)
+            res.status(201).send(JSON.stringify(uObj));
         });
     });
-    
+
     // Delete User
     app.delete('/user/:userId', (req, res) => {
         res.set('Content-Type', 'text/plain');
@@ -121,7 +122,7 @@ db.once('open', function () {
             }
         });
     });
-    
+
     // Update User
     app.put('/user', (req, res) => {
         res.set('Content-Type', 'text-plain');
@@ -150,7 +151,7 @@ db.once('open', function () {
             }
         });
     });
-    
+
     // get all user data
     app.get('/user', (req, res) => {
         res.set('Content-Type', 'text/plain');
@@ -251,7 +252,8 @@ db.once('open', function () {
                             "wind_dir": weather.wind_dir,
                             "humidity": weather.humidity,
                             "precip_mm": weather.precip_mm.toString(),
-                            "vis_km": weather.vis_km
+                            "vis_km": weather.vis_km,
+                            "last_updated": weather.last_updated
                         };
                         res.set('Content-Type', 'application/json');
                         res.status(200).send(JSON.stringify(weatherobj));
@@ -299,7 +301,8 @@ db.once('open', function () {
                                 "wind_dir": weather.wind_dir,
                                 "humidity": weather[i].humidity,
                                 "precip_mm": weather[i].precip_mm.toString(),
-                                "vis_km": weather[i].vis_km
+                                "vis_km": weather[i].vis_km,
+                                "last_updated": weather[i].last_updated
                             };
                             weatherlist.push(weatherobj);
                         }
@@ -335,7 +338,8 @@ db.once('open', function () {
                                     wind_dir: data['current']['wind_dir'],
                                     humidity: data['current']['humidity'],
                                     precip_mm: data['current']['precip_mm'],
-                                    vis_km: data['current']['vis_km']
+                                    vis_km: data['current']['vis_km'],
+                                    last_updated: data['current']['last_updated']
                                 }
                             };
                         Weather.updateOne(conditions, update, { upsert: true }, (err, weather) => {
@@ -379,7 +383,8 @@ db.once('open', function () {
                                             wind_dir: data['current']['wind_dir'],
                                             humidity: data['current']['humidity'],
                                             precip_mm: data['current']['precip_mm'],
-                                            vis_km: data['current']['vis_km']
+                                            vis_km: data['current']['vis_km'],
+                                            last_updated: data['current']['last_updated']
                                         }
                                     };
                                 Weather.updateOne(conditions, update, { upsert: true }, (err, weather) => {
@@ -506,12 +511,12 @@ db.once('open', function () {
                 res.status(404).send(err.message);
             } else {
                 console.log("Successfully created locations");
-                res.status(201).send('success');    
-                
+                res.status(201).send('success');
+
             }
         });
     });
-    
+
     // update a single location
     app.put('/loc/:loc', (req, res) => {
         res.set('Content-Type', 'text/plain');
@@ -520,7 +525,7 @@ db.once('open', function () {
         let updateLat = req.body.lat;
         let updateLon = req.body.lon;
 
-        Location.findOne({name: originalName}, (err, loc) => {
+        Location.findOne({ name: originalName }, (err, loc) => {
             if (err) {
                 res.status(404).send(err.message);
             } else if (!loc) {
@@ -627,11 +632,15 @@ db.once('open', function () {
     app.put('/comment', (req, res) => {
         res.set('Content-Type', 'text/plain');
         let { uid, location, comment } = req.body;
-        Location.updateOne({name: location}, 
-            {$push: {comment: {
-                uid: uid,
-                content: comment
-            }}}, (err, loc) => {
+        Location.updateOne({ name: location },
+            {
+                $push: {
+                    comment: {
+                        uid: uid,
+                        content: comment
+                    }
+                }
+            }, (err, loc) => {
                 if (err) {
                     console.log(err.message);
                     res.status(404).send("Fail to add comment in location " + location);
@@ -643,76 +652,76 @@ db.once('open', function () {
 
     app.get('/comment/:loc', (req, res) => {
         res.set('Content-Type', 'text/plain');
-        Location.findOne({name: req.params.loc}, (err, loc) => {
+        Location.findOne({ name: req.params.loc }, (err, loc) => {
             if (err || !loc) {
                 console.log("Error in finding location " + req.params.loc);
                 res.status(404).send("No location of name " + req.params.loc + " found");
             } else {
                 let comments = [];
                 for (let comment of loc.comment) {
-                    comments.push({user: comment.uid, comment: comment.content});
+                    comments.push({ user: comment.uid, comment: comment.content });
                 }
                 res.status(200).send(JSON.stringify(comments));
             }
         });
     });
-    
-//     app.put('/User', (req, res) => {
-//         res.set('Content-Type', 'text-plain');
-//         let userid = req.params['id'];
-//         let newid = req.params['newid'];
-//         let newpwd = req.params['newpwd'];
-//         if(newid != NULL){
-//             User.updateOne({ id: userid }, {$set:{id: newid}}, (err, res) => {
-//                 if(err){
-//                     console.log("Failed to update user" + userid);
-//                     res.status(404).send("Failed to update user" + userid);
-//                 } else{
-//                     console.log("Successfully update user" + userid);
-//                     res.status(204).send("Successfully update user" + userid);
-//                 }
-//             });
-//         }
-//         if(newpwd != NULL){
-//             User.updateOne({ id: userid }, {$set:{pwd: newpwd}}, (err, res) => {
-//                 if(err){
-//                     console.log("Failed to update user" + userid);
-//                     res.status(404).send("Failed to update user" + userid);
-//                 } else{
-//                     console.log("Successfully update user" + userid);
-//                     res.status(204).send("Successfully update user" + userid);
-//                 }
-//             });
-//         }
-//     });
-    
+
+    //     app.put('/User', (req, res) => {
+    //         res.set('Content-Type', 'text-plain');
+    //         let userid = req.params['id'];
+    //         let newid = req.params['newid'];
+    //         let newpwd = req.params['newpwd'];
+    //         if(newid != NULL){
+    //             User.updateOne({ id: userid }, {$set:{id: newid}}, (err, res) => {
+    //                 if(err){
+    //                     console.log("Failed to update user" + userid);
+    //                     res.status(404).send("Failed to update user" + userid);
+    //                 } else{
+    //                     console.log("Successfully update user" + userid);
+    //                     res.status(204).send("Successfully update user" + userid);
+    //                 }
+    //             });
+    //         }
+    //         if(newpwd != NULL){
+    //             User.updateOne({ id: userid }, {$set:{pwd: newpwd}}, (err, res) => {
+    //                 if(err){
+    //                     console.log("Failed to update user" + userid);
+    //                     res.status(404).send("Failed to update user" + userid);
+    //                 } else{
+    //                     console.log("Successfully update user" + userid);
+    //                     res.status(204).send("Successfully update user" + userid);
+    //                 }
+    //             });
+    //         }
+    //     });
+
     // Read User
-//     app.post('/User', (req, res) => {
-//         res.set('Content-Type', 'text/plain');
-//         let userid = req.params['id'];
-//         User.findOne({ id: userid }, (err, res) => {
-//             if(err){
-//                 console.log("Failed to find user" + userid);
-//                 res.status(404).send("Failed to find user" + userid);
-//             } else{
-//                 console.log("Successfully find user" + userid);
-//                 res.status(204).send("Successfully find user" + userid);
-//             }
-//         });
-//     });
-//     app.post('/User', (req, res) => {
-//         res.set('Content-Type', 'text/plain');
-//         User.find((err, res) => {
-//             if(err){
-//                 console.log(err.message);
-//                 res.status(404).send(err.message);
-//             } else{
-//                 console.log(Success);
-//                 res.status(204).send("Successfully find");
-//             }
-//         });
-//     });
-    
+    //     app.post('/User', (req, res) => {
+    //         res.set('Content-Type', 'text/plain');
+    //         let userid = req.params['id'];
+    //         User.findOne({ id: userid }, (err, res) => {
+    //             if(err){
+    //                 console.log("Failed to find user" + userid);
+    //                 res.status(404).send("Failed to find user" + userid);
+    //             } else{
+    //                 console.log("Successfully find user" + userid);
+    //                 res.status(204).send("Successfully find user" + userid);
+    //             }
+    //         });
+    //     });
+    //     app.post('/User', (req, res) => {
+    //         res.set('Content-Type', 'text/plain');
+    //         User.find((err, res) => {
+    //             if(err){
+    //                 console.log(err.message);
+    //                 res.status(404).send(err.message);
+    //             } else{
+    //                 console.log(Success);
+    //                 res.status(204).send("Successfully find");
+    //             }
+    //         });
+    //     });
+
     app.all('/*', (req, res) => {
         res.send("Welcome!");
     });
