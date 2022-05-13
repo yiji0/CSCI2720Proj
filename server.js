@@ -43,14 +43,14 @@ db.once('open', function () {
     });
 
     const UserSchema = mongoose.Schema({
-        id: { type: String, required: true, unique: true },
-        pwd: { type: String, required: true },
+        id: { type: String, required: true, unique: true, minlength: 4, maxlength: 20 },
+        pwd: { type: String, required: true, minlength: 4, maxlength: 20 },
         fav_loc: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }]
     });
 
     const AdminSchema = mongoose.Schema({
-        id: { type: String, required: true, unique: true },
-        pwd: { type: String, required: true }
+        id: { type: String, required: true, unique: true, minlength: 4, maxlength: 20 },
+        pwd: { type: String, required: true, minlength: 4, maxlength: 20 }
     });
 
     const Location = mongoose.model('Location', LocationSchema);
@@ -77,29 +77,25 @@ db.once('open', function () {
     // Create User
     app.post('/createUser', (req, res) => {
         res.set('Content-Type', 'text/plain');
-        if (req.body['name'] != '' && req.body['pwd'] != '') {
-            User.create({
-                id: req.body['name'],
-                pwd: sha256(req.body['pwd']).toString(),
-                fav_loc: []
-            }, (err, user) => {
-                if (err){
-                    console.log("Fail to create.");
-                    res.send(err.message);
-                }
-                else {
-                    res.set('Content-Type', 'application/json');
-                    let uObj = {
-                        id: req.body['name'],
-                        pwd: sha256(req.body['pwd']).toString()
-                    };
-                    console.log('User created successfully!\n' + user)
-                    res.status(201).send(JSON.stringify(uObj));
-                } 
-            });
-        } else {
-            res.sendStatus(404);
-        }
+        User.create({
+            id: req.body['name'],
+            pwd: sha256(req.body['pwd']).toString(),
+            fav_loc: []
+        }, (err, user) => {
+            if (err){
+                console.log("Fail to create.");
+                res.send(err.message);
+            }
+            else {
+                res.set('Content-Type', 'application/json');
+                let uObj = {
+                    id: req.body['name'],
+                    pwd: sha256(req.body['pwd']).toString()
+                };
+                console.log('User created successfully!\n' + user)
+                res.status(201).send(JSON.stringify(uObj));
+            } 
+        });
     });
 
     // Delete User
