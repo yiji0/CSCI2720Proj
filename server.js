@@ -569,8 +569,8 @@ db.once('open', function () {
                 for (let favlocobj of favlists) {
                     favlocations.push({
                         name: favlocobj.name,
-                        lat: favlocobj.lat.toString(),
-                        lon: favlocobj.lon.toString()
+                        lat: favlocobj.lat.toString().replace('.', '°') + 'N',
+                        lon: favlocobj.lon.toString().replace('.', '°') + 'E'
                     })
                 }
                 res.set('Content-Type', 'application/json');
