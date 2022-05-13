@@ -168,8 +168,8 @@ class GetFav extends React.Component {
     return (
       <tr>
         <td><Link to={'/' + data.name}>{data.name}</Link></td>
-        <td>{data.lon}</td>
-        <td>{data.lat}</td>
+        <td>{data.lon.toString().replace('.', '°')}E</td>
+        <td>{data.lat.toString().replace('.', '°')}E</td>
         <td><button className="btn btn-outline-success me-2" onClick={() => this.deleteLoc(data.name)}>delete</button></td>
       </tr>
     )
