@@ -12,18 +12,18 @@ class Detail extends React.Component {
         this.state = {
             comments: [],
             weather: {
-                temp_c: "TBD",
-                wind_kph: "TBD",
-                wind_dir: null,
-                humidity: 0,
-                precip_mm: 0,
-                vis_km: 0,
+                temp_c: "Loading",
+                wind_kph: "Loading",
+                wind_dir: 'Loading',
+                humidity: 'Loading',
+                precip_mm: 'Loading',
+                vis_km: 'Loading',
                 last_updated: null
             },
             location: {
                 name: window.location.pathname.split('/')[1],
-                lon: 0,
-                lat: 0,
+                lon: 'Loading',
+                lat: 'Loading',
             },
             inFav: 0 // by default not in Favlist
         };
