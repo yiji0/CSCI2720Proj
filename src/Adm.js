@@ -296,22 +296,12 @@ class UserAdm extends React.Component {
               <tr>
                 <th>UserId </th>
                 <th>Password </th>
+                <th>Action</th>
                 <th> </th>
               </tr>
             </thead>
             <tbody>
             {this.state.user.map((user, index) => <Getuser data={user} i={index} key={index} />)}
-            {/* <tr id='newUser'>
-              <td><input type="text" id="uid" placeholder='New User ID'/></td>
-              <td><input type="text" id="pwd" placeholder='New Password'/></td>
-              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.createUser}>Create</button></td>
-            </tr>
-            <tr id='updateUser'>
-              <td><input type="text" id="oid" placeholder='The original User ID'/></td>
-              <td><input type="text" id="unewuid" placeholder='New User ID'/></td>
-              <td><input type="text" id="upwd" placeholder='New password'/></td>
-              <td><button type='button'className="btn btn-outline-success me-2" onClick={this.updateUser}>Update</button></td>
-            </tr> */}
             </tbody>
           </Table>
 
