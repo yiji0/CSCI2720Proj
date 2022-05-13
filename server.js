@@ -44,13 +44,13 @@ db.once('open', function () {
 
     const UserSchema = mongoose.Schema({
         id: { type: String, required: true, unique: true, minlength: 4, maxlength: 20 },
-        pwd: { type: String, required: true, minlength: 4, maxlength: 20 },
+        pwd: { type: String, required: true },
         fav_loc: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Location' }]
     });
 
     const AdminSchema = mongoose.Schema({
         id: { type: String, required: true, unique: true, minlength: 4, maxlength: 20 },
-        pwd: { type: String, required: true, minlength: 4, maxlength: 20 }
+        pwd: { type: String, required: true }
     });
 
     const Location = mongoose.model('Location', LocationSchema);
