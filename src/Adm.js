@@ -53,7 +53,7 @@ class AllAdm extends React.Component {
 
     // console.log(newLocObj)
     
-    if (newLocObj['name'] == '' || newLocObj['lon'] == '' || newLocObj['lat'] == '') {
+    if (newLocObj['name'] === '' || newLocObj['lon'] === '' || newLocObj['lat'] === '') {
       window.alert("Invalid input :(\nPlease fill in all blanks.");
     } else {
       let createNewLoc = await fetch(BACK_END + 'loc',{
@@ -92,7 +92,7 @@ class AllAdm extends React.Component {
       lat: document.getElementById('ulat').value
     };
 
-    if (newLocObj['originalName'] == '' || newLocObj['name'] == '' || newLocObj['lon'] == '' || newLocObj['lat'] == '') {
+    if (newLocObj['originalName'] === '' || newLocObj['name'] === '' || newLocObj['lon'] === '' || newLocObj['lat'] === '') {
       window.alert("Invalid input :(\nPlease fill in all blanks.");
     } else {
       await fetch(BACK_END + 'loc/'+document.querySelector("#oname").value,{
@@ -256,7 +256,7 @@ class UserAdm extends React.Component {
     let name = document.getElementById('uid').value;
     let pwd = document.getElementById('pwd').value;
 
-    if (name == '' || pwd == '') {
+    if (name === '' || pwd === '') {
       window.alert("Invalid input :(\nPlease check wether you have input correct username and password.");
     } else {
       let uObj = {
@@ -292,9 +292,9 @@ class UserAdm extends React.Component {
       newpwd: document.getElementById('upwd').value
     };
 
-    if (newObj['id'] == '') {
+    if (newObj['id'] === '') {
       window.alert("Invalid input :(\nPlease enter the original username.")
-    } else if (newObj['newid'] == '' && newObj['newpwd'] == '') {
+    } else if (newObj['newid'] === '' && newObj['newpwd'] === '') {
       window.alert("Invalid input :(\n Please enter at least one of the updating attributes.")
     } else {
       fetch(BACK_END + 'user',{
