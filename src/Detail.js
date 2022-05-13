@@ -1,69 +1,16 @@
 import React from 'react';
 import ReactMapGL, { Marker } from 'react-map-gl';
+import {BACK_END} from './App';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MAPBOX_TOKEN = 'pk.eyJ1Ijoic3V2aWFicyIsImEiOiJjbDFydWlkamkyMHk1M2xtbW1sb2p0a3hpIn0.8V0sfF1FRYSn4B0n-m1vAg';
-
-
-// class Detail extends React.Component{
-//     constructor(props){
-//         super();
-//         this.state={
-//             comments:[
-//                 {user:'unername', comment:'this is very nice'},
-//                 {user:'unsername2', comment:'this is also very nice'}        
-//             ],
-//             temp_c:0,
-//             wind_kph:0,
-//             wind_dir:null,
-//             humidity:0,
-//             precip_mm:0,
-//             vis_km:0,
-//             location:{
-//                 name:null,
-//                 lon:0,
-//                 lat:0
-//             }
-//         }
-//     }
-
-//     async componentDidMount(){
-//         const url = window.location.href;
-//         const response = await fetch(url);
-//         const data = await response.json();
-//         this.setState({
-//             comments:data.comments, 
-//             temp_c:data.temp_c, 
-//             wind_kph:data.wind_kph, 
-//             wind_dir:data.wind_dir, 
-//             humidity:data.humidity,
-//             precip_mm:data.precip_mm,
-//             vis_km:data.vis_km
-//         });
-//     }
-
-//     render(){
-//         return(
-//             <div>
-//                 <div>{this.state.temp_c}</div>
-//                 <div>{this.state.wind_kph}</div>
-//                 <div>{this.state.comment}</div>
-//                 <SmallMap info={this.state.location}/>
-//             </div>
-//         );
-//     }
-
-// }
 
 
 class Detail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            comments: [
-                // {user:'unername', comment:'this is very nice'},
-                // {user:'unsername2', comment:'this is also very nice'}        
-            ],
+            comments: [],
             weather: {
                 temp_c: "TBD",
                 wind_kph: "TBD",
@@ -122,7 +69,7 @@ class Detail extends React.Component {
 
     async fetchInfo() {
         // ftech location infomation for map
-        let locres = await fetch('http://localhost:8000/loc/' + this.state.location.name, {
+        let locres = await fetch(BACK_END + 'loc/' + this.state.location.name, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -133,7 +80,7 @@ class Detail extends React.Component {
         this.setState((prevState) => ({ location: loc }));
 
         // fetch weather infomation
-        let wres = await fetch('http://localhost:8000/weather/' + this.state.location.name, {
+        let wres = await fetch(BACK_END + 'weather/' + this.state.location.name, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -144,7 +91,7 @@ class Detail extends React.Component {
         this.setState((prevState) => ({ weather: weatherInfo }));
 
         // fetch favlist and check whether exists
-        let favres = await fetch('http://localhost:8000/favlist/' + this.props.uid, {
+        let favres = await fetch(BACK_END + 'favlist/' + this.props.uid, {
             method: 'POST',
         });
         let fav = await favres.json();
@@ -153,7 +100,7 @@ class Detail extends React.Component {
         this.setState({inFav:favlist.some(loc=>loc===this.state.location.name)? 1:0})
 
         // fetch comments
-        let commres = await fetch('http://localhost:8000/comment/'+this.state.location.name,{
+        let commres = await fetch(BACK_END + 'comment/'+this.state.location.name,{
             method:'GET',
           });
         let comments = await commres.json();
@@ -172,7 +119,7 @@ class Detail extends React.Component {
             comment: document.getElementById('new-comment').value
         };
         console.log(newCom);
-        fetch('http://localhost:8000/comment', {
+        fetch(BACK_END + 'comment', {
             method: 'PUT',
             body: JSON.stringify(newCom),
             headers: {
@@ -209,7 +156,7 @@ class Detail extends React.Component {
     async addFav() {
         let myObjData = { uid: this.props.uid, location: this.state.location.name };
         if (this.state.inFav) {
-            fetch('http://localhost:8000/favlist', {
+            fetch(BACK_END + 'favlist', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -228,7 +175,7 @@ class Detail extends React.Component {
                 console.log(err.message);
             });         //send the param in url get a res of sucess or not
         } else {
-            fetch('http://localhost:8000/favlist', {
+            fetch(BACK_END + 'favlist', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -313,7 +260,7 @@ class SmallMap extends React.Component {
     // async fetchLoc(){
     // // ftech location infomation for map
     // const name = window.location.pathname.split('/')[1]
-    // let locres = await fetch('http://localhost:8000/loc/'+name,{
+    // let locres = await fetch(BACK_END + 'loc/'+name,{
     //     method:'GET',
     //     headers: { 
     //       'Content-Type': 'application/json',

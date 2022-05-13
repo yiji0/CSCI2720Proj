@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table'
 import { getloginfo } from './Login'
+import { BACK_END } from './App'
 
 class All extends React.Component {
   sortname() {
@@ -95,7 +96,7 @@ class All extends React.Component {
   }
 
   async fetchLoc() {
-    let res = await fetch('http://localhost:8000/loc1', {
+    let res = await fetch(BACK_END + 'loc1', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -150,7 +151,7 @@ class Get extends React.Component {
 class GetFav extends React.Component {
   deleteLoc(d){
     alert("delete successfully. Please refresh the page.");
-    return fetch('http://localhost:8000/favlist',{
+    return fetch(BACK_END + 'favlist',{
       method:'DELETE',
       body: JSON.stringify({uid: getloginfo()['uid'], location: d}),
       headers: { 
@@ -181,7 +182,7 @@ class Fav extends React.Component {
   async componentDidMount() {
     const loginfo = getloginfo();
     if (loginfo && loginfo['mode'] === 'user') {
-      const url = "http://localhost:8000/favlist/" + loginfo['uid'];
+      const url = BACK_END + "favlist/" + loginfo['uid'];
       fetch(url, { method: "POST" }).then(res => res.text())
         .then(data => {
           if (data) {

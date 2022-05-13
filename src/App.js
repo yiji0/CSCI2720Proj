@@ -14,6 +14,9 @@ import { Search, SearchName, SearchLon, SearchLat } from './Search';
 import { AllAdm, UserAdm } from './Adm';
 import { logout } from './Login';
 
+// export const BACK_END = 'http://ec2-54-146-195-100.compute-1.amazonaws.com:8000/'
+export const BACK_END = 'http://localhost:8000/'
+
 function PrivateRoute() {
   const auth = getloginfo();
   return auth ? <Outlet /> : <Navigate to='/login' />;

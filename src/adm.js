@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table'
 import Container from 'react-bootstrap/Container';
-
+import { BACK_END } from './App'
 
 
 class AllAdm extends React.Component {
@@ -19,7 +19,7 @@ class AllAdm extends React.Component {
 
 
   async fetchLoc() {
-    let res = await fetch('http://localhost:8000/loc1', {
+    let res = await fetch(BACK_END + 'loc1', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ class AllAdm extends React.Component {
 
 
   refreshData(){
-    fetch('http://localhost:8000/weather',{
+    fetch(BACK_END + 'weather',{
       method:'PUT',
     }).then(res=>res.text()).then(msg=>alert(msg));
   }
@@ -53,7 +53,7 @@ class AllAdm extends React.Component {
 
     // console.log(newLocObj)
     
-    let createNewLoc = await fetch('http://localhost:8000/loc',{
+    let createNewLoc = await fetch(BACK_END + 'loc',{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ class AllAdm extends React.Component {
       lat: document.getElementById('ulat').value
     };
 
-    let res = await fetch('http://localhost:8000/loc/'+document.querySelector("#oname").value,{
+    let res = await fetch(BACK_END + 'loc/'+document.querySelector("#oname").value,{
       method:'PUT',
       body:JSON.stringify(newLocObj),
       headers: { 
@@ -139,7 +139,7 @@ class AllAdm extends React.Component {
 class LocInfo extends React.Component {
   deleteLoc(d){
     alert("delete successfully! Please fresh the page.");
-    return fetch('http://localhost:8000/loc/'+d,{
+    return fetch(BACK_END + 'loc/'+d,{
       method:'DELETE',
       headers: { 
         'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ class LocInfo extends React.Component {
 class Getuser extends React.Component {
   deleteU(d){
     alert("delete successfully! Please fresh the page.");
-    return fetch('http://localhost:8000/user/'+d,{
+    return fetch(BACK_END + 'user/'+d,{
       method:'DELETE',
       headers: { 
         'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ class UserAdm extends React.Component {
   
 
   async fetchuser(){
-    let res = await fetch('http://localhost:8000/user',{
+    let res = await fetch(BACK_END + 'user',{
       method:'GET',
       headers: { 
         'Content-Type': 'application/json',
@@ -224,7 +224,7 @@ class UserAdm extends React.Component {
     };
     console.log(uObj)
   
-    let newUser = await fetch('http://localhost:8000/createUser',{
+    let newUser = await fetch(BACK_END + 'createUser',{
       method:'POST',
       headers:{
         'Content-Type': 'application/json'
@@ -248,7 +248,7 @@ class UserAdm extends React.Component {
       newpwd: document.getElementById('upwd').value
     };
 
-    fetch('http://localhost:8000/user',{
+    fetch(BACK_END + 'user',{
       method:'PUT',
       body:JSON.stringify(newObj),
       headers: { 

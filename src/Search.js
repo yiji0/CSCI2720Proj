@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { BACK_END } from './App'
 
 
 class CityRowName extends React.Component {
@@ -111,7 +112,7 @@ class SearchName extends React.Component {
   }
 
   async fetchLoc() {
-    let res = await fetch('http://localhost:8000/loc1', {
+    let res = await fetch(BACK_END + 'loc1', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -255,7 +256,7 @@ class SearchLon extends React.Component {
   }
 
   async fetchLoc() {
-    let res = await fetch('http://localhost:8000/loc1', {
+    let res = await fetch(BACK_END + 'loc1', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -400,7 +401,7 @@ class SearchLat extends React.Component {
   }
 
   async fetchLoc() {
-    let res = await fetch('http://localhost:8000/loc1', {
+    let res = await fetch(BACK_END + 'loc1', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
