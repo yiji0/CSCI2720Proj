@@ -257,7 +257,7 @@ class UserAdm extends React.Component {
     let pwd = document.getElementById('pwd').value;
 
     if (name.length < 4 || name.length > 20 || pwd.length < 4 || pwd.length > 20) {
-      window.alert("Invalid input :(\nPlease check weather you have input valid username and password.");
+      window.alert("Invalid input :(\nPlease check whether you have input valid username and password.");
     } else {
       let uObj = {
         name:name,
