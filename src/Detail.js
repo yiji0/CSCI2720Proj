@@ -79,6 +79,14 @@ class Detail extends React.Component {
         let loc = await locres.json();
         this.setState((prevState) => ({ location: loc }));
 
+        // refresh weather info
+
+        let newres = await fetch(BACK_END+'weather',{
+            method: 'PUT'
+        })
+        let msg = await newres.text();
+        console.log(msg);
+
         // fetch weather infomation
         let wres = await fetch(BACK_END + 'weather/' + this.state.location.name, {
             method: 'GET',
@@ -96,7 +104,7 @@ class Detail extends React.Component {
         });
         let fav = await favres.json();
         let favlist = fav.map((loc)=>loc.name)
-        console.log(favlist)
+        // console.log(favlist)
         this.setState({inFav:favlist.some(loc=>loc===this.state.location.name)? 1:0})
 
         // fetch comments
