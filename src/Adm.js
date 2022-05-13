@@ -342,11 +342,11 @@ class UserAdm extends React.Component {
           <form>
             <div className='form-group'>
               <label for='uid'>New User Name:</label>
-              <input type="text" id="uid" className='form-control'/>
+              <input type="text" id="uid" className='form-control' placeholder='New User Name (4-20 characters)'/ >
             </div>
             <div className='form-group'>
               <label for='pwd'>Password:</label>
-              <input type="password" id="pwd" className='form-control'/>
+              <input type="password" id="pwd" className='form-control' placeholder='New password (4-20 characters)'/>
             </div>
             <button type='button'className="btn btn-outline-success me-2 my-2" onClick={this.createUser}>Create</button>
           </form>
@@ -359,11 +359,11 @@ class UserAdm extends React.Component {
             </div>
             <div className='form-group'>
               <label for='unewuid'>New User Name:</label>
-              <input type="text" id="unewuid" className='form-control'/>
+              <input type="text" id="unewuid" className='form-control' placeholder='New User Name (4-20 characters)'/>
             </div>
             <div className='form-group'>
               <label for='upwd'>New Password:</label>
-              <input type="password" id="upwd" className='form-control'/>
+              <input type="password" id="upwd" className='form-control' placeholder='New password (4-20 characters)'/>
             </div>
             <button type='button'className="btn btn-outline-success me-2 my-2" onClick={this.updateUser}>Update</button>
           </form>
