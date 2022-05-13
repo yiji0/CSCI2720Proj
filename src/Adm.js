@@ -294,7 +294,7 @@ class UserAdm extends React.Component {
           <Table bordered striped hover id="locationlist">
             <thead>
               <tr>
-                <th>UserId </th>
+                <th>Username </th>
                 <th>Password </th>
                 <th> </th>
               </tr>
