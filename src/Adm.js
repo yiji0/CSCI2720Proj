@@ -256,8 +256,9 @@ class UserAdm extends React.Component {
     let name = document.getElementById('uid').value;
     let pwd = document.getElementById('pwd').value;
 
-    if (name.length < 4 || name.length > 20 || pwd.length < 4 || pwd.length > 20) {
-      window.alert("Invalid input :(\nPlease check whether you have input valid username and password.");
+    if (name.length<4 || name.length>20 ||pwd.length<4 || pwd.length>20) {
+      window.alert("Invalid input :(\nPlease check wether you have input correct username and password.");
+      return;
     } else {
       let uObj = {
         name:name,
@@ -272,13 +273,7 @@ class UserAdm extends React.Component {
         },
         body: JSON.stringify(uObj)
       })
-      .then(res => {
-        if (res.status === 201) {
-          window.alert("Create successfully :)");
-        } else {
-          window.alert("Fail to create user :(\nPlease check whether the username has existed.");
-        }
-      });
+      
       let user = await newUser.json();
       console.log(user);
       
