@@ -15,3 +15,6 @@ node server.js & # run the backend server in the background
 npm run build # build the app in production mode
 sudo serve -s build -p 80 # run the server in port 80 (need root privilege)
 ```
+
+## Academic honesty
+We have read this article carefully: http://www.cuhk.edu.hk/policy/academichonesty.
