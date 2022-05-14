@@ -2,8 +2,10 @@
 ZHANG Shenghao (1155141511), JI Yi (1155141508), DUAN Jianing (1155141464)*/ 
 import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
-import Table from 'react-bootstrap/Table'
-import { BACK_END } from './App'
+import Table from 'react-bootstrap/Table';
+import { BACK_END } from './App';
+import sha256 from 'crypto-js/sha256';
+
 
 
 class AllAdm extends React.Component {
@@ -262,7 +264,7 @@ class UserAdm extends React.Component {
     } else {
       let uObj = {
         name:name,
-        pwd: pwd
+        pwd: sha256(pwd).toString()
       };
       console.log(uObj)
 
@@ -274,16 +276,26 @@ class UserAdm extends React.Component {
         body: JSON.stringify(uObj)
       })
       
-      let user = await newUser.json();
-      console.log(user);
+
+      let msg = await newUser.text();
+      alert(msg);
+
+      let obj = {
+        id: uObj['name'],
+        pwd: uObj['pwd']
+      };
       
-      this.setState(previousState => ({
-        user: [...previousState.user, user]
-      }));
-      document.querySelector('#uid').value='';
-      document.querySelector('#pwd').value='';
+      if (msg==='success'){
+        this.setState(previousState => ({
+          user: [...previousState.user, obj]
+        }));
+        document.querySelector('#uid').value='';
+        document.querySelector('#pwd').value='';
+      }
+      
     }
   }
+
   
   async updateUser(){
     let newObj = {
