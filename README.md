@@ -1,7 +1,7 @@
 # CSCI2720 Group Project
 
 ## Site URL
-
+http://ec2-54-157-250-6.compute-1.amazonaws.com/
 
 ## How to run our app
 First of all, you need to specify your own server address in `App.js`. Modify the `const BACK_END` variable as your own server address.
