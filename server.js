@@ -79,21 +79,16 @@ db.once('open', function () {
         res.set('Content-Type', 'text/plain');
         User.create({
             id: req.body['name'],
-            pwd: sha256(req.body['pwd']).toString(),
+            pwd: req.body['pwd'],
             fav_loc: []
         }, (err, user) => {
             if (err){
-                console.log("Fail to create.");
-                res.send(err.message);
+                console.log(err.message);
+                res.status(404).send(err.message);
             }
             else {
-                res.set('Content-Type', 'application/json');
-                let uObj = {
-                    id: req.body['name'],
-                    pwd: sha256(req.body['pwd']).toString()
-                };
-                console.log('User created successfully!\n' + user)
-                res.status(201).send(JSON.stringify(uObj));
+                console.log('User created successfully!\n' + user);
+                res.status(201).send('success');
             } 
         });
     });
